@@ -6,6 +6,10 @@
       <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
         <div class="swiper-wrapper">
         @foreach($destaques as $destaque)    
+        <?php $data_a = date('d-m-Y', strtotime('now')); 
+              $data_f = date('d-m-Y', strtotime($destaque->data_fim));
+        ?>
+        @if(strtotime($data_f) >= strtotime($data_a))
         <div class="swiper-slide">
             <div class="testimonial-item"><br><br>
               <a href="{{ route('destaquesDetalhes', $destaque->id) }}"><img src="{{asset('storage')}}/{{$destaque->caminho}}" class="testimonial-img" alt=""></a>
@@ -14,8 +18,9 @@
                  {{ substr($destaque->texto, 0, 300) .'...' }}
               </p>
             </div>
-            </div>
-         @endforeach
+        </div>
+        @endif
+        @endforeach
          </div> <br><br>
         <div class="swiper-pagination"></div>
       </div>
@@ -59,7 +64,7 @@
           <div class="col-lg-4 col-md-6">
             <div class="icon-box">
               <div class="icon"><i class="bi bi-cash-stack" style="color: #ff689b;"></i></div>
-              <h4 class="title"><a href="{{ route('acessoRapido', 1) }}">Ouvidoria Unidades</a></h4>
+              <h4 class="title"><a href="{{ route('acessoRapido', 1) }}">Ouvidoria das Unidades</a></h4>
             </div>
           </div>
           <div class="col-lg-4 col-md-6">

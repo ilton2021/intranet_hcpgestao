@@ -37,7 +37,7 @@
 							<td> 
 							  <input class="form-control" style="width: 750px" type="file" id="imagem" name="imagem" required value="" /> 
 							</td>
-						</tr>
+						 </tr>
 					      <tr>
 							<td> Data Início: </td>
 							<td>
@@ -56,7 +56,37 @@
 								<textarea class="form-control" rows="5" type="text" id="texto" name="texto" required value="{{ old('texto') }}"> </textarea>
 							</td>
 						 </tr>
-                         </table>
+						 <tr>
+							<td> Imagem 2: </td>
+							<td> 
+							  <input class="form-control" style="width: 750px" type="file" id="imagem2" name="imagem2" value="" /> 
+							</td>
+						 </tr>
+						 <tr>
+							<td> Imagem 3: </td>
+							<td> 
+							  <input class="form-control" style="width: 750px" type="file" id="imagem3" name="imagem3" value="" /> 
+							</td>
+						 </tr>
+						 <tr>
+							<td> Imagem 4: </td>
+							<td> 
+							  <input class="form-control" style="width: 750px" type="file" id="imagem4" name="imagem4" value="" /> 
+							</td>
+						 </tr>
+						 <tr>
+							<td> Imagem 5: </td>
+							<td> 
+							  <input class="form-control" style="width: 750px" type="file" id="imagem5" name="imagem5" value="" /> 
+							</td>
+						 </tr>
+						 <tr>
+							<td> Imagem 6: </td>
+							<td> 
+							  <input class="form-control" style="width: 750px" type="file" id="imagem6" name="imagem6" value="" /> 
+							</td>
+						 </tr>
+                        </table>
 						<table>
 						 <tr>
 						  <td><br> <a href="{{ route('cadastroDestaques') }}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-top: 10px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a>

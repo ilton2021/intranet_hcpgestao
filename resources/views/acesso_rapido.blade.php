@@ -41,7 +41,7 @@
       <div class="container">
         <div class="row gy-4">
             <div>
-            @if($id == 1) 
+            @if($id == 1) <br><br><br><br>
             <p align="justify">
               @foreach($ouvidorias as $ouvidoria)
                 {{ $ouvidoria->nome }}: <b>{{ $ouvidoria->email }}</b> <BR><BR>

@@ -18,7 +18,7 @@
 <body>
     <header id="header" class="fixed-top">
     <div class="container d-flex align-items-center justify-content-between">
-      <a href="{{ url('/') }}" class="logo"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>
+      <a href="{{ url('/') }}" class="logo"><img src="{{ asset('assets/img/logo.png') }}" alt="" class="img-fluid"></a>
       <nav id="navbar" class="navbar">
         <ul>
           <li class="dropdown"><a href="#"><span>O HCPGESTÃO</span> <i class="bi bi-chevron-down"></i></a>
@@ -33,8 +33,22 @@
             </ul>
           </li>
           <li><a class="nav-link scrollto" href="http://172.16.0.219/portalrh/WPortalRH.dll/$/" target="_blank">ÁREA DO COLABORADOR</a></li>
-          <li><a class="nav-link scrollto" href="#services">SERVIÇOS</a></li>
-          <li><a class="nav-link scrollto " href="#portfolio">COMUNICAÇÃO</a></li>
+          <li class="dropdown"><a href="#"><span>SERVIÇOS</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+                <li><a href="{{ route('acessoRapido', 1) }}">Ouvidoria das Unidades</a></li>
+                <li><a href="{{ route('acessoRapido', 2) }}">Indicadores</a></li>
+                <li><a href="{{ route('acessoRapido', 3) }}">Ramais/E-mails</a></li>
+                <li><a href="{{ route('acessoRapido', 4) }}">Documentos da Qualidade</a></li>
+                <li><a href="{{ route('acessoRapido', 5) }}">Protocolos Institucionais</a></li>
+                <li><a href="{{ route('acessoRapido', 6) }}">Políticas e Normas</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>COMUNICAÇÃO</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+                <li><a href="{{ route('destaquesDetalhes', 0) }}">Eventos</a></li>
+                <li><a href="{{ route('muraisDetalhes', 0) }}">Mural de Avisos</a></li>
+            </ul>
+          </li>
           <li class="dropdown"><a href="#"><span>SISTEMAS</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
                 <li><a href="https://hcpgestao-portal.hcpgestao.org.br" target="_blank">Portal da Transparência</a></li>
@@ -82,8 +96,6 @@
               <a href="https://www.youtube.com/user/hcppernambuco" class="youtube" target="_blank"><i class="bx bxl-youtube"></i></a>
             </div>
           </div>
-
-          
 
         </div>
       </div>

@@ -39,7 +39,6 @@
                 <li><strong>Endereço</strong>: <p align="justify"> {{ $unidade[0]->endereco }} </p></li>
               </ul>
             </div>
-           
           </div>
            <div>
               <p align="justify">

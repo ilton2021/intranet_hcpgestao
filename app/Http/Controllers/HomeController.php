@@ -38,13 +38,23 @@ class HomeController extends Controller
     }
 
     public function destaquesDetalhes($id) {
-        $destaques = Destaques::where('id',$id)->get();
-        return view('destaques_detalhes', compact('destaques'));
+        if($id == 0){
+            $destaques  = Destaques::all();
+        } else {
+            $destaques  = Destaques::where('id',$id)->get();
+        }
+        $destaques2 = Destaques::all();
+        return view('destaques_detalhes', compact('destaques','destaques2'));
     }
 
-    public function muraisDetalhes(){
-        $murais = Mural::all();
-        return view('murais_detalhes', compact('murais'));
+    public function muraisDetalhes($id){  
+        if($id == 0) {
+            $murais = Mural::all();
+        } else {
+            $murais = Mural::where('id',$id)->get();
+        }
+        $murais2 = Mural::all();
+        return view('murais_detalhes', compact('murais','murais2'));
     }
 
     public function acessoRapido($id) {

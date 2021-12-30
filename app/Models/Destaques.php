@@ -16,6 +16,16 @@ class Destaques extends Model
         'titulo',
         'data_inicio',
         'data_fim',
+        'imagem2',
+        'caminho2',
+        'imagem3',
+        'caminho3',
+        'imagem4',
+        'caminho4',
+        'imagem5',
+        'caminho5',
+        'imagem6',
+        'caminho6',
         'created_at',
         'updated_at'
     ];

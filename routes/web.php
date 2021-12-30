@@ -28,7 +28,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/hcpgestao', [App\Http\Controllers\HomeController::class, 'oquee'])->name('oquee');
 Route::get('/unidade/{id}', [App\Http\Controllers\HomeController::class, 'unidade'])->name('unidade');
 Route::get('/destaques_detalhes/{id}', [App\Http\Controllers\HomeController::class, 'destaquesDetalhes'])->name('destaquesDetalhes');
-Route::get('/murais_detalhes', [App\Http\Controllers\HomeController::class, 'muraisDetalhes'])->name('muraisDetalhes');
+Route::get('/murais_detalhes/{id}', [App\Http\Controllers\HomeController::class, 'muraisDetalhes'])->name('muraisDetalhes');
 Route::get('/acesso_rapido/{id}', [App\Http\Controllers\HomeController::class, 'acessoRapido'])->name('acessoRapido');
 Route::post('/', [App\Http\Controllers\HomeController::class, 'enviarEmail'])->name('enviarEmail');
 ////

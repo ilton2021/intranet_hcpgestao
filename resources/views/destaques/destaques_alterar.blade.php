@@ -57,6 +57,41 @@
 								<textarea class="form-control" rows="5" type="text" id="texto" name="texto" required value="<?php echo $destaques[0]->texto; ?>"> {{ $destaques[0]->texto }} </textarea>
 							</td>
 						 </tr>
+						 <tr>
+							<td> Imagem 2: </td>
+							<td> 
+							  <input class="form-control" style="width: 750px" type="text" id="imagem2_" name="imagem2_" readonly value="<?php echo $destaques[0]->imagem2; ?>" /> 
+                              <input class="form-control" style="width: 750px" type="file" id="imagem2" name="imagem2" value="" />
+							</td>
+						 </tr>
+						 <tr>
+							<td> Imagem 3: </td>
+							<td> 
+							  <input class="form-control" style="width: 750px" type="text" id="imagem3_" name="imagem3_" readonly value="<?php echo $destaques[0]->imagem3; ?>" /> 
+                              <input class="form-control" style="width: 750px" type="file" id="imagem3" name="imagem3" value="" />
+							</td>
+						 </tr>
+						 <tr>
+							<td> Imagem 4: </td>
+							<td> 
+							  <input class="form-control" style="width: 750px" type="text" id="imagem4_" name="imagem4_" readonly value="<?php echo $destaques[0]->imagem4; ?>" /> 
+                              <input class="form-control" style="width: 750px" type="file" id="imagem4" name="imagem4" value="" />
+							</td>
+						 </tr>
+						 <tr>
+							<td> Imagem 5: </td>
+							<td> 
+							  <input class="form-control" style="width: 750px" type="text" id="imagem5_" name="imagem5_" readonly value="<?php echo $destaques[0]->imagem5; ?>" /> 
+                              <input class="form-control" style="width: 750px" type="file" id="imagem5" name="imagem5" value="" />
+							</td>
+						 </tr>
+						 <tr>
+							<td> Imagem 6: </td>
+							<td> 
+							  <input class="form-control" style="width: 750px" type="text" id="imagem6_" name="imagem6_" readonly value="<?php echo $destaques[0]->imagem6; ?>" /> 
+                              <input class="form-control" style="width: 750px" type="file" id="imagem6" name="imagem6" value="" />
+							</td>
+						 </tr>
                          </table>
 						<table>
 						 <tr>

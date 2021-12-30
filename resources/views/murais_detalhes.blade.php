@@ -16,13 +16,13 @@
     <section id="portfolio-details" class="portfolio-details">
       <div class="container">
 
-        <div class="row gy-12">
+        <div class="row gy-20">
           <div class="col-lg-6">
             <div class="portfolio-details-slider swiper">
               <div class="swiper-wrapper align-items-center">
                 <div class="swiper-slide">
                   @foreach($murais as $mural)
-                    <a href="{{asset('storage')}}/{{$mural->caminho}}" data-gallery="portfolioGallery" class="portfolio-lightbox" title="<?php echo $mural->titulo; ?>"><img src="{{asset('storage')}}/{{$mural->caminho}}" class="img-fluid" alt=""></a>
+                    <a href="{{asset('storage')}}/{{$mural->caminho}}" data-gallery="portfolioGallery" class="portfolio-lightbox" title="<?php echo $mural->titulo; ?>"><img src="{{asset('storage')}}/{{$mural->caminho}}" class="img-fluid" alt="" width="500px"></a>
                   @endforeach
                 </div>
               </div>
@@ -32,14 +32,14 @@
 
           <div class="col-lg-6"> 
             <div class="portfolio-info">
-              <h3>Mais Avisos:</h3>
+              <h3>Mural de Avisos:</h3>
               <ul>
-                @foreach($murais as $mural)
-                <li><strong> {{ $mural->titulo }} - {{ $mural->texto }}</strong></li>
-                <li>
-                  <img src="{{ asset('img/calendar.png') }}" width="40px" />
-                  {{ date('d/m/Y', strtotime($mural->data_inicio)) }}
-                </li>
+                @foreach($murais2 as $mural)
+                <ul>
+                <li><strong><p align="justify"><font size="2"><a href="{{ route('muraisDetalhes', $mural->id) }}" title="<?php echo $mural->titulo; ?>">{{ substr($mural->titulo,0,70) }}</a></font></p></strong>
+                <img src="{{asset('img')}}/{{('calendar.png')}}" width="30"/> 
+                <font size="2">{{ date('d/m/Y', strtotime($mural->created_at)) }} </font></li>
+                </ul> <br>
                 @endforeach
               </ul>
             </div>
@@ -48,5 +48,12 @@
       </div>
     </section>
   </main>
+  <script src="{{ asset('../assets/vendor/purecounter/purecounter.js') }}"></script>
+  <script src="{{ asset('../assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ asset('../assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
+  <script src="{{ asset('../assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+  <script src="{{ asset('../assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+  <script src="{{ asset('../assets/vendor/php-email-form/validate.js') }}"></script>
+  <script src="{{ asset('../assets/js/main.js') }}"></script>
 </body>
 </html>

@@ -44,7 +44,7 @@ class DestaquesController extends Controller
 		} else {
 			if($extensao == 'jpg' || $extensao == 'png' || $extensao == 'jpeg') {
 				$validator = Validator::make($request->all(), [
-					'texto'       => 'required|max:4000',
+					'texto'       => 'required|max:8000',
                     'titulo'      => 'required|max:255',
                     'data_inicio' => 'required|date',
                     'data_fim'    => 'required|date'
@@ -57,6 +57,16 @@ class DestaquesController extends Controller
 					$request->file('imagem')->move('../public/storage/destaques/', $nome);
 					$input['imagem'] = $nome; 
 					$input['caminho'] = 'destaques/'.$nome; 
+
+					for($a = 2; $a <= 6; $a++){
+						if($request->file('imagem'.$a) != NULL) {	
+							$nome1 = $_FILES['imagem'.$a]['name'];
+							$input['imagem'.$a]  = $nome1; 
+							$input['caminho'.$a] = 'destaques/'.$nome.'/'.$nome1; 
+							$request->file('imagem'.$a)->move('../public/storage/destaques/',$nome1);
+						}
+					}
+
 					$destaques = Destaques::create($input);
 					$destaques = Destaques::all();
 					$validator = 'Destaque Cadastrado com Sucesso!';
@@ -97,7 +107,7 @@ class DestaquesController extends Controller
 			}			
 			if($extensao == 'jpg' || $extensao == 'png' || $extensao == 'jpeg') {
 				$validator = Validator::make($request->all(), [
-					'texto'       => 'required|max:4000',
+					'texto'       => 'required|max:8000',
                     'titulo'      => 'required|max:255',
                     'data_inicio' => 'required|date',
                     'data_fim'    => 'required|date'
@@ -112,6 +122,16 @@ class DestaquesController extends Controller
 					  $input['imagem'] = $nome1; 
 					  $input['caminho'] = 'destaques/'.$nome1; 
 					} 
+
+					for($a = 2; $a <= 6; $a++){
+						if($request->file('imagem'.$a) != "") {
+							$nome = $_FILES['imagem'.$a]['name'];
+							$input['imagem'.$a]  = $nome; 
+							$input['caminho'.$a] = 'destaques/'.$nome; 
+							$request->file('imagem'.$a)->move('../public/storage/destaques/',$nome);
+						}
+					}
+
 					$destaques = Destaques::find($id); 
 					$destaques->update($input);
 					$destaques = Destaques::all();
