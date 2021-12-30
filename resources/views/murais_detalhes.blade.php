@@ -32,7 +32,7 @@
 
           <div class="col-lg-6"> 
             <div class="portfolio-info">
-              <h3>Mural de Avisos:</h3>
+              <h3><font color="green">Mural de Avisos:</font></h3>
               <ul>
                 @foreach($murais2 as $mural)
                 <ul>

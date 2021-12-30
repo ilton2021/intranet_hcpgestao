@@ -62,7 +62,7 @@ class DestaquesController extends Controller
 						if($request->file('imagem'.$a) != NULL) {	
 							$nome1 = $_FILES['imagem'.$a]['name'];
 							$input['imagem'.$a]  = $nome1; 
-							$input['caminho'.$a] = 'destaques/'.$nome.'/'.$nome1; 
+							$input['caminho'.$a] = 'destaques/'.$nome1; 
 							$request->file('imagem'.$a)->move('../public/storage/destaques/',$nome1);
 						}
 					}
