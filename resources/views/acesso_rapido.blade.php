@@ -48,7 +48,10 @@
               @endforeach
             </p>
             @elseif($id == 2)
-
+            <p align="justify">
+              Você precisa fazer Login para visualizar os Indicadores: <br><br>
+              <a href="{{ route('telaLoginIndicador') }}" class="btn btn-sm btn-info">Fazer Login</a>
+            </p>
             @elseif($id == 3)
             <p align="justify">
              

@@ -13,7 +13,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm" style="background-color:#f8fafc !important;">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-top" style="background-color:#f8fafc !important;">
             <div class="container">
 				<a href="{{ route('logout') }}" class="navbar-brand" onclick="event.preventDefault(); document.getElementById('logout-form2').submit();"> 
 					<img src="{{asset('img/Imagem1.png')}}"  height="50" class="d-inline-block align-top" alt="">
@@ -33,7 +33,7 @@
                     <ul class="navbar-nav ml-auto">
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('telaLogin') }}">{{ __('Logar') }}</a>
+                                <a class="nav-link" href="{{ route('telaLoginIndicador') }}">{{ __('Logar') }}</a>
                             </li>
                         @else
                             <li class="nav-item dropdown">

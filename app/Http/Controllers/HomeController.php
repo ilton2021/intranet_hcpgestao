@@ -9,6 +9,7 @@ use App\Models\Mural;
 use App\Models\OuvidoriaUnidades;
 use App\Models\DocumentosQualidade;
 use App\Models\PoliticasNormas;
+use App\Models\Indicadores;
 use App\Models\Ramais;
 use App\Models\Emails;
 use App\Models\Setor;
@@ -53,14 +54,15 @@ class HomeController extends Controller
     }
 
     public function acessoRapido($id) {
-        $ouvidorias = OuvidoriaUnidades::all();
-        $documentos = DocumentosQualidade::all();
-        $politicas  = PoliticasNormas::all();
-        $protocolos = ProtocolosInstitucionais::all();
-        $ramais     = Ramais::all();
-        $emails     = Emails::all();
-        $setores    = Setor::all();
-        return view('acesso_rapido', compact('id','setores','ouvidorias','documentos','politicas','ramais','emails','protocolos'));
+        $ouvidorias  = OuvidoriaUnidades::all();
+        $documentos  = DocumentosQualidade::all();
+        $politicas   = PoliticasNormas::all();
+        $protocolos  = ProtocolosInstitucionais::all();
+        $ramais      = Ramais::all();
+        $emails      = Emails::all();
+        $setores     = Setor::all();
+        $indicadores = Indicadores::all();
+        return view('acesso_rapido', compact('id','setores','ouvidorias','documentos','politicas','ramais','emails','protocolos','indicadores'));
     }
 
     public function enviarEmail(Request $request){ 

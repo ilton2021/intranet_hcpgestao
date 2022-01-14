@@ -5,16 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Indicadores extends Model
+class GrupoIndicadores extends Model
 {
-    protected $table = 'indicadores';
+    protected $table = 'grupo_indicadores';
 
     protected $fillable = [
-        'grupo_id',
-        'status',
         'nome',
-        'link',
-        'unidade_id',
         'created_at',
         'updated_at'
     ];

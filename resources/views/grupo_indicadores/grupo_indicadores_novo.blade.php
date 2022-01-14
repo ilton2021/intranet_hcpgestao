@@ -2,7 +2,7 @@
 	<div class="container-fluid">
 	<div class="row" style="margin-top: 0px;">
 		<div class="col-md-12 text-center">
-			<h3 style="font-size: 18px;">EXCLUIR INDICADORES:</h3>
+			<h3 style="font-size: 18px;">CADASTRAR NOVO GRUPO DE INDICADOR:</h3>
 		</div>
 	</div>
 	@if ($errors->any())
@@ -20,32 +20,23 @@
 		 <div class="accordion" id="accordionExample">
                 <div class="card">
                     <a class="card-header bg-success text-decoration-none text-white bg-success" type="button" data-toggle="collapse" data-target="#PESSOAL" aria-expanded="true" aria-controls="PESSOAL">
-                        Excluir Indicadores: <i class="fas fa-check-circle"></i>
+                        Grupo de Indicador: <i class="fas fa-check-circle"></i>
                     </a>
                 </div>	
-					<form action="{{\Request::route('destroyIndicadores')}}" method="post">
+					<form action="{{\Request::route('storeGrupoIndicadores')}}" method="post">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 						<table border="0" class="table-sm" style="line-height: 1.5;" >
 						 <tr>
 							<td> Nome: </td>
 							<td>
-								<input class="form-control" type="text" id="nome" name="nome" readonly value="<?php echo $indicadores[0]->nome; ?>" />
+								<input class="form-control" style="width: 400px" type="text" id="nome" name="nome" required value="{{ old('nome') }}" />
 							</td>
 						 </tr>
-                         <tr>
-							<td> Grupo: </td>
-							<td>
-								<input class="form-control" type="text" id="grupo" name="grupo" readonly value="<?php echo $indicadores[0]->grupo; ?>" />
-							</td>
-						 </tr>
-                         <tr>
-                            <td colspan="4"><br><b>Deseja Realmente Excluir este Indicador?</b></td>
-                         </tr>
                          </table>
 						<table>
 						 <tr>
-						  <td><br> <a href="{{ route('cadastroIndicadores') }}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-top: 10px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a>
-						  <input type="submit" class="btn btn-danger btn-sm" style="margin-top: 10px;" value="Excluir" id="Salvar" name="Salvar" /> </td>
+						  <td><br> <a href="{{ route('cadastroGrupoIndicadores') }}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-top: 10px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a>
+						  <input type="submit" class="btn btn-success btn-sm" style="margin-top: 10px;" value="Salvar" id="Salvar" name="Salvar" /> </td>
 						 </tr>
 						</table>
 					</form>

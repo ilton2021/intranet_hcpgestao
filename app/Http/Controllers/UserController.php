@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Auth;
+use Auth;
 use App\Models\Unidades;
 use App\Models\AlterarSenha;
+use App\Models\Indicadores;
+use App\Models\GrupoIndicadores;
 use App\Models\PerfilUser;
 use Spatie\Permission\Models\Role;
 use DB;
@@ -45,7 +47,8 @@ class UserController extends Controller
 	public function usuariosNovo()
 	{
 		$perfil_users = PerfilUser::all();
-		return view('users/users_novo', compact('perfil_users'));
+		$unidades     = Unidades::all();
+		return view('users/users_novo', compact('perfil_users','unidades'));
 	}
 
 	public function usuariosAlterar($id)
@@ -67,9 +70,9 @@ class UserController extends Controller
 		return view('users/users_resetar_senha', compact('users'));
 	}
 
-	public function telaLogin()
+	public function telaLoginIndicador()
 	{
-		return view('auth.login');
+		return view('auth.login_indicador');
 	}
 
 	public function telaRegistro()
@@ -89,7 +92,7 @@ class UserController extends Controller
 	}
 	
 	public function Login(Request $request)
-	{
+	{	
 		$input = $request->all(); 		
 		$validator = Validator::make($request->all(), [
 			'email'    => 'required|email',
@@ -111,10 +114,20 @@ class UserController extends Controller
 						->withInput(session()->flashInput($request->input())); 	
 			} else {
 				$unidades = $this->unidade->all();
-				Auth::login($user);
-				return view('home', compact('unidades','user'))
+				Auth::attempt(['email' => $email, 'password' => $senha]);
+				$idU    = Auth::user()->unidade_id;
+				$perfil = Auth::user()->perfil;
+				if($perfil == "Administrador") {
+					return view('home')
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input())); 							
+				}  else {
+					$indicadores 	   = Indicadores::where('id',0)->get();
+					$grupo_indicadores = GrupoIndicadores::orderby('nome','ASC')->get();
+					return view('indicadores/lista_indicadores', compact('unidades','user','grupo_indicadores','indicadores'))
+							->withErrors($validator)
+							->withInput(session()->flashInput($request->input())); 							
+				}
 			}
 		}
 	}

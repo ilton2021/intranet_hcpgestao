@@ -24,7 +24,7 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ route('cadastroEmails') }}">E-mails</a>
                         <a class="dropdown-item" href="{{ route('cadastroDocumentos') }}">Documentos de Qualidade</a>
-                        <a class="dropdown-item" href="#">Indicadores</a>
+                        <a class="dropdown-item" href="{{ route('cadastroIndicadores') }}">Indicadores</a>
                         <a class="dropdown-item" href="{{ route('cadastroProtocolos') }}">Protocolos Institucionais</a>
                         <a class="dropdown-item" href="{{ route('cadastroPoliticas') }}">Políticas e Normas</a>
                         <a class="dropdown-item" href="{{ route('cadastroRamais') }}">Ramais</a>
