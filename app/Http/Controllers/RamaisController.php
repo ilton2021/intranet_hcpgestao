@@ -108,4 +108,11 @@ class RamaisController extends Controller
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
     }
+
+    public function ramaisUnidade($id)
+    {
+        $ramais = Ramais::where('unidade_id',$id)->get();
+        $unidade = Unidades::where('id',$id)->get();
+        return view('ramais/ramais_unidade', compact('ramais','unidade'));
+    }
 }

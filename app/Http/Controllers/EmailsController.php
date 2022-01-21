@@ -108,4 +108,11 @@ class EmailsController extends Controller
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
     }
+
+    public function emailsUnidade($id)
+    {
+        $emails = Emails::where('unidade_id',$id)->orderby('nome','ASC')->get();
+        $unidade = Unidades::where('id',$id)->get();
+        return view('emails/emails_unidade', compact('emails','unidade'));
+    }
 }

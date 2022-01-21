@@ -54,7 +54,24 @@
             </p>
             @elseif($id == 3)
             <p align="justify">
-             
+              <table class="table">
+                <tr>
+                  <thead>
+                    <th>UNIDADES:</th>
+                    <th>RAMAIS:</th>
+                    <th>E-MAILS:</th>
+                  </thead>
+                  @foreach($unidades as $unidade)
+                  <tr>
+                   <td>
+                    {{ $unidade->nome }}
+                   </td>
+                   <td title="<?php echo $unidade->nome; ?>"><a href="{{ route('ramaisUnidade', $unidade->id) }}" class="btn btn-sm btn-success">RAMAL</a></td>
+                   <td title="<?php echo $unidade->nome; ?>"><a href="{{ route('emailsUnidade', $unidade->id) }}" class="btn btn-sm btn-success">EMAIL</a></td>
+                  </tr>
+                  @endforeach
+                </tr>
+              </table>
             </p>
             @elseif($id == 4)
             <p align="justify">

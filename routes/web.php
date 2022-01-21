@@ -31,13 +31,14 @@ Route::get('/murais_detalhes/{id}', [App\Http\Controllers\HomeController::class,
 Route::get('/acesso_rapido/{id}', [App\Http\Controllers\HomeController::class, 'acessoRapido'])->name('acessoRapido');
 Route::post('/', [App\Http\Controllers\HomeController::class, 'enviarEmail'])->name('enviarEmail');
 Route::get('/admin/indicador', [App\Http\Controllers\UserController::class, 'telaLoginIndicador'])->name('telaLoginIndicador');
+Route::get('/acesso_rapido/3/ramais_unidade/{id}', [App\Http\Controllers\RamaisController::class, 'ramaisUnidade'])->name('ramaisUnidade');
+Route::get('/acesso_rapido/3/emails_unidade/{id}', [App\Http\Controllers\EmailsController::class, 'emailsUnidade'])->name('emailsUnidade');
 ////
 
 Route::middleware(['auth'])->group( function() {
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     
-
     //Usuários
     Route::get('/cadastro_usuarios', [App\Http\Controllers\UserController::class, 'cadastroUsuarios'])->name('cadastroUsuarios');
     Route::get('/pesquisar_usuarios', [App\Http\Controllers\UserController::class, 'pesquisarUsuarios'])->name('pesquisarUsuarios');
@@ -180,6 +181,7 @@ Route::middleware(['auth'])->group( function() {
     Route::post('/cadastro_ramais/alterar_ramais/{id}', [App\Http\Controllers\RamaisController::class, 'updateRamais'])->name('updateRamais');
     Route::get('/cadastro_ramais/excluir_ramais/{id}', [App\Http\Controllers\RamaisController::class, 'ramaisExcluir'])->name('ramaisExcluir');
     Route::post('/cadastro_ramais/excluir_ramais/{id}', [App\Http\Controllers\RamaisController::class, 'destroyRamais'])->name('destroyRamais');
+    
     ////
 
     //Indicadores

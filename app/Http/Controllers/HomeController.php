@@ -62,7 +62,8 @@ class HomeController extends Controller
         $emails      = Emails::all();
         $setores     = Setor::all();
         $indicadores = Indicadores::all();
-        return view('acesso_rapido', compact('id','setores','ouvidorias','documentos','politicas','ramais','emails','protocolos','indicadores'));
+        $unidades = Unidades::all();
+        return view('acesso_rapido', compact('id','setores','ouvidorias','documentos','politicas','ramais','emails','protocolos','indicadores','unidades'));
     }
 
     public function enviarEmail(Request $request){ 
