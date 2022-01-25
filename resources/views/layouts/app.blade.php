@@ -30,6 +30,7 @@
                   <li><a href="{{ route('unidade', 4) }}">UPAE ARRUDA</a></li>
                   <li><a href="{{ route('unidade', 5) }}">UPAE CARUARU</a></li>
                   <li><a href="{{ route('unidade', 6) }}">HSS</a></li>
+                  <li><a href="{{ route('unidade', 8) }}">UPA IGARASSU</a></li>
             </ul>
           </li>
           <li><a class="nav-link scrollto" href="http://172.16.0.219/portalrh/WPortalRH.dll/$/" target="_blank">ÁREA DO COLABORADOR</a></li>

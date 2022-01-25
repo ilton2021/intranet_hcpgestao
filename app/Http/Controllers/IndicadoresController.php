@@ -52,10 +52,21 @@ class IndicadoresController extends Controller
         $unidade = Auth::user()->unidade_id;
 		if(empty($input['pesq2'])) { $input['pesq2'] = ""; }
       	$pesq2 = $input['pesq2']; 
+        $idU = Auth::user()->unidade_id;
         if($pesq2 != "") {
-            $indicadores = Indicadores::where('grupo_id',$pesq2)->where('unidade_id',$unidade)->get();
-            $qtd = sizeof($indicadores);
-            $grupo_indicadores = GrupoIndicadores::orderby('nome','ASC')->get();
+             if($idU != 7){
+                $indicadores = Indicadores::where('grupo_id',$pesq2)->where('unidade_id',$unidade)->get();
+                $qtd = sizeof($indicadores);
+                $grupo_indicadores = DB::table('grupo_indicadores')
+					->join('indicadores','indicadores.grupo_id','=','grupo_indicadores.id')
+					->select('grupo_indicadores.nome','grupo_indicadores.id')
+                    ->where('indicadores.unidade_id',$idU)
+            		->groupby('grupo_indicadores.nome','grupo_indicadores.id')->get();
+            } else {
+                $indicadores = Indicadores::where('grupo_id',$pesq2)->get();
+                $qtd = sizeof($indicadores);
+                $grupo_indicadores = GrupoIndicadores::all();
+            }
             if($qtd == 0) {
                 $validator = 'Não existe nenhum Indicador cadastrado nesta Unidade deste Grupo!';
                 return view('indicadores/lista_indicadores', compact('indicadores','pesq2','grupo_indicadores'))

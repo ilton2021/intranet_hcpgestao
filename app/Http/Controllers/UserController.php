@@ -114,7 +114,8 @@ class UserController extends Controller
 						->withInput(session()->flashInput($request->input())); 	
 			} else {
 				$unidades = $this->unidade->all();
-				Auth::attempt(['email' => $email, 'password' => $senha]);
+				$user = User::find($user[0]->id);
+				Auth::login($user);				
 				$idU    = Auth::user()->unidade_id;
 				$perfil = Auth::user()->perfil;
 				if($perfil == "Administrador") {
@@ -123,7 +124,15 @@ class UserController extends Controller
 						->withInput(session()->flashInput($request->input())); 							
 				}  else {
 					$indicadores 	   = Indicadores::where('id',0)->get();
-					$grupo_indicadores = GrupoIndicadores::orderby('nome','ASC')->get();
+					if($idU != 7){
+						$grupo_indicadores = DB::table('grupo_indicadores')
+							->join('indicadores','indicadores.grupo_id','=','grupo_indicadores.id')
+							->select('grupo_indicadores.nome','grupo_indicadores.id')
+							->where('indicadores.unidade_id',$idU)
+							->groupby('grupo_indicadores.nome','grupo_indicadores.id')->get();
+					} else {
+						$grupo_indicadores = GrupoIndicadores::all();
+					}
 					return view('indicadores/lista_indicadores', compact('unidades','user','grupo_indicadores','indicadores'))
 							->withErrors($validator)
 							->withInput(session()->flashInput($request->input())); 							

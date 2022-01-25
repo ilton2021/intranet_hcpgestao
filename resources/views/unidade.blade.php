@@ -36,7 +36,7 @@
                 <li><strong>Horário</strong>: {{ $unidade[0]->horario }}</li>
                 <li><strong>Telefone</strong>: {{ $unidade[0]->telefone }} </li>
                 <li><strong>Ouvidoria</strong>: {{ $unidade[0]->ouvidoria }} </li>
-                <li><strong>Endereço</strong>: <p align="justify"> {{ $unidade[0]->endereco }} </p></li>
+                <li><strong>Endereço</strong>:  {{ $unidade[0]->endereco }} </li>
               </ul>
             </div>
           </div>
