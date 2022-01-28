@@ -54,7 +54,7 @@ class DestaquesController extends Controller
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
 				}else {
-					$request->file('imagem')->move('../public/storage/destaques/', $nome);
+					$request->file('imagem')->move('public/storage/destaques/', $nome);
 					$input['imagem'] = $nome; 
 					$input['caminho'] = 'destaques/'.$nome; 
 
@@ -63,7 +63,7 @@ class DestaquesController extends Controller
 							$nome1 = $_FILES['imagem'.$a]['name'];
 							$input['imagem'.$a]  = $nome1; 
 							$input['caminho'.$a] = 'destaques/'.$nome1; 
-							$request->file('imagem'.$a)->move('../public/storage/destaques/',$nome1);
+							$request->file('imagem'.$a)->move('public/storage/destaques/',$nome1);
 						}
 					}
 
@@ -118,7 +118,7 @@ class DestaquesController extends Controller
 						->withInput(session()->flashInput($request->input()));
 				}else {
 					if($nome1 != "") {
-					  $request->file('imagem')->move('../public/storage/destaques/', $nome1);
+					  $request->file('imagem')->move('public/storage/destaques/', $nome1);
 					  $input['imagem'] = $nome1; 
 					  $input['caminho'] = 'destaques/'.$nome1; 
 					} 
@@ -128,7 +128,7 @@ class DestaquesController extends Controller
 							$nome = $_FILES['imagem'.$a]['name'];
 							$input['imagem'.$a]  = $nome; 
 							$input['caminho'.$a] = 'destaques/'.$nome; 
-							$request->file('imagem'.$a)->move('../public/storage/destaques/',$nome);
+							$request->file('imagem'.$a)->move('public/storage/destaques/',$nome);
 						}
 					}
 
@@ -155,11 +155,11 @@ class DestaquesController extends Controller
     }
 
     public function destroyDestaques($id, Request $request){
-        Destaques::find($id)->delete();
-		$input = $request->all();
-		$nome = $input['imagem'];
-		$pasta = 'public/storage/destaques/'.$nome; 
-		Storage::delete($pasta);
+        $input = $request->all();
+		$data = Destaques::find($id);
+		$image_path = public_path().'/storage/'.$data->caminho;
+        unlink($image_path);
+        $data->delete();
 		$destaques = Destaques::all();
         $validator = 'Destaque excluído com sucesso!';
 		return view('destaques/destaques_cadastro', compact('destaques'))

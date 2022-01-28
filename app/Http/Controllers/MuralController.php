@@ -54,7 +54,7 @@ class MuralController extends Controller
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
 				}else {
-					$request->file('imagem')->move('../public/storage/mural_avisos/', $nome);
+					$request->file('imagem')->move('public/storage/mural_avisos/', $nome);
 					$input['imagem'] = $nome; 
 					$input['caminho'] = 'mural_avisos/'.$nome; 
 					$murais = Mural::create($input);
@@ -108,7 +108,7 @@ class MuralController extends Controller
 						->withInput(session()->flashInput($request->input()));
 				}else {
 					if($nome1 != "") {
-					  $request->file('imagem')->move('../public/storage/mural_avisos/', $nome1);
+					  $request->file('imagem')->move('public/storage/mural_avisos/', $nome1);
 					  $input['imagem'] = $nome1; 
 					  $input['caminho'] = 'mural_avisos/'.$nome1; 
 					} 
@@ -135,11 +135,11 @@ class MuralController extends Controller
     }
 
     public function destroyMural($id, Request $request){
-        Mural::find($id)->delete();
-		$input = $request->all();
-		$nome = $input['imagem'];
-		$pasta = 'public/storage/mural_avisos/'.$nome; 
-		Storage::delete($pasta);
+        $input = $request->all();
+		$data  = Mural::find($id);
+		$image_path = public_path().'/storage/'.$data->caminho;
+        unlink($image_path);
+        $data->delete();
 		$murais = Mural::all();
         $validator = 'Mural de Avisos excluído com sucesso!';
 		return view('mural_avisos/mural_cadastro', compact('murais'))

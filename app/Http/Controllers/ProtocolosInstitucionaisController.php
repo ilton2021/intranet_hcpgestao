@@ -59,7 +59,7 @@ class ProtocolosInstitucionaisController extends Controller
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
 				}else {
-					$request->file('imagem')->move('../public/storage/protocolos_institucionais/', $nome);
+					$request->file('imagem')->move('public/storage/protocolos_institucionais/', $nome);
 					$input['imagem'] = $nome; 
 					$input['caminho'] = 'protocolos_institucionais/'.$nome; 
 					$protocolos = ProtocolosInstitucionais::create($input);
@@ -114,7 +114,7 @@ class ProtocolosInstitucionaisController extends Controller
 						->withInput(session()->flashInput($request->input()));
 				}else {
 					if($nome1 != "") {
-					  $request->file('imagem')->move('../public/storage/protocolos_institucionais/', $nome1);
+					  $request->file('imagem')->move('public/storage/protocolos_institucionais/', $nome1);
 					  $input['imagem'] = $nome1; 
 					  $input['caminho'] = 'protocolos_institucionais/'.$nome1; 
 					} 
@@ -127,7 +127,7 @@ class ProtocolosInstitucionaisController extends Controller
 						->withInput(session()->flashInput($request->input()));
 				}
 			} else {
-				$validator = 'Só é permitido imagens: .jpg, .jpeg ou .png!';
+				$validator = 'Só é permitido arquivos: .pdf!';
 				return view('protocolos_institucionais/protocolos_institucionais_alterar', compact('protocolos'))
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
@@ -143,11 +143,11 @@ class ProtocolosInstitucionaisController extends Controller
 
     public function destroyProtocolos($id, Request $request)
     {
-        ProtocolosInstitucionais::find($id)->delete();
-		$input = $request->all();
-		$nome = $input['imagem'];
-		$pasta = 'public/storage/protocolos_institucionais/'.$nome; 
-		Storage::delete($pasta);
+        $input = $request->all();
+		$data  = ProtocolosInstitucionais::find($id);
+		$image_path = public_path().'/storage/'.$data->caminho;
+        unlink($image_path);
+        $data->delete();
 		$protocolos = ProtocolosInstitucionais::all();
         $validator = 'Protocolo Institucional excluído com sucesso!';
 		return view('protocolos_institucionais/protocolos_institucionais_cadastro', compact('protocolos'))

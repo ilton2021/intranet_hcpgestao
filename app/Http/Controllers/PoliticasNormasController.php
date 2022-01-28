@@ -58,7 +58,7 @@ class PoliticasNormasController extends Controller
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
 				}else {
-					$request->file('imagem')->move('../public/storage/politicas_normas/', $nome);
+					$request->file('imagem')->move('public/storage/politicas_normas/', $nome);
 					$input['imagem'] = $nome; 
 					$input['caminho'] = 'politicas_normas/'.$nome; 
 					$politicas = PoliticasNormas::create($input);
@@ -69,7 +69,7 @@ class PoliticasNormasController extends Controller
 						->withInput(session()->flashInput($request->input()));
 				}
 			} else {
-				$validator = 'Só é permitido imagens: .jpg, .jpeg ou .png!';		
+				$validator = 'Só é permitido arquivos: .pdf!';		
 				return view('politicas_normas/politicas_normas_novo', compact('setores'))
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
@@ -113,7 +113,7 @@ class PoliticasNormasController extends Controller
 						->withInput(session()->flashInput($request->input()));
 				}else {
 					if($nome1 != "") {
-					  $request->file('imagem')->move('../public/storage/politicas_normas/', $nome1);
+					  $request->file('imagem')->move('public/storage/politicas_normas/', $nome1);
 					  $input['imagem'] = $nome1; 
 					  $input['caminho'] = 'politicas_normas/'.$nome1; 
 					} 
@@ -142,11 +142,11 @@ class PoliticasNormasController extends Controller
 
     public function destroyPoliticas($id, Request $request)
     {
-        PoliticasNormas::find($id)->delete();
-		$input = $request->all();
-		$nome = $input['imagem'];
-		$pasta = 'public/storage/politicas_normas/'.$nome; 
-		Storage::delete($pasta);
+        $input = $request->all();
+	    $data  = PoliticasNormas::find($id);
+	    $image_path = public_path().'/storage/'.$data->caminho;
+	    unlink($image_path);
+	    $data->delete();
 		$politicas = PoliticasNormas::all();
         $validator = 'Políticas e Normas excluído com sucesso!';
 		return view('politicas_normas/politicas_normas_cadastro', compact('politicas'))

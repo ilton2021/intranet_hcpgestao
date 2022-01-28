@@ -54,7 +54,7 @@ class DocumentosQualidadeController extends Controller
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
 				}else {
-					$request->file('imagem')->move('../public/storage/documentos_qualidade/', $nome);
+					$request->file('imagem')->move('public/storage/documentos_qualidade/', $nome);
 					$input['imagem'] = $nome; 
 					$input['caminho'] = 'documentos_qualidade/'.$nome; 
 					$documentos = DocumentosQualidade::create($input);
@@ -65,8 +65,8 @@ class DocumentosQualidadeController extends Controller
 						->withInput(session()->flashInput($request->input()));
 				}
 			} else {
-				$validator = 'Só é permitido imagens: .jpg, .jpeg ou .png!';		
-				return view('documentos_qualidade/documentos_qualidade_novo', compact('documentos'))
+				$validator = 'Só é permitido documentos: .pdf ou .PDF!';		
+				return view('documentos_qualidade/documentos_qualidade_novo')
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
 			}
@@ -107,7 +107,7 @@ class DocumentosQualidadeController extends Controller
 						->withInput(session()->flashInput($request->input()));
 				}else {
 					if($nome1 != "") {
-					  $request->file('imagem')->move('../public/storage/documentos_qualidade/', $nome1);
+					  $request->file('imagem')->move('public/storage/documentos_qualidade/', $nome1);
 					  $input['imagem'] = $nome1; 
 					  $input['caminho'] = 'documentos_qualidade/'.$nome1; 
 					} 
@@ -120,7 +120,7 @@ class DocumentosQualidadeController extends Controller
 						->withInput(session()->flashInput($request->input()));
 				}
 			} else {
-				$validator = 'Só é permitido imagens: .jpg, .jpeg ou .png!';
+				$validator = 'Só é permitido arquivos: .pdf!';
 				return view('documentos_qualidade/documentos_qualidade_alterar', compact('documentos'))
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
@@ -136,11 +136,11 @@ class DocumentosQualidadeController extends Controller
 
     public function destroyDocumentos($id, Request $request)
     {
-        DocumentosQualidade::find($id)->delete();
-		$input = $request->all();
-		$nome  = $input['imagem'];
-		$pasta = 'public/storage/documentos_qualidade/'.$nome; 
-		Storage::delete($pasta);
+        $input = $request->all();
+		$data  = DocumentosQualidade::find($id);
+		$image_path = public_path().'/storage/'.$data->caminho;
+        unlink($image_path);
+        $data->delete();
 		$documentos = DocumentosQualidade::all();
         $validator  = 'Documento de Qualidade excluído com sucesso!';
 		return view('documentos_qualidade/documentos_qualidade_cadastro', compact('documentos'))

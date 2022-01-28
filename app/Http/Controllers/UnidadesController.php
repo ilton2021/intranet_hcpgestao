@@ -58,7 +58,7 @@ class UnidadesController extends Controller
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
 				}else {
-					$request->file('imagem')->move('../public/storage/unidades/', $nome);
+					$request->file('imagem')->move('public/storage/unidades/', $nome);
 					$input['imagem'] = $nome; 
 					$input['caminho'] = 'unidades/'.$nome; 
 					$unidade = Unidades::create($input);
@@ -115,7 +115,7 @@ class UnidadesController extends Controller
 						->withInput(session()->flashInput($request->input()));
 				}else {
 					if($nome1 != "") {
-					  $request->file('imagem')->move('../public/storage/unidades/', $nome1);
+					  $request->file('imagem')->move('public/storage/unidades/', $nome1);
 					  $input['imagem'] = $nome1; 
 					  $input['caminho'] = 'unidades/'.$nome1; 
 					} 
@@ -142,11 +142,11 @@ class UnidadesController extends Controller
     }
 
     public function destroyUnidade($id, Request $request){
-        Unidades::find($id)->delete();
-		$input = $request->all();
-		$nome = $input['imagem'];
-		$pasta = 'public/storage/unidades/'.$nome; 
-		Storage::delete($pasta);
+        $input = $request->all();
+		$data  = Unidades::find($id);
+		$image_path = public_path().'/storage/'.$data->caminho;
+        unlink($image_path);
+        $data->delete();
 		$unidades = Unidades::all();
         $validator = 'Unidade excluída com sucesso!';
 		return view('unidades/unidades_cadastro', compact('unidades'))

@@ -76,13 +76,13 @@
             @elseif($id == 4)
             <p align="justify">
               <table>
-               <tr> <?php $a = 1; ?>
+               <tr> <?php $a = 0; ?>
                 @foreach($documentos as $documento)  <?php $a += 1; ?>
                 <td>
                   <center><img src="{{asset('storage')}}/{{('foto.jpg')}}" width="200" /></center><br>
-                  <font size="2"><p align="center"> {{ $documento->nome }} </p></font> <br><center><a href="{{asset('storage')}}/{{$documento->caminho}}" width="100px" class="btn btn-sm btn-info" target="_blank"> Download</a></center><BR><BR>
+                  <font size="2"><p align="center"> <b>{{ $documento->nome }}</b> </p></font> <br><center><a href="{{asset('storage')}}/{{$documento->caminho}}" width="100px" class="btn btn-sm btn-info" target="_blank"> Download</a></center><BR><BR>
                   </td>
-                  @if($a > 4 || $a > 8 || $a > 12 || $a > 16 || $a > 20 || $a > 24) </tr> @endif
+                  @if($a > 3 || $a > 6 || $a > 12 || $a > 16 || $a > 20 || $a > 24) </tr> @endif
                 @endforeach 
                </tr>
               </table>
