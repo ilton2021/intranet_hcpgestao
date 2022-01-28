@@ -31,6 +31,8 @@ class CreateDestaquesTable extends Migration
             $table->string('caminho5');
             $table->string('imagem6');
             $table->string('caminho6');
+            $table->unsignedBigInteger('unidade_id');
+            $table->foreign('unidade_id')->references('id')->on('unidades');
             $table->timestamps();
         });
     }

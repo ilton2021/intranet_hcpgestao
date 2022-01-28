@@ -21,6 +21,8 @@ class CreateMuralTable extends Migration
             $table->string('texto');
             $table->date('data_inicio');
             $table->date('data_fim');
+            $table->unsignedBigInteger('unidade_id');
+            $table->foreign('unidade_id')->references('id')->on('unidades');
             $table->timestamps();
         });
     }
