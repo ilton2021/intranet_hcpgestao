@@ -21,6 +21,16 @@ class CreateDestaquesTable extends Migration
             $table->string('titulo');
             $table->date('data_inicio');
             $table->date('data_fim');
+            $table->string('imagem2');
+            $table->string('caminho2');
+            $table->string('imagem3');
+            $table->string('caminho3');
+            $table->string('imagem4');
+            $table->string('caminho4');
+            $table->string('imagem5');
+            $table->string('caminho5');
+            $table->string('imagem6');
+            $table->string('caminho6');
             $table->timestamps();
         });
     }

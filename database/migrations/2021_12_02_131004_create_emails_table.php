@@ -17,7 +17,8 @@ class CreateEmailsTable extends Migration
             $table->bigincrements('id');
             $table->string('nome');
             $table->string('email');
-            $table->string('unidade');
+            $table->unsignedBigInteger('unidade_id');
+            $table->foreign('unidade_id')->references('id')->on('unidades');
             $table->timestamps();
         });
     }
