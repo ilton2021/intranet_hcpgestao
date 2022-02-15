@@ -100,7 +100,7 @@
 								</li>
 								<li style="list-style: none;">
 									@foreach($unidades as $unidade)
-									<input type='checkbox' id="unidade_id[]" class="unidade" name="unidade_id[]" value="<?php echo $unidade->id; ?>" /> {{$unidade->nome}} &nbsp;&nbsp;</input>
+									<input type='checkbox' id="unidade_id[]" class="unidade" name="unidade_id[]" value="<?php echo $unidade->id; ?>" /> {{$unidade->sigla}} &nbsp;&nbsp;</input>
 									@endforeach
 								</li>
 							</td>

@@ -65,7 +65,7 @@
 									if (in_array($unidade->id, $und_atual))
 										$marcado = 'checked';
 									?>
-									<input type='checkbox' id="unidade_id[]" class="unidade" name="unidade_id[]" <?php echo $marcado; ?> value="<?php echo $unidade->id; ?>" /> {{$unidade->nome}} &nbsp;&nbsp;</input>
+									<input type='checkbox' id="unidade_id[]" class="unidade" name="unidade_id[]" <?php echo $marcado; ?> value="<?php echo $unidade->id; ?>" /> {{$unidade->sigla}} &nbsp;&nbsp;</input>
 									@endforeach
 								</li>
 							</td>
