@@ -16,6 +16,7 @@ class Mural extends Model
         'texto',
         'data_inicio',
         'data_fim',
+        'unidade_id',
         'created_at',
         'updated_at'
     ];

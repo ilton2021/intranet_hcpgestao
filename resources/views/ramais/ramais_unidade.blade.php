@@ -27,7 +27,7 @@
                     @foreach($ramais as $ramal)
                     <tr>
                         <td>{{ $ramal->nome }}</td>
-                        <td>{{ $ramal->ramal}}</td>
+                        <td>{{ $ramal->telefone }}</td>
                     </tr>
                     @endforeach
                 </table>

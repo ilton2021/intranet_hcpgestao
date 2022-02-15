@@ -7,9 +7,27 @@ use App\Models\Destaques;
 
 Route::get('/', function () {
     $unidades = Unidades::all();
+    $und_Princ = Unidades::where('id',1)->get();
+    $unidade =  $und_Princ;
     $murais = Mural::all();
     $destaques = Destaques::all();
-    return view('welcome', compact('unidades','murais','destaques'));
+    $muraisDaUnd = array();
+    for ($i=0; $i < sizeof($murais); $i++) { 
+        $und_atuais = explode(",",$murais[$i]->unidade_id);
+        if (in_array($und_Princ[0]->id,$und_atuais)) {
+            array_push($muraisDaUnd,$murais[$i]);
+        }   
+    }
+    $murais = $muraisDaUnd;
+    $destaDaUnd = array();
+    for ($u=0; $u < sizeof($destaques); $u++) { 
+        $und_atuais2 = explode(",",$destaques[$u]->unidade_id);
+        if (in_array($und_Princ[0]->id,$und_atuais2)) {
+            array_push($destaDaUnd,$destaques[$u]);
+        }   
+    }
+    $destaques = $destaDaUnd;
+    return view('welcome', compact('unidades','murais','destaques','unidade'));
 });
 
 Auth::routes();
@@ -29,7 +47,7 @@ Route::get('/unidade/{id}', [App\Http\Controllers\HomeController::class, 'unidad
 Route::get('/destaques_detalhes/{id}', [App\Http\Controllers\HomeController::class, 'destaquesDetalhes'])->name('destaquesDetalhes');
 Route::get('/murais_detalhes/{id}', [App\Http\Controllers\HomeController::class, 'muraisDetalhes'])->name('muraisDetalhes');
 Route::get('/acesso_rapido/{id}', [App\Http\Controllers\HomeController::class, 'acessoRapido'])->name('acessoRapido');
-Route::post('/', [App\Http\Controllers\HomeController::class, 'enviarEmail'])->name('enviarEmail');
+Route::post('/unidade/{id}', [App\Http\Controllers\HomeController::class, 'enviarEmail'])->name('enviarEmail');
 Route::get('/admin/indicador', [App\Http\Controllers\UserController::class, 'telaLoginIndicador'])->name('telaLoginIndicador');
 Route::get('/acesso_rapido/3/ramais_unidade/{id}', [App\Http\Controllers\RamaisController::class, 'ramaisUnidade'])->name('ramaisUnidade');
 Route::get('/acesso_rapido/3/emails_unidade/{id}', [App\Http\Controllers\EmailsController::class, 'emailsUnidade'])->name('emailsUnidade');

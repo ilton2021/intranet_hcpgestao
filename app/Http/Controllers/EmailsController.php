@@ -111,8 +111,9 @@ class EmailsController extends Controller
 
     public function emailsUnidade($id)
     {
+        $unidades = Unidades::all();
         $emails = Emails::where('unidade_id',$id)->orderby('nome','ASC')->get();
         $unidade = Unidades::where('id',$id)->get();
-        return view('emails/emails_unidade', compact('emails','unidade'));
+        return view('emails/emails_unidade', compact('emails','unidade','unidades'));
     }
 }

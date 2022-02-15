@@ -41,9 +41,9 @@
 						 <tr>
 							<td> Unidade: </td>
 							<td>
-							  <select class="form-control" id="unidade" name="unidade">
+							  <select class="form-control" id="unidade_id" name="unidade_id">
 								@foreach($unidades as $unidade)
-								  <option id="unidade" name="unidade" value="<?php echo $unidade->nome; ?>">{{ $unidade->nome }}</option>
+								  <option id="unidade_id" name="unidade_id" value="<?php echo $unidade->id; ?>">{{ $unidade->nome }}</option>
 								@endforeach
 							  </select>
 							</td>

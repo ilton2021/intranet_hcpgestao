@@ -25,35 +25,74 @@ class HomeController extends Controller
 
     public function oquee()
     {
-        return view('oquee');
+        $unidades = Unidades::all();
+        return view('oquee',compact('unidades'));
     }
 
-    public function unidade($id){
-        $unidade = Unidades::where('id',$id)->get();
-        return view('unidade', compact('unidade'));
+    public function unidade($id)
+    {
+        $murais = Mural::all();
+        $destaques = Destaques::all();
+        $und_Princ = Unidades::where('id',$id)->get();
+        $muraisDaUnd = array();
+        for ($i = 0; $i < sizeof($murais); $i++) {
+            $und_atuais = explode(",", $murais[$i]->unidade_id);
+            if (in_array($und_Princ[0]->id, $und_atuais)) {
+                array_push($muraisDaUnd, $murais[$i]->id);
+            }
+        }
+        $destaDaUnd = array();
+        for ($u = 0; $u < sizeof($destaques); $u++) {
+            $und_atuais2 = explode(",", $destaques[$u]->unidade_id);
+            if (in_array($und_Princ[0]->id, $und_atuais2)) {
+                array_push($destaDaUnd, $destaques[$u]->id);
+            }
+        }
+        $destaques = Destaques::all();
+        $murais = Mural::all();
+        $unidades = Unidades::all();
+        $unidade = Unidades::where('id', $id)->get();
+        $und_Matriz = Unidades::where('id', 1)->get();
+        return view('unidade', compact('unidade', 'unidades','murais','destaques','destaDaUnd','muraisDaUnd','und_Matriz'));
     }
 
-    public function destaquesDetalhes($id) {
-        if($id == 0){
+    public function destaquesDetalhes($id)
+    {
+        $unidades = Unidades::all();
+        $destaques = Destaques::all();
+        $destaques2 = Destaques::all();
+        if ($id == 0) {
             $destaques  = Destaques::all();
         } else {
-            $destaques  = Destaques::where('id',$id)->get();
+            $destaDaUnd = array();
+            for ($u = 0; $u < sizeof($destaques); $u++) {
+                $und_atuais2 = explode(",", $destaques[$u]->unidade_id);
+                if (in_array($id, $und_atuais2)) {
+                    array_push($destaDaUnd, $destaques[$u]);
+                }
+            }
+            if (sizeof($destaDaUnd) == 0) {
+                $destaDaUnd = Destaques::all();
+            }
+            $destaques = $destaDaUnd;
         }
-        $destaques2 = Destaques::all();
-        return view('destaques_detalhes', compact('destaques','destaques2'));
+        return view('destaques_detalhes', compact('destaques', 'destaques2', 'unidades'));
     }
 
-    public function muraisDetalhes($id){  
-        if($id == 0) {
+    public function muraisDetalhes($id)
+    {
+        $unidades = Unidades::all();
+        if ($id == 0) {
             $murais = Mural::all();
         } else {
-            $murais = Mural::where('id',$id)->get();
+            $murais = Mural::where('id', $id)->get();
         }
         $murais2 = Mural::all();
-        return view('murais_detalhes', compact('murais','murais2'));
+        return view('murais_detalhes', compact('murais', 'murais2', 'unidades'));
     }
 
-    public function acessoRapido($id) {
+    public function acessoRapido($id)
+    {
         $ouvidorias  = OuvidoriaUnidades::all();
         $documentos  = DocumentosQualidade::all();
         $politicas   = PoliticasNormas::all();
@@ -63,24 +102,44 @@ class HomeController extends Controller
         $setores     = Setor::all();
         $indicadores = Indicadores::all();
         $unidades = Unidades::all();
-        return view('acesso_rapido', compact('id','setores','ouvidorias','documentos','politicas','ramais','emails','protocolos','indicadores','unidades'));
+        return view('acesso_rapido', compact('id', 'setores', 'ouvidorias', 'documentos', 'politicas', 'ramais', 'emails', 'protocolos', 'indicadores', 'unidades'));
     }
 
-    public function enviarEmail(Request $request){ 
+    public function enviarEmail($id, Request $request)
+    {
         $input = $request->all();
-        $email = 'ilton.albuquerque@hcpgestao.org.br';
+        $unidade = Unidades::where('id', $id)->get();
+        $emailUnd = $unidade[0]->ouvidoria;
+        $undsigla = 'Ouvidoria '.$unidade[0]->sigla;
+        $nomeClt = $input['name']; 
+        $emailClt = $input['email'];
         $assunto = $input['subject'];
         $texto   = $input['message'];
-        Mail::send([], [], function($m) use ($email,$assunto,$texto) {
-            $m->from('ilton.albuquerque@hcpgestao.org.br', 'Ouvidoria HCPGESTÃO');
+        Mail::send([], [], function ($m) use ($nomeClt, $emailClt, $emailUnd, $assunto, $texto, $undsigla) {
+            $m->from($emailClt, $nomeClt);
             $m->subject($assunto);
             $m->setBody($texto);
-            $m->to($email);
+            $m->to($emailUnd);
         });
         $destaques = Destaques::all();
         $unidades  = Unidades::all();
         $murais    = Mural::all();
-
-        return view('welcome', compact('destaques','unidades','murais'));
+        $und_Princ = Unidades::where('id',$id)->get();
+        $muraisDaUnd = array();
+        for ($i = 0; $i < sizeof($murais); $i++) {
+            $und_atuais = explode(",", $murais[$i]->unidade_id);
+            if (in_array($und_Princ[0]->id, $und_atuais)) {
+                array_push($muraisDaUnd, $murais[$i]->id);
+            }
+        }
+        $destaDaUnd = array();
+        for ($u = 0; $u < sizeof($destaques); $u++) {
+            $und_atuais2 = explode(",", $destaques[$u]->unidade_id);
+            if (in_array($und_Princ[0]->id, $und_atuais2)) {
+                array_push($destaDaUnd, $destaques[$u]->id);
+            }
+        }
+        $validator = "Mensagem enviada com sucesso !!";
+        return view('unidade', compact('destaques','destaDaUnd','unidade', 'unidades', 'murais','muraisDaUnd'));
     }
 }

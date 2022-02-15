@@ -111,8 +111,9 @@ class RamaisController extends Controller
 
     public function ramaisUnidade($id)
     {
+        $unidades = Unidades::all();
         $ramais = Ramais::where('unidade_id',$id)->get();
         $unidade = Unidades::where('id',$id)->get();
-        return view('ramais/ramais_unidade', compact('ramais','unidade'));
+        return view('ramais/ramais_unidade', compact('ramais','unidade','unidades'));
     }
 }
