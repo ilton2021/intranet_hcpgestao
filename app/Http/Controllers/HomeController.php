@@ -26,14 +26,14 @@ class HomeController extends Controller
     public function oquee()
     {
         $unidades = Unidades::all();
-        return view('oquee',compact('unidades'));
+        return view('oquee', compact('unidades'));
     }
 
     public function unidade($id)
     {
         $murais = Mural::all();
         $destaques = Destaques::all();
-        $und_Princ = Unidades::where('id',$id)->get();
+        $und_Princ = Unidades::where('id', $id)->get();
         $muraisDaUnd = array();
         for ($i = 0; $i < sizeof($murais); $i++) {
             $und_atuais = explode(",", $murais[$i]->unidade_id);
@@ -53,14 +53,14 @@ class HomeController extends Controller
         $unidades = Unidades::all();
         $unidade = Unidades::where('id', $id)->get();
         $und_Matriz = Unidades::where('id', 1)->get();
-        return view('unidade', compact('unidade', 'unidades','murais','destaques','destaDaUnd','muraisDaUnd','und_Matriz'));
+        return view('unidade', compact('unidade', 'unidades', 'murais', 'destaques', 'destaDaUnd', 'muraisDaUnd', 'und_Matriz'));
     }
 
     public function destaquesDetalhes($id)
     {
         $unidades = Unidades::all();
         $destaques = Destaques::all();
-        $destaques2 = Destaques::all();
+        //$destaques2 = Destaques::all();
         if ($id == 0) {
             $destaques  = Destaques::all();
         } else {
@@ -71,12 +71,9 @@ class HomeController extends Controller
                     array_push($destaDaUnd, $destaques[$u]);
                 }
             }
-            if (sizeof($destaDaUnd) == 0) {
-                $destaDaUnd = Destaques::all();
-            }
             $destaques = $destaDaUnd;
         }
-        return view('destaques_detalhes', compact('destaques', 'destaques2', 'unidades'));
+        return view('destaques_detalhes', compact('destaques', 'unidades'));
     }
 
     public function muraisDetalhes($id)
@@ -110,11 +107,11 @@ class HomeController extends Controller
         $input = $request->all();
         $unidade = Unidades::where('id', $id)->get();
         $emailUnd = $unidade[0]->ouvidoria;
-        $undsigla = 'Ouvidoria '.$unidade[0]->sigla;
-        $nomeClt = $input['name']; 
+        $undsigla = 'Ouvidoria ' . $unidade[0]->sigla;
+        $nomeClt  = $input['name'];
         $emailClt = $input['email'];
-        $assunto = $input['subject'];
-        $texto   = $input['message'];
+        $assunto =  $input['subject'];
+        $texto   =  $input['message'];
         Mail::send([], [], function ($m) use ($nomeClt, $emailClt, $emailUnd, $assunto, $texto, $undsigla) {
             $m->from($emailClt, $nomeClt);
             $m->subject($assunto);
@@ -124,7 +121,7 @@ class HomeController extends Controller
         $destaques = Destaques::all();
         $unidades  = Unidades::all();
         $murais    = Mural::all();
-        $und_Princ = Unidades::where('id',$id)->get();
+        $und_Princ = Unidades::where('id', $id)->get();
         $muraisDaUnd = array();
         for ($i = 0; $i < sizeof($murais); $i++) {
             $und_atuais = explode(",", $murais[$i]->unidade_id);
@@ -140,6 +137,6 @@ class HomeController extends Controller
             }
         }
         $validator = "Mensagem enviada com sucesso !!";
-        return view('unidade', compact('destaques','destaDaUnd','unidade', 'unidades', 'murais','muraisDaUnd'));
+        return view('unidade', compact('destaques', 'destaDaUnd', 'unidade', 'unidades', 'murais', 'muraisDaUnd'));
     }
 }
