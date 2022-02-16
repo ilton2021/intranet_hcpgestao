@@ -64,7 +64,7 @@
           <div class="col-lg-6">
             <div class="portfolio-info">
               <h3><font color="green">Mais Eventos</font></h3>
-              @foreach($destaques2 as $destaque)
+              @foreach($destaques as $destaque)
               <ul>
                 <li><strong><p align="justify"><font size="2"><a href="{{ route('destaquesDetalhes', $destaque->id) }}" title="<?php echo $destaque->titulo; ?>">{{ substr($destaque->titulo,0,70) }}</a></font></p></strong>
                  <img src="{{asset('img')}}/{{('calendar.png')}}" width="30"/> 
