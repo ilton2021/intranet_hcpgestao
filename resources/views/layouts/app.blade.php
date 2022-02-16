@@ -40,7 +40,6 @@
               <li><a href="{{ route('acessoRapido', 2) }}">Indicadores</a></li>
               <li><a href="{{ route('acessoRapido', 3) }}">Ramais/E-mails</a></li>
               <li><a href="{{ route('acessoRapido', 4) }}">Documentos da Qualidade</a></li>
-              <li><a href="{{ route('acessoRapido', 5) }}">Protocolos Institucionais</a></li>
               <li><a href="{{ route('acessoRapido', 6) }}">Políticas e Normas</a></li>
             </ul>
           </li>

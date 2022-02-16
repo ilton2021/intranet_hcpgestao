@@ -108,7 +108,7 @@
             <img src="{{asset('storage')}}/{{$unds->caminho}}" class="img-fluid" alt="">
             <div class="portfolio-info">
               <h4>{{ $unds->sigla }}</h4>
-              <p>{{ $unds->nome }} <br> {{ $unds->nome_unidade }}</p>
+              <p>{{ $unds->nome }} </p>
               <div class="portfolio-links">
                 <a href="{{ route('unidade', $unds->id) }}" title="More Details"><i class="bx bx-link"></i></a>
               </div>
