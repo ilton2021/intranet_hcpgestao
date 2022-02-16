@@ -11,22 +11,6 @@ Route::get('/', function () {
     $unidade =  $und_Princ;
     $murais = Mural::all();
     $destaques = Destaques::all();
-    $muraisDaUnd = array();
-    for ($i=0; $i < sizeof($murais); $i++) { 
-        $und_atuais = explode(",",$murais[$i]->unidade_id);
-        if (in_array($und_Princ[0]->id,$und_atuais)) {
-            array_push($muraisDaUnd,$murais[$i]);
-        }   
-    }
-    $murais = $muraisDaUnd;
-    $destaDaUnd = array();
-    for ($u=0; $u < sizeof($destaques); $u++) { 
-        $und_atuais2 = explode(",",$destaques[$u]->unidade_id);
-        if (in_array($und_Princ[0]->id,$und_atuais2)) {
-            array_push($destaDaUnd,$destaques[$u]);
-        }   
-    }
-    $destaques = $destaDaUnd;
     return view('welcome', compact('unidades','murais','destaques','unidade'));
 });
 

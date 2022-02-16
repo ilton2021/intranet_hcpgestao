@@ -43,12 +43,6 @@
               <li><a href="{{ route('acessoRapido', 6) }}">Políticas e Normas</a></li>
             </ul>
           </li>
-          <li class="dropdown"><a href="#"><span>COMUNICAÇÃO</span> <i class="bi bi-chevron-down"></i></a>
-            <ul>
-              <li><a href="{{ route('destaquesDetalhes', 0) }}">Eventos</a></li>
-              <li><a href="{{ route('muraisDetalhes', 0) }}">Mural de Avisos</a></li>
-            </ul>
-          </li>
           <li class="dropdown"><a href="#"><span>SISTEMAS</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="https://hcpgestao-portal.hcpgestao.org.br" target="_blank">Portal da Transparência</a></li>
