@@ -156,6 +156,7 @@ class UserController extends Controller
 			->withErrors($validator)
 			->withInput(session()->flashInput($request->input()));
 		} else {
+			
 			if($qtd > 0){
 				$input['token']   = Str::random('40');
 				$input['user_id'] = $usuarios[0]->id;

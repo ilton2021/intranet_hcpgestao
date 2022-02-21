@@ -9,7 +9,7 @@
 
                 <div class="card-body">
  
-                    <form method="POST" action="{{ route('password.email') }}">
+                    <form method="POST" action="{{ route('emailReset') }}">
                         @csrf
 
                         <div class="row mb-3">
