@@ -55,7 +55,8 @@ class UserController extends Controller
 	{
 		$usuarios = User::where('id',$id)->get();
 		$perfil_users = PerfilUser::all();
-		return view('users/users_alterar', compact('usuarios','perfil_users')); 
+		$unidades = Unidades::all();
+		return view('users/users_alterar', compact('usuarios','perfil_users','unidades')); 
 	}
 
 	public function usuariosExcluir($id)
@@ -250,6 +251,7 @@ class UserController extends Controller
     {
 		$input = $request->all();
 		$perfil_users = PerfilUser::all();
+		$unidades = Unidades::all();
 		$validator = Validator::make($request->all(), [
 			'name'     		   => 'required',
             'email'    		   => 'required|email|unique:users,email',
@@ -258,7 +260,7 @@ class UserController extends Controller
 			'perfil' 		   => 'required'
     	]);			 
 		if ($validator->fails()) {
-			return view('users/users_novo',compact('perfil_users'))
+			return view('users/users_novo',compact('perfil_users','unidades'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));						
 		} else {
@@ -290,6 +292,7 @@ class UserController extends Controller
     public function alterarUsuarios(Request $request, $id)
     {
         $input = $request->all();
+		$unidades = Unidades::all();
 		$validator = Validator::make($request->all(), [
             'name'   => 'required',
             'email'  => 'required|email',
@@ -297,7 +300,7 @@ class UserController extends Controller
         ]);
 		if($validator->fails()) {
 			$users = User::where('id',$id)->get();
-			return view('users/users_cadastro_alterar', compact('users'))
+			return view('users/users_cadastro_alterar', compact('users','unidades'))
 			->withErrors($validator)
 			->withInput(session()->flashInput($request->input()));						
 		} else {

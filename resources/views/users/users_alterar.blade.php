@@ -52,6 +52,22 @@
 								</select>
 							</td>
 						 </tr>
+						 <tr>
+							<td> UNIDADE: </td>
+							<td>
+								<select class="form-control" id="unidade_id" name="unidade_id">
+									@foreach($unidades as $unidade)
+									<?php
+									$selected = '';
+									if ($usuarios[0]->unidade_id == $unidade->id) {
+										$selected = 'selected';
+									}
+									?>
+									<option id="unidade_id" name="unidade_id" <?php echo $selected; ?> value="{{$unidade->id}}">{{ $unidade->sigla }}</option>
+									@endforeach
+								</select>
+							</td>
+						</tr>
                          </table>
 						<table>
 						 <tr>

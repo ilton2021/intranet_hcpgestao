@@ -177,8 +177,8 @@ class MuralController extends Controller
 		$data->delete();
 		$murais = Mural::all();
 		$validator = 'Mural de Avisos excluído com sucesso!';
-		return view('mural_avisos/mural_cadastro', compact('murais'))
+		return redirect()->route('cadastroMural')
 			->withErrors($validator)
-			->withInput(session()->flashInput($request->input()));
+			->with('murais');
 	}
 }

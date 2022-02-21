@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRamaisTable extends Migration
+class CreateEmailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateRamaisTable extends Migration
      */
     public function up()
     {
-        Schema::create('ramais', function (Blueprint $table) {
+        Schema::create('emails', function (Blueprint $table) {
             $table->bigincrements('id');
             $table->string('nome');
-            $table->string('telefone');
+            $table->string('email');
             $table->unsignedBigInteger('unidade_id');
             $table->foreign('unidade_id')->references('id')->on('unidades');
+            $table->unsignedBigInteger('setor_id');
+            $table->foreign('setor_id')->references('id')->on('setores');
             $table->timestamps();
         });
     }
@@ -30,6 +32,6 @@ class CreateRamaisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ramais');
+        Schema::dropIfExists('emails');
     }
 }

@@ -26,32 +26,50 @@
 					<form action="{{\Request::route('updateRamais')}}" method="post">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 						<table border="0" class="table-sm" style="line-height: 1.5;" >
-						 <tr>
-							<td> Nome: </td>
+						<tr>
+							<td> Telefone: </td>
+							<td>
+								<input class="form-control" type="text" id="telefone" name="telefone" required value="<?php echo $ramais[0]->telefone; ?>" />
+							</td>
+						 </tr> 
+						<tr>
+							<td> Sala: </td>
 							<td>
 								<input class="form-control" type="text" id="nome" name="nome" required value="<?php echo $ramais[0]->nome; ?>" />
 							</td>
 						 </tr>
 						 <tr>
-							<td> Telefone: </td>
+							<td> Setor: </td>
 							<td>
-								<input class="form-control" type="text" id="telefone" name="telefone" required value="<?php echo $ramais[0]->telefone; ?>" />
+								<select class="form-control" id="setor_id" name="setor_id">
+									@foreach($setores as $setor)
+									<?php
+									$selected = '';
+									if ($ramais[0]->setor_id == $setor->id) {
+										$selected = 'selected';
+									}
+									?>
+									<option id="setor_id" name="setor_id" <?php echo $selected; ?> value="<?php echo $setor->id; ?>">{{ $setor->nome }}</option>
+									@endforeach
+								</select>
 							</td>
-						 </tr>
-						 <tr>
-							 <td> UNIDADE: </td>
-							 <td>
-								 <select id="unidade" name="unidade" class="form-control">
-								  @foreach($unidades as $unidade)
-								   @if($unidade->nome == $ramais[0]->unidade)
-									<option id="unidade" name="unidade" value="<?php echo $unidade->nome; ?>" selected>{{ $unidade->nome }}</option>
-								   @else
-								    <option id="unidade" name="unidade" value="<?php echo $unidade->nome; ?>">{{ $unidade->nome }}</option>
-								   @endif
-								  @endforeach
-								 </select>
-							 </td>
-						 </tr>
+						</tr>
+						<tr>
+							<td> UNIDADE: </td>
+							<td>
+								<select class="form-control" id="unidade_id" name="unidade_id">
+									@foreach($unidades as $unidade)
+									<?php
+									$selected = '';
+									if ($ramais[0]->unidade_id == $unidade->id) {
+										$selected = 'selected';
+									}
+									?>
+									<option id="unidade_id" name="unidade_id" <?php echo $selected; ?> value="{{$unidade->id}}">{{ $unidade->sigla }}</option>
+									@endforeach
+								</select>
+							</td>
+						</tr>
                          </table>
 						<table>
 						 <tr>

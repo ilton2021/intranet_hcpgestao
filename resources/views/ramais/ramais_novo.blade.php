@@ -26,24 +26,34 @@
 					<form action="{{\Request::route('storeRamais')}}" method="post">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 						<table border="0" class="table-sm" style="line-height: 1.5;" >
-						 <tr>
-							<td> Nome: </td>
+						<tr>
+							<td> Telefone: </td>
+							<td>
+								<input class="form-control" style="width: 400px" type="text" id="telefone" name="telefone" required value="{{ old('telefone') }}" />
+							</td>
+						 </tr>	
+						<tr>
+							<td> Sala: </td>
 							<td>
 								<input class="form-control" style="width: 400px" type="text" id="nome" name="nome" required value="{{ old('nome') }}" />
 							</td>
 						 </tr>
 						 <tr>
-							<td> Telefone: </td>
+							<td> Setor: </td>
 							<td>
-								<input class="form-control" type="text" id="telefone" name="telefone" required value="{{ old('telefone') }}" />
+								<select class="form-control" style="width: 400px" id="setor_id" name="setor_id">
+									@foreach($setores as $setor)
+									<option id="setor_id" name="setor_id" value="<?php echo $setor->id; ?>">{{ $setor->nome }}</option>
+									@endforeach
+								</select>
 							</td>
-						 </tr>
+						</tr>
 						 <tr>
 							<td> Unidade: </td>
 							<td>
-							  <select class="form-control" id="unidade_id" name="unidade_id">
+							  <select class="form-control" style="width: 400px" id="unidade_id" name="unidade_id">
 								@foreach($unidades as $unidade)
-								  <option id="unidade_id" name="unidade_id" value="<?php echo $unidade->id; ?>">{{ $unidade->nome }}</option>
+								  <option id="unidade_id" name="unidade_id" value="<?php echo $unidade->id; ?>">{{ $unidade->sigla }}</option>
 								@endforeach
 							  </select>
 							</td>

@@ -25,13 +25,20 @@
                     </td>
                     <td style="width: 150px;">
 					 <select id="pesq2" name="pesq2" style="width: 150px;" class="form-control">
-						<option id="pesq2" name="pesq2" value="1">NOME</option>
+						<option id="pesq2" name="pesq2" value="1">FUNCIONÁRIO</option>
 						<option id="pesq2" name="pesq2" value="2">E-MAIL</option>
 						<option id="pesq2" name="pesq2" value="3">UNIDADE</option>
 					 </select>
                     </td>
+					<td >
+					 <select id="unidade" name="unidade" style="width: 150px;" class="form-control">
+						@foreach($unidades as $und)
+						<option id="unidade" name="unidade" value="<?php echo $und->id;?>">{{$und->sigla}}</option>
+						@endforeach
+					 </select>
+                    </td>
                     <td> 
-					 <input type="submit" id="btn"  name="btn" class="btn btn-success btn-sm" value="Pesquisar" />
+					 <input style="margin-left: -30px;" type="submit" id="btn"  name="btn" class="btn btn-success btn-sm" value="Pesquisar" />
 					</td>	
 					<td>
 					  <p align="right">
@@ -44,7 +51,7 @@
 			<table class="table table-sm " id="my_table">
 				<thead class="bg-success">
 					<tr>
-						<th scope="col" width="600px">NOME</th>
+						<th scope="col" width="600px">FUNCIONÁRIO</th>
 						<th scope="col">E-MAIL</th>
 						<th scope="col">UNIDADE</th>
 						<th scope="col"><center>ALTERAR</center></th>
@@ -54,9 +61,18 @@
 				<tbody>
 					@foreach($emails as $email)
 					<tr>
+						<?php $Array = array('php', 'programador', 'script', 'códigos'); ?>
 						<td style="font-size: 15px;">{{$email->nome}}</td>
 						<td style="font-size: 15px;">{{$email->email}}</td>
-						<td style="font-size: 15px;">{{$email->unidade}}</td>
+						<td style="font-size: 15px;">
+						<?php 
+							for ($i=0 ; $i < sizeof($unidades); $i++ ) { 
+								if($email->unidade_id == $unidades[$i]->id){
+									echo $unidades[$i]->sigla;
+								}
+							}
+						?>
+						</td>
 						<td><center><a class="btn btn-info btn-sm" href="{{ route('emailsAlterar', $email->id) }}" ><i class="fas fa-edit"></i></center></td>
                         <td><center><a class="btn btn-danger btn-sm" href="{{ route('emailsExcluir', $email->id) }}" ><i class="fas fa-times-circle"></i></center></td>
 					</tr>

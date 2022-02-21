@@ -127,7 +127,7 @@ class DestaquesController extends Controller
 		$unidades = Unidades::all();
 		$destaques = Destaques::where('id', $id)->get();
 		$und_atual = explode(',', $destaques[0]->unidade_id);
-		return view('destaques/destaques_alterar', compact('destaques','unidades','und_atual'));
+		return view('destaques/destaques_alterar', compact('destaques', 'unidades', 'und_atual'));
 	}
 
 	public function updateDestaques($id, Request $request)
@@ -141,7 +141,7 @@ class DestaquesController extends Controller
 		$destaques = Destaques::where('id', $id)->get();
 		if ($request->file('imagem') === NULL && $input['imagem_'] == "") {
 			$validator = 'Selecione a imagem do Destaque!!';
-			return view('destaques/destaques_alterar', compact('destaques','unidades','und_atual'))
+			return view('destaques/destaques_alterar', compact('destaques', 'unidades', 'und_atual'))
 				->withErrors($validator)
 				->withInput(session()->flashInput($request->input()));
 		} else {
@@ -160,7 +160,7 @@ class DestaquesController extends Controller
 					'data_fim'    => 'required|date'
 				]);
 				if ($validator->fails()) {
-					return view('destaques/destaques_alterar', compact('destaques','unidades','und_atual'))
+					return view('destaques/destaques_alterar', compact('destaques', 'unidades', 'und_atual'))
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
 				} else {
@@ -217,7 +217,7 @@ class DestaquesController extends Controller
 				}
 			} else {
 				$validator = 'Só é permitido imagens: .jpg, .jpeg ou .png!';
-				return view('destaques/destaques_alterar', compact('destaques','unidades','und_atual'))
+				return view('destaques/destaques_alterar', compact('destaques', 'unidades', 'und_atual'))
 					->withErrors($validator)
 					->withInput(session()->flashInput($request->input()));
 			}
@@ -239,8 +239,8 @@ class DestaquesController extends Controller
 		$data->delete();
 		$destaques = Destaques::all();
 		$validator = 'Destaque excluído com sucesso!';
-		return view('destaques/destaques_cadastro', compact('destaques'))
+		return redirect()->route('cadastroDestaques')
 			->withErrors($validator)
-			->withInput(session()->flashInput($request->input()));
+			->with('destaques');
 	}
 }

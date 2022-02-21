@@ -29,7 +29,7 @@
 						 <tr>
 							<td> Nome: </td>
 							<td>
-								<input class="form-control" type="text" id="nome" name="nome" readonly value="<?php echo $politicas[0]->nome; ?>" />
+								<input class="form-control" type="text" id="nome" name="nome" readonly value="<?php echo $setores[0]->nome; ?>" />
 							</td>
 						 </tr>
                             <tr>

@@ -13,6 +13,7 @@ class Ramais extends Model
         'nome',
         'telefone',
         'unidade_id',
+        'setor_id',
         'created_at',
         'updated_at'
     ];

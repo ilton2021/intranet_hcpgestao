@@ -53,7 +53,7 @@
 							 <td>
 								 <select id="unidade_id" name="unidade_id" class="form-control">
 								 @foreach($unidades as $unidade)
-								  <option id="unidade_id" name="unidade_id" value="<?php echo $unidade->id; ?>">{{ $unidade->nome }}</option>
+								  <option id="unidade_id" name="unidade_id" value="<?php echo $unidade->id; ?>">{{ $unidade->sigla }}</option>
 								 @endforeach
 								 </select>
 							 </td>
