@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Destaques;
 use App\Models\Unidades;
+use App\Models\Logger;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\PermissaoController;
 use Validator;
 use Storage;
 
@@ -12,33 +15,60 @@ class DestaquesController extends Controller
 {
 	public function cadastroDestaques()
 	{
-		$destaques = Destaques::all();
-		return view('destaques/destaques_cadastro', compact('destaques'));
+		$id_user = Auth::user()->id;
+		$idTela = 2;
+		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
+		if($validacao == "ok") {
+			$destaques = Destaques::all();
+			return view('destaques/destaques_cadastro', compact('destaques'));
+		} else {
+			$validator = "Você não tem Permissão para acessar esta tela!!!";
+			return view('home')
+				->withErrors($validator);
+		}
 	}
 
 	public function pesquisarDestaques(Request $request)
 	{
-		$input  = $request->all();
-		if (empty($input['pesq'])) {
-			$input['pesq'] = "";
+		$id_user = Auth::user()->id;
+		$idTela = 2;
+		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
+		if($validacao == "ok") {
+			$input  = $request->all();
+			if (empty($input['pesq'])) {
+				$input['pesq'] = "";
+			}
+			if (empty($input['pesq2'])) {
+				$input['pesq2'] = "";
+			}
+			$pesq  = $input['pesq'];
+			$pesq2 = $input['pesq2'];
+			if ($pesq2 == "1") {
+				$destaques = Destaques::where('titulo', 'like', '%' . $pesq . '%')->get();
+			} else if ($pesq2 == "2") {
+				$destaques = Destaques::where('texto', 'like', '%' . $pesq . '%')->get();
+			}
+			return view('destaques/destaques_cadastro', compact('destaques', 'pesq', 'pesq2'));
+		} else {
+			$validator = "Você não tem Permissão para acessar esta tela!!!";
+			return view('home')
+				->withErrors($validator);
 		}
-		if (empty($input['pesq2'])) {
-			$input['pesq2'] = "";
-		}
-		$pesq  = $input['pesq'];
-		$pesq2 = $input['pesq2'];
-		if ($pesq2 == "1") {
-			$destaques = Destaques::where('titulo', 'like', '%' . $pesq . '%')->get();
-		} else if ($pesq2 == "2") {
-			$destaques = Destaques::where('texto', 'like', '%' . $pesq . '%')->get();
-		}
-		return view('destaques/destaques_cadastro', compact('destaques', 'pesq', 'pesq2'));
 	}
 
 	public function destaquesNovo()
 	{
-		$unidades = Unidades::all();
-		return view('destaques/destaques_novo', compact('unidades'));
+		$id_user = Auth::user()->id;
+		$idTela = 2;
+		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
+		if($validacao == "ok") {
+			$unidades = Unidades::all();
+			return view('destaques/destaques_novo', compact('unidades'));
+		} else {
+			$validator = "Você não tem Permissão para acessar esta tela!!!";
+			return view('home')
+				->withErrors($validator);
+		}
 	}
 
 	public function storeDestaques(Request $request)
@@ -108,6 +138,9 @@ class DestaquesController extends Controller
 					}
 					$destaques = Destaques::create($input);
 					$destaques = Destaques::all();
+					$id = Destaques::all()->max('id');   
+					$input['idTabela'] = $id;
+					$loggers   = Logger::create($input); 
 					$validator = 'Destaque Cadastrado com Sucesso!';
 					return redirect()->route('cadastroDestaques')
 						->withErrors($validator)
@@ -124,10 +157,19 @@ class DestaquesController extends Controller
 
 	public function destaquesAlterar($id)
 	{
-		$unidades = Unidades::all();
-		$destaques = Destaques::where('id', $id)->get();
-		$und_atual = explode(',', $destaques[0]->unidade_id);
-		return view('destaques/destaques_alterar', compact('destaques', 'unidades', 'und_atual'));
+		$id_user = Auth::user()->id;
+		$idTela = 2;
+		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
+		if($validacao == "ok") {
+			$unidades = Unidades::all();
+			$destaques = Destaques::where('id', $id)->get();
+			$und_atual = explode(',', $destaques[0]->unidade_id);
+			return view('destaques/destaques_alterar', compact('destaques','unidades','und_atual'));
+		} else {
+			$validator = "Você não tem Permissão para acessar esta tela!!!";
+			return view('home')
+				->withErrors($validator);
+		}
 	}
 
 	public function updateDestaques($id, Request $request)
@@ -136,12 +178,11 @@ class DestaquesController extends Controller
 		$destaques = Destaques::where('id', $id)->get();
 		$und_atual = explode(',', $destaques[0]->unidade_id);
 		$input = $request->all();
-
 		$nome1 = "";
 		$destaques = Destaques::where('id', $id)->get();
 		if ($request->file('imagem') === NULL && $input['imagem_'] == "") {
 			$validator = 'Selecione a imagem do Destaque!!';
-			return view('destaques/destaques_alterar', compact('destaques', 'unidades', 'und_atual'))
+			return view('destaques/destaques_alterar', compact('destaques','unidades','und_atual'))
 				->withErrors($validator)
 				->withInput(session()->flashInput($request->input()));
 		} else {
@@ -160,7 +201,7 @@ class DestaquesController extends Controller
 					'data_fim'    => 'required|date'
 				]);
 				if ($validator->fails()) {
-					return view('destaques/destaques_alterar', compact('destaques', 'unidades', 'und_atual'))
+					return view('destaques/destaques_alterar', compact('destaques','unidades','und_atual'))
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
 				} else {
@@ -210,6 +251,8 @@ class DestaquesController extends Controller
 					$destaques = Destaques::find($id);
 					$destaques->update($input);
 					$destaques = Destaques::all();
+					$input['idTabela'] = $id;
+					$loggers = Logger::create($input);
 					$validator = 'Destaque Alterado com Sucesso!';
 					return redirect()->route('cadastroDestaques')
 						->withErrors($validator)
@@ -217,7 +260,7 @@ class DestaquesController extends Controller
 				}
 			} else {
 				$validator = 'Só é permitido imagens: .jpg, .jpeg ou .png!';
-				return view('destaques/destaques_alterar', compact('destaques', 'unidades', 'und_atual'))
+				return view('destaques/destaques_alterar', compact('destaques','unidades','und_atual'))
 					->withErrors($validator)
 					->withInput(session()->flashInput($request->input()));
 			}
@@ -226,8 +269,17 @@ class DestaquesController extends Controller
 
 	public function destaquesExcluir($id)
 	{
-		$destaques = Destaques::where('id', $id)->get();
-		return view('destaques/destaques_excluir', compact('destaques'));
+		$id_user = Auth::user()->id;
+		$idTela = 2;
+		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
+		if($validacao == "ok") {
+			$destaques = Destaques::where('id', $id)->get();
+			return view('destaques/destaques_excluir', compact('destaques'));
+		} else {
+			$validator = "Você não tem Permissão para acessar esta tela!!!";
+			return view('home')
+				->withErrors($validator);
+		}
 	}
 
 	public function destroyDestaques($id, Request $request)
@@ -238,6 +290,8 @@ class DestaquesController extends Controller
 		unlink($image_path);
 		$data->delete();
 		$destaques = Destaques::all();
+		$input['idTabela'] = $id;
+		$loggers = Logger::create($input);
 		$validator = 'Destaque excluído com sucesso!';
 		return redirect()->route('cadastroDestaques')
 			->withErrors($validator)

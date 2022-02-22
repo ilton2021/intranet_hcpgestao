@@ -36,7 +36,7 @@
 						<option id="unidade" name="unidade" value="<?php echo $und->id;?>">{{$und->sigla}}</option>
 						@endforeach 
 					</select>
-                    </td>
+					</td>
                     <td> 
 					 <input type="submit" id="btn"  name="btn" class="btn btn-success btn-sm" value="Pesquisar" />
 					</td>	

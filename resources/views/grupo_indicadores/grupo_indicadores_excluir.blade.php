@@ -29,10 +29,15 @@
 						 <tr>
 							<td> Nome: </td>
 							<td>
-								<input class="form-control" type="text" id="nome" name="nome" readonly value="<?php echo $grupo_indicadores[0]->nome; ?>" />
+								<input class="form-control" style="width: 500px;" type="text" id="nome" name="nome" readonly value="<?php echo $grupo_indicadores[0]->nome; ?>" />
 							</td>
 						 </tr>
-                          <tr>
+						 <tr>
+							<td><input hidden type="text" id="tela" name="tela" class="form-control" value="excluir_grupo_indicadores" /></td>
+							<td><input hidden type="text" id="user_id" name="user_id" class="form-control" value="<?php echo Auth::user()->id; ?>"  /></td>
+							<td><input hidden type="text" id="idTabela" name="idTabela" class="form-control" value="" /> </td>
+						 </tr>
+                         <tr>
                             <td colspan="4"><br><b>Deseja Realmente Excluir este Grupo de Indicador?</b></td>
                          </tr>
                          </table>

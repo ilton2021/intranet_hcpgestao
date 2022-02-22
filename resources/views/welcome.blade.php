@@ -101,7 +101,7 @@
         <h2>Unidades do HCPGESTÃO</h2>
       </div>
       @foreach($unidades as $unds)
-      @if($unds->id != 7)
+      @if($unds->id != 1)
       <div class="row portfolio-container">
         <div class="col-lg-4 col-md-6 portfolio-item filter-app">
           <div class="portfolio-wrap">

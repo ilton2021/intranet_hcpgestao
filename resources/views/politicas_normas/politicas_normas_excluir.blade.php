@@ -47,10 +47,15 @@
                          <tr>
                             <td colspan="4"><br><b>Deseja Realmente Excluir esta Política e Norma?</b></td>
                          </tr>
+						 <tr>
+							<td><input hidden type="text" id="tela" name="tela" class="form-control" value="excluir_politicas" /></td>
+							<td><input hidden type="text" id="user_id" name="user_id" class="form-control" value="<?php echo Auth::user()->id; ?>"  /></td>
+							<td><input hidden type="text" id="idTabela" name="idTabela" class="form-control" value="" /> </td>
+						 </tr>
                          </table>
 						<table>
 						 <tr>
-						  <td><br> <a href="{{ route('cadastroDestaques') }}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-top: 10px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a>
+						  <td><br> <a href="{{ route('cadastroPoliticas') }}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-top: 10px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a>
 						  <input type="submit" class="btn btn-danger btn-sm" style="margin-top: 10px;" value="Excluir" id="Salvar" name="Salvar" /> </td>
 						 </tr>
 						</table>

@@ -29,7 +29,7 @@
 						 <tr>
 							<td> Nome: </td>
 							<td>
-								<input class="form-control" type="text" id="name" name="name" required value="<?php echo $usuarios[0]->name; ?>" />
+								<input class="form-control" style="width: 500px;" type="text" id="name" name="name" required value="<?php echo $usuarios[0]->name; ?>" />
 							</td>
 						 </tr>
 						 <tr>
@@ -67,7 +67,12 @@
 									@endforeach
 								</select>
 							</td>
-						</tr>
+						 </tr>
+						 <tr>
+							<td><input hidden type="text" id="tela" name="tela" class="form-control" value="alterar_usuarios" /></td>
+							<td><input hidden type="text" id="user_id" name="user_id" class="form-control" value="<?php echo Auth::user()->id; ?>"  /></td>
+							<td><input hidden type="text" id="idTabela" name="idTabela" class="form-control" value="" /> </td>
+						 </tr>
                          </table>
 						<table>
 						 <tr>

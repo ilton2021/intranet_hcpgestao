@@ -197,6 +197,7 @@ Route::middleware(['auth'])->group( function() {
     Route::get('/cadastro_indicadores/excluir_indicadores/{id}', [App\Http\Controllers\IndicadoresController::class, 'indicadoresExcluir'])->name('indicadoresExcluir');
     Route::post('/cadastro_indicadores/excluir_indicadores/{id}', [App\Http\Controllers\IndicadoresController::class, 'destroyIndicadores'])->name('destroyIndicadores');
     Route::post('/admin/indicador', [App\Http\Controllers\IndicadoresController::class, 'pesquisarIndicadoresGestores'])->name('pesquisarIndicadoresGestores');
+    Route::get('/cadastro_indicadores/tela_indicador/{id}', [App\Http\Controllers\IndicadoresController::class, 'telaIndicador'])->name('telaIndicador');
     ////
 
     //Grupo de Indicadores
@@ -210,5 +211,21 @@ Route::middleware(['auth'])->group( function() {
     Route::get('/cadastro_grupo_indicadores/excluir_grupo_indicadores/{id}', [App\Http\Controllers\GrupoIndicadoresController::class, 'indicadoresGrupoExcluir'])->name('indicadoresGrupoExcluir');
     Route::post('/cadastro_grupo_indicadores/excluir_grupo_indicadores/{id}', [App\Http\Controllers\GrupoIndicadoresController::class, 'destroyGrupoIndicadores'])->name('destroyGrupoIndicadores');
     ////
+
+    //Permissão
+    Route::get('/cadastro_permissao', [App\Http\Controllers\PermissaoController::class, 'cadastroPermissoes'])->name('cadastroPermissoes');
+    Route::get('/pesquisar_permissao', [App\Http\Controllers\PermissaoController::class, 'pesquisarPermissoes'])->name('pesquisarPermissoes');
+    Route::post('/pesquisar_permissao', [App\Http\Controllers\PermissaoController::class, 'pesquisarPermissoes'])->name('pesquisarPermissoes');
+    Route::get('/cadastro_permissao_novo', [App\Http\Controllers\PermissaoController::class, 'cadastroPermissaoNovo'])->name('cadastroPermissaoNovo');
+    Route::post('/cadastro_permissao_novo', [App\Http\Controllers\PermissaoController::class, 'storePermissoes'])->name('storePermissoes');
+    Route::get('/cadastro_permissao/permissao_alterar/{id}', [App\Http\Controllers\PermissaoController::class, 'permissaoAlterar'])->name('permissaoAlterar');
+    Route::post('/cadastro_permissao/permissao_alterar/{id}', [App\Http\Controllers\PermissaoController::class, 'updatePermissoes'])->name('updatePermissoes');
+    Route::get('/cadastro_permissao/permissao_excluir/{id}', [App\Http\Controllers\PermissaoController::class, 'permissaoExcluir'])->name('permissaoExcluir');
+    Route::post('/cadastro_permissao/permissao_excluir/{id}', [App\Http\Controllers\PermissaoController::class, 'destroyPermissoes'])->name('destroyPermissoes');
+    Route::get('/cadastro_permissao/permissao_vincular_usuario/excluir', [App\Http\Controllers\PermissaoController::class, 'permissaoUserExcluir'])->name('permissaoUserExcluir');
+    Route::get('/cadastro_permissao/permissao_vincular_usuario/excluir/{id}/{id_p}', [App\Http\Controllers\PermissaoController::class, 'permissaoUserExcluir_'])->name('permissaoUserExcluir_');
+    Route::post('/cadastro_permissao/permissao_vincular_usuario/excluir/{id}/{id_p}', [App\Http\Controllers\PermissaoController::class, 'destroyPermissaoUser'])->name('destroyPermissaoUser');
+    Route::get('/cadastro_permissao/permissao_vincular_usuario/{id}', [App\Http\Controllers\PermissaoController::class, 'permissaoVincular'])->name('permissaoVincular');
+    Route::post('/cadastro_permissao/permissao_vincular_usuario/{id}', [App\Http\Controllers\PermissaoController::class, 'storePermissaoUsers'])->name('storePermissaoUsers');
 });
 

@@ -26,16 +26,16 @@
 					<form action="{{\Request::route('storeRamais')}}" method="post">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 						<table border="0" class="table-sm" style="line-height: 1.5;" >
-						<tr>
+						 <tr>
 							<td> Telefone: </td>
 							<td>
 								<input class="form-control" style="width: 400px" type="text" id="telefone" name="telefone" required value="{{ old('telefone') }}" />
 							</td>
 						 </tr>	
-						<tr>
+						 <tr>
 							<td> Sala: </td>
 							<td>
-								<input class="form-control" style="width: 400px" type="text" id="nome" name="nome" required value="{{ old('nome') }}" />
+							<input class="form-control" style="width: 400px" type="text" id="nome" name="nome" required value="{{ old('nome') }}" />
 							</td>
 						 </tr>
 						 <tr>
@@ -47,9 +47,9 @@
 									@endforeach
 								</select>
 							</td>
-						</tr>
+						 </tr>
 						 <tr>
-							<td> Unidade: </td>
+							<td> Unidade: </td>	
 							<td>
 							  <select class="form-control" style="width: 400px" id="unidade_id" name="unidade_id">
 								@foreach($unidades as $unidade)
@@ -58,6 +58,11 @@
 							  </select>
 							</td>
 						 </tr>
+						 <tr>
+							<td><input hidden type="text" id="tela" name="tela" class="form-control" value="novo_ramais" /></td>
+							<td><input hidden type="text" id="user_id" name="user_id" class="form-control" value="<?php echo Auth::user()->id; ?>"  /></td>
+							<td><input hidden type="text" id="idTabela" name="idTabela" class="form-control" value="" /> </td>
+						</tr>
                          </table>
 						<table>
 						 <tr>

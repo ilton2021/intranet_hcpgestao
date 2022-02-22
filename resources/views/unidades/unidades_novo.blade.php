@@ -72,6 +72,11 @@
 								<textarea class="form-control" rows="5" type="text" id="endereco" name="endereco" required value="{{ old('endereco') }}"> </textarea>
 							</td>
 						 </tr>
+						 <tr>
+							<td><input hidden type="text" id="tela" name="tela" class="form-control" value="novo_unidades" /></td>
+							<td><input hidden type="text" id="user_id" name="user_id" class="form-control" value="<?php echo Auth::user()->id; ?>"  /></td>
+							<td><input hidden type="text" id="idTabela" name="idTabela" class="form-control" value="" /> </td>
+						 </tr>
                          </table>
 						<table>
 						 <tr>

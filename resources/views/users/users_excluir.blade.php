@@ -29,12 +29,17 @@
 						 <tr>
 							<td> Nome: </td>
 							<td>
-								<input class="form-control" type="text" id="name" name="name" readonly value="<?php echo $usuarios[0]->name; ?>" />
+								<input class="form-control" style="width: 500px;" type="text" id="name" name="name" readonly value="<?php echo $usuarios[0]->name; ?>" />
 							</td>
 						 </tr>
                             <tr>
                             <td colspan="4"><br><b>Deseja Realmente Excluir este Usuário?</b></td>
                          </tr>
+						 <tr>
+							<td><input hidden type="text" id="tela" name="tela" class="form-control" value="excluir_usuarios" /></td>
+							<td><input hidden type="text" id="user_id_" name="user_id_" class="form-control" value="<?php echo Auth::user()->id; ?>"  /></td>
+							<td><input hidden type="text" id="idTabela" name="idTabela" class="form-control" value="" /> </td>
+						 </tr>
                          </table>
 						<table>
 						 <tr>

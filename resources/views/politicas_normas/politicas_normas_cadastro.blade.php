@@ -43,7 +43,7 @@
 			<table class="table table-sm " id="my_table">
 				<thead class="bg-success">
 					<tr>
-						<th scope="col" width="600px">NOME</th>
+						<th scope="col" width="900px">NOME</th>
 						<th scope="col">SETOR</th>
 						<th scope="col"><center>ALTERAR</center></th>
 						<th scope="col"><center>EXCLUIR</center></th>

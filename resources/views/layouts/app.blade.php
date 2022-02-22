@@ -50,7 +50,6 @@
               <li><a href="https://hcpgestao.org.br/processoSeletivo/public/" target="_blank">Portal do Processo Seletivo</a></li>
             </ul>
           </li>
-          <li><a class="nav-link scrollto" href="#contact">CONTATO</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav>

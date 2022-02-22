@@ -4,19 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use Auth;
+use App\Http\Controllers\PermissaoController;
 use App\Models\Unidades;
+use App\Models\User;
 use App\Models\AlterarSenha;
 use App\Models\Indicadores;
 use App\Models\GrupoIndicadores;
 use App\Models\PerfilUser;
+use App\Models\Logger;
 use Spatie\Permission\Models\Role;
 use DB;
 use Str;
 use Hash;
 use Validator;
 use Mail;
+use Auth;
 
 class UserController extends Controller
 {
@@ -40,35 +42,108 @@ class UserController extends Controller
 
 	public function cadastroUsuarios()
 	{
-		$usuarios = User::all();
-		return view('users/users_cadastro', compact('usuarios'));
+		$id_user = Auth::user()->id;
+		$idTela = 5;
+		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
+		if($validacao == "ok") {
+			$usuarios  = User::all();
+			return view('users/users_cadastro', compact('usuarios'));
+		} else {
+			$validator = "Você não tem Permissão para acessar esta tela!!!";
+			return view('home')
+				->withErrors($validator);
+		}
+	}
+
+	public function pesquisarUsuarios(Request $request)
+	{
+		$id_user = Auth::user()->id;
+		$idTela = 5;
+		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
+		if($validacao == "ok") {
+			$input  = $request->all();
+			if (empty($input['pesq'])) {
+				$input['pesq'] = "";
+			}
+			if (empty($input['pesq2'])) {
+				$input['pesq2'] = "";
+			}
+			$pesq  = $input['pesq'];
+			$pesq2 = $input['pesq2'];
+			if ($pesq2 == "1") {
+				$usuarios = User::where('name', 'like', '%' . $pesq . '%')->get();
+			} else {
+				$usuarios = User::all();
+			}
+			return view('destaques/destaques_cadastro', compact('destaques', 'pesq', 'pesq2'));
+		} else {
+			$validator = "Você não tem Permissão para acessar esta tela!!!";
+			return view('home')
+				->withErrors($validator);
+		}
 	}
 
 	public function usuariosNovo()
 	{
-		$perfil_users = PerfilUser::all();
-		$unidades     = Unidades::all();
-		return view('users/users_novo', compact('perfil_users','unidades'));
+		$id_user = Auth::user()->id;
+		$idTela = 5;
+		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
+		if($validacao == "ok") {
+			$perfil_users = PerfilUser::all();
+			$unidades     = Unidades::all();
+			return view('users/users_novo', compact('perfil_users','unidades'));
+		} else {
+			$validator = "Você não tem Permissão para acessar esta tela!!!";
+			return view('home')
+				->withErrors($validator);
+		}
 	}
 
 	public function usuariosAlterar($id)
 	{
-		$usuarios = User::where('id',$id)->get();
-		$perfil_users = PerfilUser::all();
-		$unidades = Unidades::all();
-		return view('users/users_alterar', compact('usuarios','perfil_users','unidades')); 
+		$id_user = Auth::user()->id;
+		$idTela = 5;
+		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
+		if($validacao == "ok") {
+			$usuarios = User::where('id',$id)->get();
+			$perfil_users = PerfilUser::all();
+			$unidades = Unidades::all();
+			return view('users/users_alterar', compact('usuarios','perfil_users','unidades')); 
+		} else {
+			$validator = "Você não tem Permissão para acessar esta tela!!!";
+			return view('home')
+				->withErrors($validator);
+		}
 	}
 
 	public function usuariosExcluir($id)
 	{
-		$usuarios = User::where('id',$id)->get();
-		return view('users/users_excluir', compact('usuarios'));
+		$id_user = Auth::user()->id;
+		$idTela = 5;
+		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
+		if($validacao == "ok") {
+			$usuarios = User::where('id',$id)->get();
+			return view('users/users_excluir', compact('usuarios'));
+		} else {
+			$validator = "Você não tem Permissão para acessar esta tela!!!";
+			return view('home')
+				->withErrors($validator);
+		}
 	}
 	
 	public function alterarSenhaUsuario($id)
 	{
-		$users = User::where('id',$id)->get();
-		return view('users/users_resetar_senha', compact('users'));
+		$id_user = Auth::user()->id;
+		$idTela = 5;
+		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
+		if($validacao == "ok") {
+			$users = User::where('id',$id)->get();
+			return view('users/users_resetar_senha', compact('users'));
+		} else {
+			$validator = "Você não tem Permissão para acessar esta tela!!!";
+			return view('home')
+				->withErrors($validator);
+		}
 	}
 
 	public function telaLoginIndicador()
@@ -106,8 +181,8 @@ class UserController extends Controller
 		} else {
 			$email = $input['email'];
 			$senha = $input['password'];		
-			$user = User::where('email', $email)->get();
-			$qtd = sizeof($user); 			
+			$user  = User::where('email', $email)->get();
+			$qtd   = sizeof($user); 			
 			if ( empty($qtd) ) {
 				$validator = 'Login Inválido!';
 				return view('auth.login')
@@ -115,16 +190,16 @@ class UserController extends Controller
 						->withInput(session()->flashInput($request->input())); 	
 			} else {
 				$unidades = $this->unidade->all();
-				$user = User::find($user[0]->id);
+				$user 	  = User::find($user[0]->id);
 				Auth::login($user);				
 				$idU    = Auth::user()->unidade_id;
 				$perfil = Auth::user()->perfil;
-				if($perfil == "Administrador") {
+				if($perfil == "Administrador" || $perfil == "Qualidade" || $perfil == "Comunicação") {
 					return view('home')
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input())); 							
 				}  else {
-					$indicadores 	   = Indicadores::where('id',0)->get();
+					$indicadores = Indicadores::where('id',0)->get();
 					if($idU != 7){
 						$grupo_indicadores = DB::table('grupo_indicadores')
 							->join('indicadores','indicadores.grupo_id','=','grupo_indicadores.id')
@@ -156,7 +231,6 @@ class UserController extends Controller
 			->withErrors($validator)
 			->withInput(session()->flashInput($request->input()));
 		} else {
-			
 			if($qtd > 0){
 				$input['token']   = Str::random('40');
 				$input['user_id'] = $usuarios[0]->id;
@@ -252,7 +326,7 @@ class UserController extends Controller
     {
 		$input = $request->all();
 		$perfil_users = PerfilUser::all();
-		$unidades = Unidades::all();
+		$unidades  = Unidades::all();
 		$validator = Validator::make($request->all(), [
 			'name'     		   => 'required',
             'email'    		   => 'required|email|unique:users,email',
@@ -270,9 +344,12 @@ class UserController extends Controller
 			$validator = 'Usuário cadastrado com sucesso!';
 			$unidades  = Unidades::all();
 			$usuarios  = User::all();
-			return view('users/users_cadastro', compact('usuarios'))
-					  ->withErrors($validator)
-                      ->withInput(session()->flashInput($request->input()));						
+			$id = User::all()->max('id');
+			$input['idTabela'] = $id;
+			$loggers = Logger::create($input);
+			return redirect()->route('cadastroUsuarios')
+						->withErrors($validator)
+						->with('usuarios', 'validator');						
 		}
     }
 
@@ -293,7 +370,7 @@ class UserController extends Controller
     public function alterarUsuarios(Request $request, $id)
     {
         $input = $request->all();
-		$unidades = Unidades::all();
+		$unidades  = Unidades::all();
 		$validator = Validator::make($request->all(), [
             'name'   => 'required',
             'email'  => 'required|email',
@@ -309,9 +386,11 @@ class UserController extends Controller
 			$user->update($input);
 			$usuarios = User::all();
 			$validator = "Usuário alterado com sucesso!!";
-			return view('users/users_cadastro', compact('usuarios'))
-				->withErrors($validator)
-				->withInput(session()->flashInput($request->input()));						
+			$input['idTabela'] = $id;
+			$loggers = Logger::create($input);
+			return redirect()->route('cadastroUsuarios')
+						->withErrors($validator)
+						->with('usuarios', 'validator');					
 		}
     }
 
@@ -339,12 +418,17 @@ class UserController extends Controller
 		}	
 	}
 
-	public function deleteUsuario($id)
+	public function deleteUsuario(Request $request, $id)
     {
+		$input = $request->all();
+		$input['idTabela'] = $id;
+		$input['user_id']  = $input['user_id_'];
+		$loggers = Logger::create($input);
         User::find($id)->delete();
 		$validator = "Usuário excluído com sucesso!!";
-		$usuarios = User::all();
-        return view('users/users_cadastro', compact('usuarios'))
-					->withErrors($validator);
+		$usuarios  = User::all();
+        return redirect()->route('cadastroUsuarios')
+						->withErrors($validator)
+						->with('usuarios', 'validator');	
     }
 }

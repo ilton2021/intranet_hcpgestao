@@ -36,11 +36,16 @@
 							<td> Imagem: </td>
 							<td> 
 							  <input class="form-control" style="width: 750px" type="text" id="imagem" name="imagem" readonly value="<?php echo $protocolos[0]->imagem; ?>" /> 
-                   		</td>
+                   		    </td>
 						 </tr>
                          <tr>
                             <td colspan="4"><br><b>Deseja Realmente Excluir este Protocolo Institucional?</b></td>
                          </tr>
+						 <tr>
+							<td><input hidden type="text" id="tela" name="tela" class="form-control" value="excluir_protocolos" /></td>
+							<td><input hidden type="text" id="user_id" name="user_id" class="form-control" value="<?php echo Auth::user()->id; ?>"  /></td>
+							<td><input hidden type="text" id="idTabela" name="idTabela" class="form-control" value="" /> </td>
+						 </tr>
                          </table>
 						<table>
 						 <tr>

@@ -59,6 +59,25 @@
 								<textarea class="form-control" type="text" id="link" name="link" required rows="5" value="<?php echo $indicadores[0]->link; ?>">{{ $indicadores[0]->link }}</textarea>
 							</td>
 						 </tr>
+						 <tr>
+							<td> Unidade: </td>
+							<td>
+								<select id="unidade_id" name="unidade_id" class="form-control">
+								@foreach($unidades as $unidade)
+									@if($unidade->id == $indicadores[0]->unidade_id)
+									 <option id="unidade_id" name="unidade_id" value="<?php echo $unidade->id; ?>" selected>{{ $unidade->sigla }}</option>
+									@else
+									 <option id="unidade_id" name="unidade_id" value="<?php echo $unidade->id; ?>">{{ $unidade->sigla }}</option>
+									@endif
+								@endforeach
+								</select>
+							</td>
+						 </tr>
+						 <tr>
+							<td><input hidden type="text" id="tela" name="tela" class="form-control" value="alterar_indicadores" /></td>
+							<td><input hidden type="text" id="user_id" name="user_id" class="form-control" value="<?php echo Auth::user()->id; ?>"  /></td>
+							<td><input hidden type="text" id="idTabela" name="idTabela" class="form-control" value="" /> </td>
+						 </tr>
                          </table>
 						<table>
 						 <tr>

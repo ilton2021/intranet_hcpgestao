@@ -29,7 +29,7 @@
 						 <tr>
 							<td> Nome: </td>
 							<td>
-								<input class="form-control" type="text" id="nome" name="nome" required value="<?php echo $ouvidorias[0]->nome; ?>" />
+								<input class="form-control" style="width: 500px;" type="text" id="nome" name="nome" required value="<?php echo $ouvidorias[0]->nome; ?>" />
 							</td>
 						 </tr>
 						 <tr>
@@ -37,6 +37,11 @@
 							<td>
 								<input class="form-control" type="text" id="email" name="email" required value="<?php echo $ouvidorias[0]->email; ?>" />
 							</td>
+						 </tr>
+						 <tr>
+							<td><input hidden type="text" id="tela" name="tela" class="form-control" value="alterar_ouvidorias" /></td>
+							<td><input hidden type="text" id="user_id" name="user_id" class="form-control" value="<?php echo Auth::user()->id; ?>"  /></td>
+							<td><input hidden type="text" id="idTabela" name="idTabela" class="form-control" value="" /> </td>
 						 </tr>
                          </table>
 						<table>

@@ -13,65 +13,7 @@
         </div>
       </div>
     </section>
-    <!-- SEÇÃO DE DESTAQUES -->
-    <section id="testimonials" class="testimonials">
-      <div class="container position-relative">
-        <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
-          <div class="swiper-wrapper">
-            @foreach($destaques as $destaque)
-            <?php if (in_array($destaque->id, $destaDaUnd)) {
-            ?>
-              <?php $data_a = date('d-m-Y', strtotime('now'));
-              $data_f = date('d-m-Y', strtotime($destaque->data_fim));
-              ?>
-              @if(strtotime($data_f) >= strtotime($data_a))
-              <div class="swiper-slide">
-                <div class="testimonial-item"><br><br>
-                  <a href="{{ route('destaquesDetalhes', $unidade[0]->id) }}"><img src="{{asset('storage')}}/{{$destaque->caminho}}" class="testimonial-img" alt=""></a>
-                  <h3>{{ $destaque->titulo }}</h3><br>
-                  <p>
-                    {{ substr($destaque->texto, 0, 300) .'...' }}
-                  </p>
-                </div>
-              </div>
-              @endif
-            <?php } ?>
-            @endforeach
-          </div> <br><br>
-          <div class="swiper-pagination"></div>
-        </div>
-      </div>
-    </section>
-    <?php $a = 0; ?>
-    <section id="team" class="team section-bg">
-      <div class="container">
-        <div class="section-title">
-          <h2>Mural de Avisos</h2>
-        </div>
-        <div class="row">
-          @foreach($murais as $mural) <?php $a += 1; ?>
-          <?php if (in_array($mural->id, $muraisDaUnd)) {
-          ?>
-            @if($a <= 4) <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
-              <div class="member">
-                <div class="member-img">
-                  <a href="{{asset('storage')}}/{{$mural->caminho}}" data-gallery="portfolioGallery" class="portfolio-lightbox" title="<?php echo $mural->titulo; ?>"><img src="{{asset('storage')}}/{{$mural->caminho}}" class="img-fluid" alt=""></a>
-                  <div class="social"> </div>
-                </div>
-                <div class="member-info">
-                  <h4>{{ $mural->titulo }}</h4>
-                  <span>{{ $mural->texto }}</span>
-                </div>
-              </div>
-        </div>
-        @endif
-      <?php } ?>
-      @endforeach
-      </div>
-      @if($a > 4)
-      <center><a href="{{ route('muraisDetalhes') }}" target="_blank" class="btn btn-sm btn-info">Mais...</a></center>
-      @endif
-    </section>
+    
     <section id="portfolio-details" class="portfolio-details">
       <div class="container">
         <div class="row gy-4">
@@ -103,6 +45,72 @@
           </div>
         </div>
       </div>
+    </section>
+    <!-- SEÇÃO DE DESTAQUES -->
+    <?php $qtdDestaques = sizeof($destaques); ?>
+    @if($qtdDestaques > 0)
+    <div class="section-title">
+      <h2>Destaques</h2>
+    </div>
+    <section id="testimonials" class="testimonials">  
+      <div class="container position-relative">
+        <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
+          <div class="swiper-wrapper">
+            @foreach($destaques as $destaque)
+            <?php if (in_array($destaque->id, $destaDaUnd)) {
+            ?>
+              <?php $data_a = date('d-m-Y', strtotime('now'));
+              $data_f = date('d-m-Y', strtotime($destaque->data_fim));
+              ?>
+              @if(strtotime($data_f) >= strtotime($data_a))
+              <div class="swiper-slide">
+                <div class="testimonial-item"><br><br>
+                  <a href="{{ route('destaquesDetalhes', $unidade[0]->id) }}"><img src="{{asset('storage')}}/{{$destaque->caminho}}" class="testimonial-img" alt=""></a>
+                  <h3>{{ $destaque->titulo }}</h3><br>
+                  <p>
+                    {{ substr($destaque->texto, 0, 300) .'...' }}
+                  </p>
+                </div>
+              </div>
+              @endif
+            <?php } ?>
+            @endforeach
+          </div> <br><br>
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+    </section>
+    @endif
+ 
+    <?php $a = 0; ?>
+    <section id="team" class="team section-bg">
+      <div class="container">
+        <div class="section-title">
+          <h2>Mural de Avisos</h2>
+        </div>
+        <div class="row">
+          @foreach($murais as $mural) <?php $a += 1; ?>
+          <?php if (in_array($mural->id, $muraisDaUnd)) {
+          ?>
+            @if($a <= 4) <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+              <div class="member">
+                <div class="member-img">
+                  <a href="{{asset('storage')}}/{{$mural->caminho}}" data-gallery="portfolioGallery" class="portfolio-lightbox" title="<?php echo $mural->titulo; ?>"><img src="{{asset('storage')}}/{{$mural->caminho}}" class="img-fluid" alt=""></a>
+                  <div class="social"> </div>
+                </div>
+                <div class="member-info">
+                  <h4>{{ $mural->titulo }}</h4>
+                  <span>{{ $mural->texto }}</span>
+                </div>
+              </div>
+        </div>
+        @endif
+      <?php } ?>
+      @endforeach
+      </div>
+      @if($a > 4)
+      <center><a href="{{ route('muraisDetalhes') }}" target="_blank" class="btn btn-sm btn-info">Mais...</a></center>
+      @endif
     </section>
     <section id="contact" class="contact">
       <div class="container">

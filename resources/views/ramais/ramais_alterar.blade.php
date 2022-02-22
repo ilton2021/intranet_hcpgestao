@@ -26,20 +26,20 @@
 					<form action="{{\Request::route('updateRamais')}}" method="post">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 						<table border="0" class="table-sm" style="line-height: 1.5;" >
-						<tr>
+						 <tr>
 							<td> Telefone: </td>
 							<td>
-								<input class="form-control" type="text" id="telefone" name="telefone" required value="<?php echo $ramais[0]->telefone; ?>" />
+								<input class="form-control" style="width: 500px;" type="text" id="telefone" name="telefone" required value="<?php echo $ramais[0]->telefone; ?>" />
 							</td>
 						 </tr> 
-						<tr>
+						 <tr>
 							<td> Sala: </td>
 							<td>
 								<input class="form-control" type="text" id="nome" name="nome" required value="<?php echo $ramais[0]->nome; ?>" />
 							</td>
 						 </tr>
 						 <tr>
-							<td> Setor: </td>
+						 	<td> Setor: </td>
 							<td>
 								<select class="form-control" id="setor_id" name="setor_id">
 									@foreach($setores as $setor)
@@ -53,11 +53,11 @@
 									@endforeach
 								</select>
 							</td>
-						</tr>
-						<tr>
-							<td> UNIDADE: </td>
-							<td>
-								<select class="form-control" id="unidade_id" name="unidade_id">
+						 </tr>
+						 <tr>
+							 <td> UNIDADE: </td>
+							 <td>
+							 	<select class="form-control" id="unidade_id" name="unidade_id">
 									@foreach($unidades as $unidade)
 									<?php
 									$selected = '';
@@ -68,8 +68,13 @@
 									<option id="unidade_id" name="unidade_id" <?php echo $selected; ?> value="{{$unidade->id}}">{{ $unidade->sigla }}</option>
 									@endforeach
 								</select>
-							</td>
-						</tr>
+							 </td>
+						 </tr>
+						 <tr>
+							<td><input hidden type="text" id="tela" name="tela" class="form-control" value="alterar_ramais" /></td>
+							<td><input hidden type="text" id="user_id" name="user_id" class="form-control" value="<?php echo Auth::user()->id; ?>"  /></td>
+							<td><input hidden type="text" id="idTabela" name="idTabela" class="form-control" value="" /> </td>
+						 </tr>
                          </table>
 						<table>
 						 <tr>

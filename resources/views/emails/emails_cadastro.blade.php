@@ -24,21 +24,14 @@
 					 <input type="text" id="pesq" name="pesq" style="width: 400px;" class="form-control" />
                     </td>
                     <td style="width: 150px;">
-					 <select id="pesq2" name="pesq2" style="width: 150px;" class="form-control">
-						<option id="pesq2" name="pesq2" value="1">FUNCIONÁRIO</option>
+					 <select id="pesq2" name="pesq2" style="width: 170px;" class="form-control">
+					    <option id="pesq2" name="pesq2" value="1">FUNCIONÁRIO</option>
 						<option id="pesq2" name="pesq2" value="2">E-MAIL</option>
 						<option id="pesq2" name="pesq2" value="3">UNIDADE</option>
 					 </select>
                     </td>
-					<td >
-					 <select id="unidade" name="unidade" style="width: 150px;" class="form-control">
-						@foreach($unidades as $und)
-						<option id="unidade" name="unidade" value="<?php echo $und->id;?>">{{$und->sigla}}</option>
-						@endforeach
-					 </select>
-                    </td>
                     <td> 
-					 <input style="margin-left: -30px;" type="submit" id="btn"  name="btn" class="btn btn-success btn-sm" value="Pesquisar" />
+					 <input style="margin-left: -10px; margin-top: 4x;" type="submit" id="btn" name="btn" class="btn btn-success btn-sm" value="Pesquisar" />
 					</td>	
 					<td>
 					  <p align="right">
@@ -61,7 +54,6 @@
 				<tbody>
 					@foreach($emails as $email)
 					<tr>
-						<?php $Array = array('php', 'programador', 'script', 'códigos'); ?>
 						<td style="font-size: 15px;">{{$email->nome}}</td>
 						<td style="font-size: 15px;">{{$email->email}}</td>
 						<td style="font-size: 15px;">

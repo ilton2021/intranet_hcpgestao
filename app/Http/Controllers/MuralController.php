@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Mural;
 use App\Models\Unidades;
+use App\Models\Logger;
+use App\Http\Controllers\PermissaoController;
 use Validator;
 use Storage;
 
@@ -12,33 +15,60 @@ class MuralController extends Controller
 {
 	public function cadastroMural()
 	{
-		$murais = Mural::all();
-		return view('mural_avisos/mural_cadastro', compact('murais'));
+		$id_user = Auth::user()->id;
+		$idTela = 1;
+		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
+		if($validacao == "ok") {
+			$murais = Mural::all();
+			return view('mural_avisos/mural_cadastro', compact('murais'));
+		} else {
+			$validator = "Você não tem Permissão para acessar esta tela!!!";
+			return view('home')
+				->withErrors($validator);
+		}
 	}
 
 	public function pesquisarMural(Request $request)
 	{
-		$input  = $request->all();
-		if (empty($input['pesq'])) {
-			$input['pesq'] = "";
+		$id_user = Auth::user()->id;
+		$idTela = 1;
+		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
+		if($validacao == "ok") {
+			$input  = $request->all();
+			if (empty($input['pesq'])) {
+				$input['pesq'] = "";
+			}
+			if (empty($input['pesq2'])) {
+				$input['pesq2'] = "";
+			}
+			$pesq  = $input['pesq'];
+			$pesq2 = $input['pesq2'];
+			if ($pesq2 == "1") {
+				$murais = Mural::where('titulo', 'like', '%' . $pesq . '%')->get();
+			} else if ($pesq2 == "2") {
+				$murais = Mural::where('texto', 'like', '%' . $pesq . '%')->get();
+			}
+			return view('mural_avisos/mural_cadastro', compact('murais', 'pesq', 'pesq2'));
+		} else {
+			$validator = "Você não tem Permissão para acessar esta tela!!!";
+			return view('home')
+				->withErrors($validator);
 		}
-		if (empty($input['pesq2'])) {
-			$input['pesq2'] = "";
-		}
-		$pesq  = $input['pesq'];
-		$pesq2 = $input['pesq2'];
-		if ($pesq2 == "1") {
-			$murais = Mural::where('titulo', 'like', '%' . $pesq . '%')->get();
-		} else if ($pesq2 == "2") {
-			$murais = Mural::where('texto', 'like', '%' . $pesq . '%')->get();
-		}
-		return view('mural_avisos/mural_cadastro', compact('murais', 'pesq', 'pesq2'));
 	}
 
 	public function muralNovo()
 	{
-		$unidades = Unidades::all();
-		return view('mural_avisos/mural_novo', compact('unidades'));
+		$id_user = Auth::user()->id;
+		$idTela = 1;
+		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
+		if($validacao == "ok") {
+			$unidades = Unidades::all();
+			return view('mural_avisos/mural_novo', compact('unidades'));
+		} else {
+			$validator = "Você não tem Permissão para acessar esta tela!!!";
+			return view('home')
+				->withErrors($validator);
+		}
 	}
 
 	public function storeMural(Request $request)
@@ -78,6 +108,9 @@ class MuralController extends Controller
 					$input['caminho'] = 'mural_avisos/' . $nome;
 					$murais = Mural::create($input);
 					$murais = Mural::all();
+					$id 	= Mural::all()->max('id');
+					$input['idTabela'] = $id;
+					$loggers = Logger::create($input);
 					$validator = 'Mural de Aviso Cadastrado com Sucesso!';
 					return redirect()->route('cadastroMural')
 						->withErrors($validator)
@@ -94,10 +127,19 @@ class MuralController extends Controller
 
 	public function muralAlterar($id)
 	{
-		$unidades = Unidades::all();
-		$murais = Mural::where('id', $id)->get();
-		$und_atual = explode(',', $murais[0]->unidade_id);
-		return view('mural_avisos/mural_alterar', compact('murais', 'unidades', 'und_atual'));
+		$id_user = Auth::user()->id;
+		$idTela = 1;
+		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
+		if($validacao == "ok") {
+			$unidades = Unidades::all();
+			$murais = Mural::where('id', $id)->get();
+			$und_atual = explode(',', $murais[0]->unidade_id);
+			return view('mural_avisos/mural_alterar', compact('murais', 'unidades', 'und_atual'));
+		} else {
+			$validator = "Você não tem Permissão para acessar esta tela!!!";
+			return view('home')
+				->withErrors($validator);
+		}
 	}
 
 	public function updateMural($id, Request $request)
@@ -148,6 +190,8 @@ class MuralController extends Controller
 					$murais = Mural::find($id);
 					$murais->update($input);
 					$murais = Mural::all();
+					$input['idTabela'] = $id;
+					$loggers = Logger::create($input);
 					$validator = 'Mural de Avisos Alterado com Sucesso!';
 					return redirect()->route('cadastroMural')
 						->withErrors($validator)
@@ -164,8 +208,17 @@ class MuralController extends Controller
 
 	public function muralExcluir($id)
 	{
-		$murais = Mural::where('id', $id)->get();
-		return view('mural_avisos/mural_excluir', compact('murais'));
+		$id_user = Auth::user()->id;
+		$idTela = 1;
+		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
+		if($validacao == "ok") {
+			$murais = Mural::where('id', $id)->get();
+			return view('mural_avisos/mural_excluir', compact('murais'));
+		} else {
+			$validator = "Você não tem Permissão para acessar esta tela!!!";
+			return view('home')
+				->withErrors($validator);
+		}
 	}
 
 	public function destroyMural($id, Request $request)
@@ -176,9 +229,11 @@ class MuralController extends Controller
 		unlink($image_path);
 		$data->delete();
 		$murais = Mural::all();
+		$input['idTabela'] = $id;
+		$loggers = Logger::create($input);
 		$validator = 'Mural de Avisos excluído com sucesso!';
 		return redirect()->route('cadastroMural')
 			->withErrors($validator)
-			->with('murais');
+  			->with('murais');
 	}
 }

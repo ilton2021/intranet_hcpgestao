@@ -48,6 +48,7 @@
 						<th scope="col" width="400px">NOME</th>
 						<th scope="col">GRUPO</th>
 						<th scope="col">LINK</th>
+						<th scope="col">UNIDADE</th>
 						<th scope="col"><center>ALTERAR</center></th>
 						<th scope="col"><center>EXCLUIR</center></th>
 					</tr>

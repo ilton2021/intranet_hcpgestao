@@ -51,7 +51,7 @@
 						  <td style="font-size: 15px;">{{$grupo->nome}}</td>
 						 @endif
 						@endforeach
-						<td style="font-size: 15px;"><a href="{{$indicador->link}}" target="_blank" class="btn btn-sm btn-success">ACESSE</a></td>
+						<td style="font-size: 15px;"><a display="none" href="{{$indicador->link}}" target="_blank" class="btn btn-sm btn-success">ACESSE</a></td>
 						@if($indicador->unidade_id == "1")
 						<td style="font-size: 15px;">{{'HMR'}}</td>
 						@elseif($indicador->unidade_id == "2")

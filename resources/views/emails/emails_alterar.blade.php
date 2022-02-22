@@ -1,37 +1,37 @@
 @extends('layouts.adm')
-<div class="container-fluid">
+	<div class="container-fluid">
 	<div class="row" style="margin-top: 0px;">
 		<div class="col-md-12 text-center">
 			<h3 style="font-size: 18px;">ALTERAR E-MAILS:</h3>
 		</div>
 	</div>
 	@if ($errors->any())
-	<div class="alert alert-danger">
-		<ul>
-			@foreach ($errors->all() as $error)
-			<li>{{ $error }}</li>
+		<div class="alert alert-danger">
+		  <ul>
+		    @foreach ($errors->all() as $error)
+		      <li>{{ $error }}</li>
 			@endforeach
-		</ul>
-	</div>
+		  </ul>
+		</div>
 	@endif
 	<div class="row" style="margin-top: 25px;">
 		<div class="col-md-2 col-sm-0"></div>
 		<div class="col-md-8 col-sm-12 text-center">
-			<div class="accordion" id="accordionExample">
-				<div class="card">
-					<a class="card-header bg-success text-decoration-none text-white bg-success" type="button" data-toggle="collapse" data-target="#PESSOAL" aria-expanded="true" aria-controls="PESSOAL">
-						Alterar E-mails: <i class="fas fa-check-circle"></i>
-					</a>
-				</div>
-				<form action="{{\Request::route('updateEmails')}}" method="post">
+		 <div class="accordion" id="accordionExample">
+                <div class="card">
+                    <a class="card-header bg-success text-decoration-none text-white bg-success" type="button" data-toggle="collapse" data-target="#PESSOAL" aria-expanded="true" aria-controls="PESSOAL">
+                        Alterar E-mails: <i class="fas fa-check-circle"></i>
+                    </a>
+                </div>	
+					<form action="{{\Request::route('updateEmails')}}" method="post">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					<table border="0" class="table-sm" style="line-height: 1.5;">
 						<tr>
 							<td> E-mail: </td>
 							<td>
-								<input class="form-control" type="text" id="email" name="email" required value="<?php echo $emails[0]->email; ?>" />
+								<input class="form-control" type="text" style="width: 500px;" id="email" name="email" required value="<?php echo $emails[0]->email; ?>" />
 							</td>
-						</tr>
+							</tr>
 						<tr>
 							<td>Funcionário:</td>
 							<td>
@@ -70,6 +70,11 @@
 								</select>
 							</td>
 						</tr>
+						<tr>
+							<td><input hidden type="text" id="tela" name="tela" class="form-control" value="alterar_emails" /></td>
+							<td><input hidden type="text" id="user_id" name="user_id" class="form-control" value="<?php echo Auth::user()->id; ?>"  /></td>
+							<td><input hidden type="text" id="idTabela" name="idTabela" class="form-control" value="" /> </td>
+						</tr>
 					</table>
 					<table>
 						<tr>
@@ -81,5 +86,5 @@
 				</form>
 			</div>
 		</div>
-	</div>
-	</body>
+</div>
+</body>

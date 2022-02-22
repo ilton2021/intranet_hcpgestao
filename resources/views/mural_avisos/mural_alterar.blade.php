@@ -76,6 +76,11 @@
 								<textarea class="form-control" rows="5" type="text" id="texto" name="texto" required value="<?php echo $murais[0]->texto; ?>"> {{ $murais[0]->texto }} </textarea>
 							</td>
 						</tr>
+						<tr>
+							<td><input hidden type="text" id="tela" name="tela" class="form-control" value="alterar_murais" /></td>
+							<td><input hidden type="text" id="user_id" name="user_id" class="form-control" value="<?php echo Auth::user()->id; ?>"  /></td>
+							<td><input hidden type="text" id="idTabela" name="idTabela" class="form-control" value="" /> </td>
+						</tr>
 					</table>
 					<table>
 						<tr>

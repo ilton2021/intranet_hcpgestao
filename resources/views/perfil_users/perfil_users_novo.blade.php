@@ -29,8 +29,13 @@
 						 <tr>
 							<td> Nome: </td>
 							<td>
-								<input class="form-control" type="text" id="nome" name="nome" required value="{{ old('nome') }}" />
+								<input class="form-control" style="width: 500px;" type="text" id="nome" name="nome" required value="{{ old('nome') }}" />
 							</td>
+						 </tr>
+						 <tr>
+							<td><input hidden type="text" id="tela" name="tela" class="form-control" value="novo_perfil_usuarios" /></td>
+							<td><input hidden type="text" id="user_id_" name="user_id_" class="form-control" value="<?php echo Auth::user()->id; ?>"  /></td>
+							<td><input hidden type="text" id="idTabela" name="idTabela" class="form-control" value="" /> </td>
 						 </tr>
                          </table>
 						<table>
