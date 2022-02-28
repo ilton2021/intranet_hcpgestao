@@ -63,19 +63,15 @@
 						@endif
 						@endforeach
 						<td style="font-size: 15px;">{{substr($indicador->link,0,30)}}</td>
-						@if($indicador->unidade_id == "1")
-						<td style="font-size: 15px;">{{'HMR'}}</td>
-						@elseif($indicador->unidade_id == "2")
-						<td style="font-size: 15px;">{{'UPAE BELO JARDIM'}}</td>
-						@elseif($indicador->unidade_id == "3")
-						<td style="font-size: 15px;">{{'UPAE ARCOVERDE'}}</td>
-						@elseif($indicador->unidade_id == "4")
-						<td style="font-size: 15px;">{{'UPAE ARRUDA'}}</td>
-						@elseif($indicador->unidade_id == "5")
-						<td style="font-size: 15px;">{{'UPAE CARUARU'}}</td>
-						@elseif($indicador->unidade_id == "6")
-						<td style="font-size: 15px;">{{'HSS'}}</td>
-						@endif
+						<td style="font-size: 15px;">
+						<?php 
+							for ($i=0 ; $i < sizeof($unidades); $i++ ) { 
+								if($indicador->unidade_id == $unidades[$i]->id){
+									echo $unidades[$i]->sigla;
+								}
+							}
+						?>
+						</td>
 						<td><center><a class="btn btn-info btn-sm" href="{{ route('indicadoresAlterar', $indicador->id) }}" ><i class="fas fa-edit"></i></center></td>
                         <td><center><a class="btn btn-danger btn-sm" href="{{ route('indicadoresExcluir', $indicador->id) }}" ><i class="fas fa-times-circle"></i></center></td>
 					</tr>

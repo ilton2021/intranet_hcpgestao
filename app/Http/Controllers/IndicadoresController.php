@@ -23,7 +23,8 @@ class IndicadoresController extends Controller
 		if($validacao == "ok") {
 			$indicadores = Indicadores::paginate(20);
             $grupo_indicadores = GrupoIndicadores::all();
-            return view('indicadores/indicadores_cadastro', compact('indicadores','grupo_indicadores'));
+            $unidades = Unidades::all();
+            return view('indicadores/indicadores_cadastro', compact('indicadores','grupo_indicadores','unidades'));
 		} else {
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
 			return view('home')
@@ -40,6 +41,7 @@ class IndicadoresController extends Controller
     public function pesquisarIndicadores(Request $request)
     {
         $id_user = Auth::user()->id;
+        $unidades = Unidades::all();
 		$idTela = 4;
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
 		if($validacao == "ok") {
@@ -64,7 +66,7 @@ class IndicadoresController extends Controller
             } else {
                 $indicadores = Indicadores::paginate(20);
             }
-            return view('indicadores/indicadores_cadastro', compact('indicadores','pesq','pesq2','grupo_indicadores'));
+            return view('indicadores/indicadores_cadastro', compact('indicadores','pesq','pesq2','grupo_indicadores','unidades'));
 		} else {
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
 			return view('home')
@@ -139,7 +141,7 @@ class IndicadoresController extends Controller
             'link'     => 'required|max:255'
     	]);
 		if ($validator->fails()) {
-			return view('indicadores/indicadores_novo', compact('indicadores', 'grupo_indicadores'))
+			return view('indicadores/indicadores_novo', compact('indicadores', 'grupo_indicadores','unidades'))
 					->withErrors($validator)
 					->withInput(session()->flashInput($request->input()));
 		}else {
@@ -152,7 +154,7 @@ class IndicadoresController extends Controller
 			$validator = 'Indicador Cadastrado com Sucesso!';
 			return redirect()->route('cadastroIndicadores')
                 ->withErrors($validator)
-                ->with('indicadores', 'grupo_indicadores');
+                ->with('indicadores', 'grupo_indicadores','unidades');
 		}
 	}
 
@@ -198,7 +200,7 @@ class IndicadoresController extends Controller
 			$validator ='Indicador Alterado com Sucesso!';
 			return redirect()->route('cadastroIndicadores')
                 ->withErrors($validator)
-                ->with('indicadores', 'grupo_indicadores');
+                ->with('indicadores', 'grupo_indicadores','unidades');
 		}
     }
 
@@ -221,6 +223,7 @@ class IndicadoresController extends Controller
     public function destroyIndicadores($id, Request $request)
     {
         $input = $request->all();
+        $unidades = Unidades::all();
         $input['idTabela'] = $id;
 		$loggers = Logger::create($input);
         Indicadores::find($id)->delete();
@@ -229,6 +232,6 @@ class IndicadoresController extends Controller
         $validator         = 'Indicador excluído com sucesso!';
 		return redirect()->route('cadastroIndicadores')
             ->withErrors($validator)
-            ->with('indicadores', 'grupo_indicadores');
+            ->with('indicadores', 'grupo_indicadores','unidades');
     }
 }

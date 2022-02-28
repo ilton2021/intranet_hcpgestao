@@ -217,19 +217,19 @@ class PermissaoController extends Controller
 		}
     }
     
-    public function permissaoUserExcluir(Request $request)
+    public function grupoVincularpfuserExcluir($id)
     {   
+        echo $id;exit();
         $id_user = Auth::user()->id;
 		$idTela = 13;
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
 		if($validacao == "ok") {
-			$input = $request->all();
             $perm_user = DB::table('permissao_user')
-                ->join('permissao','permissao.id','=','permissao_user.permissao_id')
-                ->join('users','users.id','=','permissao_user.user_id')
-                ->select('permissao.tela as tela','users.name as usuario','permissao_user.id as id',
-                'permissao_user.permissao_id as permissao','permissao_user.user_id as user')->get();
-            $permissoes = Permissao::where('id',$perm_user[0]->id)->get();
+            ->join('permissao','permissao.id','=','permissao_user.permissao_id')
+            ->join('users','users.id','=','permissao_user.user_id')->where('permissao_user.permissao_id',$id)
+            ->select('permissao.tela as tela','users.name as usuario','permissao_user.id as id',
+            'permissao_user.permissao_id as permissao','permissao_user.user_id as user')->get();
+            $permissoes = Permissao::where('id',$id)->get();
             $usuarios   = User::all();
             return view('permissao/permissao_excluir_usuario', compact('permissoes','usuarios','perm_user'))
                         ->withInput(session()->flashInput($request->input()));

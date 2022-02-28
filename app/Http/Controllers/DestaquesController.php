@@ -179,7 +179,7 @@ class DestaquesController extends Controller
 		$und_atual = explode(',', $destaques[0]->unidade_id);
 		$input = $request->all();
 		$nome1 = "";
-		$destaques = Destaques::where('id', $id)->get();
+
 		if ($request->file('imagem') === NULL && $input['imagem_'] == "") {
 			$validator = 'Selecione a imagem do Destaque!!';
 			return view('destaques/destaques_alterar', compact('destaques','unidades','und_atual'))

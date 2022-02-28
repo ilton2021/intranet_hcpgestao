@@ -43,6 +43,8 @@
 				<thead class="bg-success">
 					<tr>
 						<th scope="col" width="600px">NOME</th>
+						<th scope="col"><center>VINCULAR PERFIL</center></th>
+						<th scope="col"><center>DESVINCULAR PERFIL</center></th>
 						<th scope="col"><center>ALTERAR</center></th>
 						<th scope="col"><center>EXCLUIR</center></th>
 					</tr>
@@ -51,6 +53,8 @@
 					@foreach($grupo_indicadores as $grupo_indicador)
 					<tr>
 						<td style="font-size: 15px;">{{$grupo_indicador->nome}}</td>
+						<td><center><a class="btn btn-success btn-sm" href="{{ route('grupoVincular', $grupo_indicador->id) }}" ><i class="fas fa-check"></i></center></td>
+						<td><center><a class="btn btn-danger btn-sm" href="{{ route('grupoVincularExcluir', $grupo_indicador->id) }}" ><i class="fas fa-check"></i></center></td>
 						<td><center><a class="btn btn-info btn-sm" href="{{ route('indicadoresGrupoAlterar', $grupo_indicador->id) }}" ><i class="fas fa-edit"></i></center></td>
                         <td><center><a class="btn btn-danger btn-sm" href="{{ route('indicadoresGrupoExcluir', $grupo_indicador->id) }}" ><i class="fas fa-times-circle"></i></center></td>
 					</tr>

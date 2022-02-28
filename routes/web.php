@@ -210,6 +210,11 @@ Route::middleware(['auth'])->group( function() {
     Route::post('/cadastro_grupo_indicadores/alterar_grupo_indicadores/{id}', [App\Http\Controllers\GrupoIndicadoresController::class, 'updateGrupoIndicadores'])->name('updateGrupoIndicadores');
     Route::get('/cadastro_grupo_indicadores/excluir_grupo_indicadores/{id}', [App\Http\Controllers\GrupoIndicadoresController::class, 'indicadoresGrupoExcluir'])->name('indicadoresGrupoExcluir');
     Route::post('/cadastro_grupo_indicadores/excluir_grupo_indicadores/{id}', [App\Http\Controllers\GrupoIndicadoresController::class, 'destroyGrupoIndicadores'])->name('destroyGrupoIndicadores');
+    Route::get('/cadastro_grupo_indicadores/gp_indicadores_vincular_pf_usuarios/{id}', [App\Http\Controllers\GrupoIndicadoresController::class, 'grupoVincular'])->name('grupoVincular');
+    Route::post('/cadastro_grupo_indicadores/gp_indicadores_vincular_pf_usuarios/{id}', [App\Http\Controllers\GrupoIndicadoresController::class, 'storeGpIndiPerfUsers'])->name('storeGpIndiPerfUsers');
+    Route::get('/cadastro_grupo_indicadores/gp_indicadores_vincular_pf_usuarios/excluir/{id}', [App\Http\Controllers\GrupoIndicadoresController::class, 'grupoVincularExcluir'])->name('grupoVincularExcluir');
+    Route::get('/cadastro_grupo_indicadores/gp_indicadores_vincular_pf_usuarios/excluir/{id}/{id_p}', [App\Http\Controllers\GrupoIndicadoresController::class, 'grupoVincularExcluir_'])->name('grupoVincularExcluir_');
+    Route::post('/cadastro_grupo_indicadores/gp_indicadores_vincular_pf_usuarios/excluir/{id}/{id_p}', [App\Http\Controllers\GrupoIndicadoresController::class, 'destroyGpIndUser'])->name('destroyGpIndUser');
     ////
 
     //Permissão
@@ -222,7 +227,7 @@ Route::middleware(['auth'])->group( function() {
     Route::post('/cadastro_permissao/permissao_alterar/{id}', [App\Http\Controllers\PermissaoController::class, 'updatePermissoes'])->name('updatePermissoes');
     Route::get('/cadastro_permissao/permissao_excluir/{id}', [App\Http\Controllers\PermissaoController::class, 'permissaoExcluir'])->name('permissaoExcluir');
     Route::post('/cadastro_permissao/permissao_excluir/{id}', [App\Http\Controllers\PermissaoController::class, 'destroyPermissoes'])->name('destroyPermissoes');
-    Route::get('/cadastro_permissao/permissao_vincular_usuario/excluir', [App\Http\Controllers\PermissaoController::class, 'permissaoUserExcluir'])->name('permissaoUserExcluir');
+    Route::get('/cadastro_permissao/permissao_vincular_usuario/excluir/{id}', [App\Http\Controllers\PermissaoController::class, 'permissaoUserExcluir'])->name('permissaoUserExcluir');
     Route::get('/cadastro_permissao/permissao_vincular_usuario/excluir/{id}/{id_p}', [App\Http\Controllers\PermissaoController::class, 'permissaoUserExcluir_'])->name('permissaoUserExcluir_');
     Route::post('/cadastro_permissao/permissao_vincular_usuario/excluir/{id}/{id_p}', [App\Http\Controllers\PermissaoController::class, 'destroyPermissaoUser'])->name('destroyPermissaoUser');
     Route::get('/cadastro_permissao/permissao_vincular_usuario/{id}', [App\Http\Controllers\PermissaoController::class, 'permissaoVincular'])->name('permissaoVincular');

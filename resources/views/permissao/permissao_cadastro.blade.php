@@ -54,7 +54,7 @@
 					<tr>
 						<td style="font-size: 15px;">{{$permissao->tela}}</td>
 						<td><center><a class="btn btn-success btn-sm" href="{{ route('permissaoVincular', $permissao->id) }}" ><i class="fas fa-check"></i></center></td>
-						<td><center><a class="btn btn-danger btn-sm" href="{{ route('permissaoUserExcluir') }}" ><i class="fas fa-check"></i></center></td>
+						<td><center><a class="btn btn-danger btn-sm" href="{{ route('permissaoUserExcluir',$permissao->id) }}" ><i class="fas fa-check"></i></center></td>
 						<td><center><a class="btn btn-info btn-sm" href="{{ route('permissaoAlterar', $permissao->id) }}" ><i class="fas fa-edit"></i></center></td>
                         <td><center><a class="btn btn-danger btn-sm" href="{{ route('permissaoExcluir', $permissao->id) }}" ><i class="fas fa-times-circle"></i></center></td>
 					</tr>
