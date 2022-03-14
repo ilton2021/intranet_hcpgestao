@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\ProtocolosInstitucionais;
 use App\Models\Setor;
 use App\Models\Logger;
+use App\Models\UserPerfil;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PermissaoController;
 use DB;
@@ -20,12 +21,19 @@ class ProtocolosInstitucionaisController extends Controller
 		$idTela = 11;
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
 		if($validacao == "ok") {
-			$protocolos = ProtocolosInstitucionais::all();
+			$protocolos = ProtocolosInstitucionais::paginate(20);
         	return view('protocolos_institucionais/protocolos_institucionais_cadastro', compact('protocolos'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -41,15 +49,22 @@ class ProtocolosInstitucionaisController extends Controller
 			$pesq  = $input['pesq'];
 			$pesq2 = $input['pesq2']; 
 			if($pesq2 == "1") {
-				$protocolos = ProtocolosInstitucionais::where('nome','like','%'.$pesq.'%')->get();
+				$protocolos = ProtocolosInstitucionais::where('nome','like','%'.$pesq.'%')->paginate(20);
 			} else if($pesq2 == "2"){
-				$protocolos = ProtocolosInstitucionais::where('setor','like','%'.$pesq.'%')->get();
+				$protocolos = ProtocolosInstitucionais::where('setor','like','%'.$pesq.'%')->paginate(20);
 			}
 			return view('protocolos_institucionais/protocolos_institucionais_cadastro', compact('protocolos','pesq','pesq2'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -62,9 +77,16 @@ class ProtocolosInstitucionaisController extends Controller
 			$setores = Setor::all();
         	return view('protocolos_institucionais/protocolos_institucionais_novo', compact('setores'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -97,6 +119,7 @@ class ProtocolosInstitucionaisController extends Controller
 					$id = ProtocolosInstitucionais::all()->max('id');
 					$input['idTabela'] = $id;
 					$loggers   = Logger::create($input);
+					$protocolos = ProtocolosInstitucionais::paginate(20);
 					$validator = 'Protocolo Institucional Cadastrado com Sucesso!';
 					return redirect()->route('cadastroProtocolos')
 						->withErrors($validator)
@@ -121,9 +144,16 @@ class ProtocolosInstitucionaisController extends Controller
 			$setores    = Setor::all();
 			return view('protocolos_institucionais/protocolos_institucionais_alterar', compact('protocolos','setores'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -165,6 +195,7 @@ class ProtocolosInstitucionaisController extends Controller
 					$protocolos = ProtocolosInstitucionais::all();
 					$input['idTabela'] = $id;
 					$loggers   = Logger::create($input);
+					$protocolos = ProtocolosInstitucionais::paginate(20);
 					$validator ='Protocolo Institucional Alterado com Sucesso!';
 					return redirect()->route('cadastroProtocolos')
 						->withErrors($validator)
@@ -188,9 +219,16 @@ class ProtocolosInstitucionaisController extends Controller
 			$protocolos = ProtocolosInstitucionais::where('id',$id)->get();
         	return view('protocolos_institucionais/protocolos_institucionais_excluir', compact('protocolos'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -203,7 +241,7 @@ class ProtocolosInstitucionaisController extends Controller
 		$image_path = public_path().'/storage/'.$data->caminho;
         unlink($image_path);
         $data->delete();
-		$protocolos = ProtocolosInstitucionais::all();
+		$protocolos = ProtocolosInstitucionais::paginate(20);
         $validator = 'Protocolo Institucional excluído com sucesso!';
 		return redirect()->route('cadastroProtocolos')
 			->withErrors($validator)

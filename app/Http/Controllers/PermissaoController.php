@@ -7,6 +7,7 @@ use App\Models\Permissao;
 use App\Models\User;
 use App\Models\PermissaoUser;
 use App\Models\Logger;
+use App\Models\UserPerfil;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PermissaoController;
 use Validator;
@@ -23,9 +24,16 @@ class PermissaoController extends Controller
 			$permissoes = Permissao::all();
             return view('permissao/permissao_cadastro', compact('permissoes'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -37,9 +45,16 @@ class PermissaoController extends Controller
 		if($validacao == "ok") {
 			return view('permissao/permissao_novo');
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -85,9 +100,16 @@ class PermissaoController extends Controller
             }
             return view('permissao/permissao_cadastro', compact('permissoes','pesq','pesq2'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -100,9 +122,16 @@ class PermissaoController extends Controller
 			$permissoes = Permissao::where('id',$id)->get();
             return view('permissao/permissao_alterar', compact('permissoes'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -140,9 +169,16 @@ class PermissaoController extends Controller
 			$permissoes = Permissao::where('id',$id)->get();
             return view('permissao/permissao_excluir', compact('permissoes'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -175,9 +211,16 @@ class PermissaoController extends Controller
             ->select('permissao.tela as tela','users.name as usuario','permissao_user.id as id')->get();
             return view('permissao/permissao_vincular_usuario', compact('permissoes','usuarios','perm_user'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -217,9 +260,8 @@ class PermissaoController extends Controller
 		}
     }
     
-    public function grupoVincularpfuserExcluir($id)
+    public function permissaoUserExcluir($id, Request $request)
     {   
-        echo $id;exit();
         $id_user = Auth::user()->id;
 		$idTela = 13;
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
@@ -234,9 +276,16 @@ class PermissaoController extends Controller
             return view('permissao/permissao_excluir_usuario', compact('permissoes','usuarios','perm_user'))
                         ->withInput(session()->flashInput($request->input()));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -264,9 +313,16 @@ class PermissaoController extends Controller
             return view('permissao/permissao_excluir_usuario_', compact('permissoes','usuarios','perm_user'))
                 ->withInput(session()->flashInput($request->input()));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 

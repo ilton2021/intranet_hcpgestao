@@ -71,66 +71,62 @@
             </table>
             </p>
             @elseif($id == 4)
-            <p align="justify">
-            <table>
-              <tr> <?php $a = 0; ?>
-                @foreach($documentos as $documento) <?php $a += 1; ?>
-                <td>
-                  <center><img src="{{asset('storage')}}/{{('foto.jpg')}}" width="200" /></center><br>
-                  <font size="2">
-                    <p align="center"> <b>{{ $documento->nome }}</b> </p>
-                  </font> <br>
-                  <center><a href="{{asset('storage')}}/{{$documento->caminho}}" width="100px" class="btn btn-sm btn-info" target="_blank"> Download</a></center><BR><BR>
-                </td>
+            <section class="cards">
+              @foreach($documentos as $documento)
+              <div class="card">
+                <div class="image">
+                  <img src="{{asset('storage')}}/{{('foto.jpg')}}" alt="Imagem" />
+                </div>
+                <div class="content">
+                  <p class="title text--medium">
+                    {{ $documento->nome }}
+                  </p>
+                  <p>
+                    <a href="{{asset('storage')}}/{{$documento->caminho}}" width="100px" class="btn btn-sm btn-info" target="_blank"> Download</a>
+                  </p>
+                </div>
+              </div>
               @endforeach
-              </tr>
-            </table>
-            </p>
-            <p align="justify">
-            <table>
-              <tr> <?php $a = 1; ?>
-                @foreach($setores as $setor)
-                @foreach($protocolos as $protocolo)
-                @if($setor->nome == $protocolo->setor) <?php $a += 1; ?>
-                <td>
-                  <center><b>{{ $setor->nome }}: </b></center><br> <br>
-                  <center><img src="{{asset('storage')}}/{{('foto.jpg')}}" width="200" /></center><br>
-                  <font size="2">
-                    <p align="center"> {{ $protocolo->nome }} </p>
-                  </font> <br>
-                  <center><a href="{{asset('storage')}}/{{$protocolo->caminho}}" width="100px" class="btn btn-sm btn-info" target="_blank"> Download</a></center><BR><BR>
-                </td>
-                @if($a > 4 || $a > 8 || $a > 12 || $a > 16 || $a > 20 || $a > 24)
-              </tr> @endif
-              @endif
+            </section>
+            <section class="cards">
+              @foreach($protocolos as $protocolo)
+              <div class="card">
+                <div class="image">
+                  <img src="{{asset('storage')}}/{{('foto2.jpg')}}" alt="Imagem" />
+                </div>
+                <div class="content">
+                  <p>
+                    Setor: {{$protocolo->setor}}</p>
+                  <p>
+                    {{ $protocolo->nome }}
+                  </p>
+                  <p>
+                    <a href="{{asset('storage')}}/{{$protocolo->caminho}}" width="100px" class="btn btn-sm btn-info" target="_blank"> Download</a>
+                  </p>
+                </div>
+              </div>
               @endforeach
-              @endforeach
-              </tr>
-            </table>
-            </p>
+            </section>
             @elseif($id == 6)
-            <p align="justify">
-            <table>
-              <tr> <?php $a = 1; ?>
-                @foreach($setores as $setor)
-                @foreach($politicas as $politica)
-                @if($setor->nome == $politica->setor) <?php $a += 1; ?>
-                <td>
-                  <center><b>{{ $setor->nome }}: </b></center><br> <br>
-                  <center><img src="{{asset('storage')}}/{{('foto.jpg')}}" width="200" /></center><br>
-                  <font size="2">
-                    <p align="center"> {{ $politica->nome }} </p>
-                  </font> <br>
-                  <center><a href="{{asset('storage')}}/{{$politica->caminho}}" width="100px" class="btn btn-sm btn-info" target="_blank"> Download</a></center><BR><BR>
-                </td>
-                @if($a > 4 || $a > 8 || $a > 12 || $a > 16 || $a > 20 || $a > 24)
-              </tr> @endif
-              @endif
+            <section class="cards">
+              @foreach($politicas as $politica)
+              <div class="card">
+                <div class="image">
+                  <img src="{{asset('storage')}}/{{('foto3.jpg')}}" alt="Imagem" />
+                </div>
+                <div class="content">
+                  <p>
+                    Setor: {{$politica->setor}}</p>
+                  <p>
+                    {{ $politica->nome }}
+                  </p>
+                  <p>
+                    <a href="{{asset('storage')}}/{{$politica->caminho}}" width="100px" class="btn btn-sm btn-info" target="_blank"> Download</a>
+                  </p>
+                </div>
+              </div>
               @endforeach
-              @endforeach
-              </tr>
-            </table>
-            </p>
+            </section>
             @endif
           </div>
         </div>

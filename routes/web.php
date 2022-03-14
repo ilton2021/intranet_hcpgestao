@@ -28,7 +28,7 @@ Route::post('auth/passwords/reset', [App\Http\Controllers\UserController::class,
 //HOME
 Route::get('/hcpgestao', [App\Http\Controllers\HomeController::class, 'oquee'])->name('oquee');
 Route::get('/unidade/{id}', [App\Http\Controllers\HomeController::class, 'unidade'])->name('unidade');
-Route::get('/destaques_detalhes/{id}', [App\Http\Controllers\HomeController::class, 'destaquesDetalhes'])->name('destaquesDetalhes');
+Route::get('/destaques_detalhes/{id}/{id_d}', [App\Http\Controllers\HomeController::class, 'destaquesDetalhes'])->name('destaquesDetalhes');
 Route::get('/murais_detalhes/{id}', [App\Http\Controllers\HomeController::class, 'muraisDetalhes'])->name('muraisDetalhes');
 Route::get('/acesso_rapido/{id}', [App\Http\Controllers\HomeController::class, 'acessoRapido'])->name('acessoRapido');
 Route::post('/unidade/{id}', [App\Http\Controllers\HomeController::class, 'enviarEmail'])->name('enviarEmail');
@@ -198,6 +198,11 @@ Route::middleware(['auth'])->group( function() {
     Route::post('/cadastro_indicadores/excluir_indicadores/{id}', [App\Http\Controllers\IndicadoresController::class, 'destroyIndicadores'])->name('destroyIndicadores');
     Route::post('/admin/indicador', [App\Http\Controllers\IndicadoresController::class, 'pesquisarIndicadoresGestores'])->name('pesquisarIndicadoresGestores');
     Route::get('/cadastro_indicadores/tela_indicador/{id}', [App\Http\Controllers\IndicadoresController::class, 'telaIndicador'])->name('telaIndicador');
+    Route::get('/cadastro_indicadores/indicadores_vincular_pf_usuarios/{id}', [App\Http\Controllers\IndicadoresController::class, 'indicadorVincular'])->name('indicadorVincular');
+    Route::post('/cadastro_indicadores/indicadores_vincular_pf_usuarios/{id}', [App\Http\Controllers\IndicadoresController::class, 'storeIndiPerfUsers'])->name('storeIndiPerfUsers');
+    Route::get('/cadastro_indicadores/indicadores_vincular_pf_usuarios/excluir/{id}/{id_p}', [App\Http\Controllers\IndicadoresController::class, 'indicaVincularExcluir'])->name('indicaVincularExcluir');
+    Route::post('/cadastro_indicadores/indicadores_vincular_pf_usuarios/excluir/{id}/{id_p}', [App\Http\Controllers\IndicadoresController::class, 'destroyIndUser'])->name('destroyIndUser');
+    Route::get('/admin/indicador/link/{id}/{id_g}', [App\Http\Controllers\IndicadoresController::class, 'showIndicador'])->name('showIndicador');
     ////
 
     //Grupo de Indicadores
@@ -210,11 +215,6 @@ Route::middleware(['auth'])->group( function() {
     Route::post('/cadastro_grupo_indicadores/alterar_grupo_indicadores/{id}', [App\Http\Controllers\GrupoIndicadoresController::class, 'updateGrupoIndicadores'])->name('updateGrupoIndicadores');
     Route::get('/cadastro_grupo_indicadores/excluir_grupo_indicadores/{id}', [App\Http\Controllers\GrupoIndicadoresController::class, 'indicadoresGrupoExcluir'])->name('indicadoresGrupoExcluir');
     Route::post('/cadastro_grupo_indicadores/excluir_grupo_indicadores/{id}', [App\Http\Controllers\GrupoIndicadoresController::class, 'destroyGrupoIndicadores'])->name('destroyGrupoIndicadores');
-    Route::get('/cadastro_grupo_indicadores/gp_indicadores_vincular_pf_usuarios/{id}', [App\Http\Controllers\GrupoIndicadoresController::class, 'grupoVincular'])->name('grupoVincular');
-    Route::post('/cadastro_grupo_indicadores/gp_indicadores_vincular_pf_usuarios/{id}', [App\Http\Controllers\GrupoIndicadoresController::class, 'storeGpIndiPerfUsers'])->name('storeGpIndiPerfUsers');
-    Route::get('/cadastro_grupo_indicadores/gp_indicadores_vincular_pf_usuarios/excluir/{id}', [App\Http\Controllers\GrupoIndicadoresController::class, 'grupoVincularExcluir'])->name('grupoVincularExcluir');
-    Route::get('/cadastro_grupo_indicadores/gp_indicadores_vincular_pf_usuarios/excluir/{id}/{id_p}', [App\Http\Controllers\GrupoIndicadoresController::class, 'grupoVincularExcluir_'])->name('grupoVincularExcluir_');
-    Route::post('/cadastro_grupo_indicadores/gp_indicadores_vincular_pf_usuarios/excluir/{id}/{id_p}', [App\Http\Controllers\GrupoIndicadoresController::class, 'destroyGpIndUser'])->name('destroyGpIndUser');
     ////
 
     //Permissão

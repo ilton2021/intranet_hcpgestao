@@ -30,13 +30,14 @@
 						<option id="pesq2" name="pesq2" value="3">UNIDADE</option>
 					 </select>
                     </td>
-					<td style="width: 150px;">
-					 <select id="unidade" name="unidade" style="width: 150px;" class="form-control">
+					<!--td style="width: 150px;">
+					 <select id="pesqUnd" name="pesqUnd" style="width: 170px;" class="form-control">
+					 	<option id="pesqUnd" name="pesqUnd" value = "0" >Qual a unidade?</option>
 					 	@foreach($unidades as $und)
-						<option id="unidade" name="unidade" value="<?php echo $und->id;?>">{{$und->sigla}}</option>
+						<option id="pesqUnd" name="pesqUnd" value="<?php echo $und->id;?>">{{$und->sigla}}</option>
 						@endforeach 
 					</select>
-					</td>
+					</td-->
                     <td> 
 					 <input type="submit" id="btn"  name="btn" class="btn btn-success btn-sm" value="Pesquisar" />
 					</td>	
@@ -51,8 +52,9 @@
 			<table class="table table-sm " id="my_table">
 				<thead class="bg-success">
 					<tr>
-						<th scope="col">RAMAL</th>
-						<th scope="col" width="300px">SALA</th>
+						<th scope="col" width="150px">RAMAL</th>
+						<th scope="col" width="200px">FUNCIONÁRIO</th>
+						<th scope="col" width="200px">SALA</th>
 						<th scope="col" width="300px">SETOR</th>
 						<th scope="col">UNIDADE</th>
 						<th scope="col"><center>ALTERAR</center></th>
@@ -63,6 +65,7 @@
 					@foreach($ramais as $ramal)
 					<tr>
 						<td style="font-size: 15px;">{{$ramal->telefone}}</td>
+						<td style="font-size: 15px;">{{$ramal->funcionario}}</td>
 						<td style="font-size: 15px;">{{$ramal->nome}}</td>
 						<td style="font-size: 15px;">
 						<?php 
@@ -88,6 +91,11 @@
 					@endforeach
 				</tbody>
 			</table>
+			<table>
+			 <tr>
+			  <td> {{ $ramais->appends(['pesq' => isset($pesq) ? $pesq : '','pesq2' => isset($pesq2) ? $pesq2 : ''])->links() }} </td>
+			 </tr> 
+		 	</table>
 		</div>
 	</div> 
 </div>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Setor;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Logger;
+use App\Models\UserPerfil;
 use App\Http\Controllers\PermissaoController;
 use DB;
 use Validator;
@@ -18,12 +19,19 @@ class SetoresController extends Controller
 		$idTela = 9;
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
 		if($validacao == "ok") {
-			$setores = Setor::all();
+			$setores = Setor::paginate(20);
             return view('setores/setores_cadastro', compact('setores'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -39,13 +47,20 @@ class SetoresController extends Controller
             $pesq  = $input['pesq'];
             $pesq2 = $input['pesq2']; 
             if($pesq2 == "1") {
-                $setores = Setor::where('nome','like','%'.$pesq.'%')->get();
+                $setores = Setor::where('nome','like','%'.$pesq.'%')->paginate(20);;
             } 
             return view('setores/setores_cadastro', compact('setores','pesq','pesq2'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -57,9 +72,16 @@ class SetoresController extends Controller
 		if($validacao == "ok") {
 			return view('setores/setores_novo');
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -79,6 +101,7 @@ class SetoresController extends Controller
 			$id = Setor::all()->max('id');
 			$input['idTabela'] = $id;
 			$loggers   = Logger::create($input);
+			$setores = Setor::paginate(20);
 			$validator = 'Setor Cadastrado com Sucesso!';
 			return redirect()->route('cadastroSetores')
                 ->withErrors($validator)
@@ -95,9 +118,16 @@ class SetoresController extends Controller
 			$setores = Setor::where('id',$id)->get();
             return view('setores/setores_alterar', compact('setores'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -118,6 +148,7 @@ class SetoresController extends Controller
 	    	$setores = Setor::all();
 			$input['idTabela'] = $id;
 			$loggers   = Logger::create($input);
+			$setores = Setor::paginate(20);
 			$validator ='Setor Alterado com Sucesso!';
 			return redirect()->route('cadastroSetores')
                 ->withErrors($validator)
@@ -134,9 +165,16 @@ class SetoresController extends Controller
 			$setores = Setor::where('id',$id)->get();
             return view('setores/setores_excluir', compact('setores'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -147,7 +185,7 @@ class SetoresController extends Controller
 		$loggers = Logger::create($input);
         Setor::find($id)->delete();
 		$input = $request->all();
-		$setores = Setor::all();
+		$setores = Setor::paginate(20);
         $validator = 'Setor excluído com sucesso!';
 		return redirect()->route('cadastroSetores')
             ->withErrors($validator)

@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 <body>
   <main id="main">
     <section id="breadcrumbs" class="breadcrumbs">
@@ -65,7 +64,7 @@
               @if(strtotime($data_f) >= strtotime($data_a))
               <div class="swiper-slide">
                 <div class="testimonial-item"><br><br>
-                  <a href="{{ route('destaquesDetalhes', $unidade[0]->id) }}"><img src="{{asset('storage')}}/{{$destaque->caminho}}" class="testimonial-img" alt=""></a>
+                  <a href="{{ route('destaquesDetalhes', array($unidade[0]->id,$destaque->id)) }}"><img src="{{asset('storage')}}/{{$destaque->caminho}}" class="testimonial-img" alt=""></a>
                   <h3>{{ $destaque->titulo }}</h3><br>
                   <p>
                     {{ substr($destaque->texto, 0, 300) .'...' }}

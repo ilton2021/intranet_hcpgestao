@@ -7,6 +7,7 @@ use App\Models\Ramais;
 use App\Models\Unidades;
 use App\Models\Setor;
 use App\Models\Logger;
+use App\Models\UserPerfil;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PermissaoController;
 use Validator;
@@ -21,14 +22,21 @@ class RamaisController extends Controller
 		$idTela = 7;
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
 		if($validacao == "ok") {
-			$ramais = Ramais::all();
+			$ramais = Ramais::paginate(20);
             $setores = Setor::all();
 			$unidades = Unidades::all();
 			return view('ramais/ramais_cadastro', compact('ramais', 'setores', 'unidades'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -46,17 +54,29 @@ class RamaisController extends Controller
             $pesq  = $input['pesq'];
             $pesq2 = $input['pesq2']; 
             if($pesq2 == "1") {
-                $ramais = Ramais::where('nome','like','%'.$pesq.'%')->get();
+                $ramais = Ramais::where('nome','like','%'.$pesq.'%')->paginate(20);
             } else if($pesq2 == "2") {
-                $ramais = Ramais::where('telefone','like','%'.$pesq.'%')->get();
+                $ramais = Ramais::where('telefone','like','%'.$pesq.'%')->paginate(20);;
             } else if($pesq2 == "3") {
-                $ramais = Ramais::where('unidade_id', $input['unidade'])->get();
+				$ramais = DB::table('ramais')
+				->join('unidades', 'unidades.id', '=', 'ramais.unidade_id')
+				->select('ramais.id as id','ramais.telefone as telefone','ramais.nome as nome','ramais.setor_id as setor_id','ramais.unidade_id as unidade_id','ramais.funcionario as funcionario')
+				->where('unidades.sigla', 'like', '%' . $pesq . '%')
+				->orderby('ramais.nome', 'asc')
+				->paginate(20);
             }
             return view('ramais/ramais_cadastro', compact('ramais', 'pesq', 'pesq2', 'setores', 'unidades'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -71,9 +91,16 @@ class RamaisController extends Controller
 			$unidades = Unidades::all();
 			return view('ramais/ramais_novo', compact('unidades', 'setores', 'unidades'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -91,11 +118,15 @@ class RamaisController extends Controller
                 ->withErrors($validator)
                 ->with('ramais', 'unidades', 'setores');
 		}else {
+			if(isset($input['funcionario'])){
+				$input['funcionario'] = "";
+			}
 			$ramais = Ramais::create($input);
 			$ramais = Ramais::all();
 			$id 	= Ramais::all()->max('id');
 			$input['idTabela'] = $id;
 			$loggers   = Logger::create($input);
+			$ramais = Ramais::paginate(20);
 			$validator = 'Ramal Cadastrado com Sucesso!';
 			return redirect()->route('cadastroRamais')
                 ->withErrors($validator)
@@ -114,9 +145,16 @@ class RamaisController extends Controller
             $setores = Setor::all();
         	return view('ramais/ramais_alterar', compact('ramais', 'unidades', 'setores'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -135,12 +173,16 @@ class RamaisController extends Controller
 				->withErrors($validator)
 	    		->withInput(session()->flashInput($request->input()));
 		}else {
+			if(isset($input['funcionario'])==false){
+				$input['funcionario'] = "";
+			}
 			$setores = Setor::all();
 			$ramais = Ramais::find($id); 
 			$ramais->update($input);
 	    	$ramais = Ramais::all();
 			$input['idTabela'] = $id;
 			$loggers = Logger::create($input);
+			$ramais = Ramais::paginate(20);
 			$validator ='Ramal Alterado com Sucesso!';
 			return redirect()->route('cadastroRamais')
                 ->withErrors($validator)
@@ -157,9 +199,16 @@ class RamaisController extends Controller
 			$ramais = Ramais::where('id',$id)->get();
             return view('ramais/ramais_excluir', compact('ramais'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -169,7 +218,7 @@ class RamaisController extends Controller
 		$input['idTabela'] = $id;
 		$loggers = Logger::create($input);
         Ramais::find($id)->delete();
-		$ramais = Ramais::all();
+		$ramais = Ramais::paginate(20);
         $validator = 'Ramal excluído com sucesso!';
 		return redirect()->route('cadastroRamais')
             ->withErrors($validator)

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\GrupoIndicadores;
 use App\Models\PerfilUser;
 use App\Models\GrupoPerfilUser;
+use App\Models\UserPerfil;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Logger;
 use App\Http\Controllers\PermissaoController;
@@ -24,9 +25,16 @@ class GrupoIndicadoresController extends Controller
 			$grupo_indicadores = GrupoIndicadores::all();
 			return view('grupo_indicadores/grupo_indicadores_cadastro', compact('grupo_indicadores'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
 	}
 
@@ -50,9 +58,16 @@ class GrupoIndicadoresController extends Controller
 			}
 			return view('grupo_indicadores/grupo_indicadores_cadastro', compact('grupo_indicadores', 'pesq', 'pesq2'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
 	}
 
@@ -64,9 +79,16 @@ class GrupoIndicadoresController extends Controller
 		if ($validacao == "ok") {
 			return view('grupo_indicadores/grupo_indicadores_novo');
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
 	}
 
@@ -102,9 +124,16 @@ class GrupoIndicadoresController extends Controller
 			$grupo_indicadores = GrupoIndicadores::where('id', $id)->get();
 			return view('grupo_indicadores/grupo_indicadores_alterar', compact('grupo_indicadores'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
 	}
 
@@ -141,9 +170,16 @@ class GrupoIndicadoresController extends Controller
 			$grupo_indicadores = GrupoIndicadores::where('id', $id)->get();
 			return view('grupo_indicadores/grupo_indicadores_excluir', compact('grupo_indicadores'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
 	}
 
@@ -175,9 +211,16 @@ class GrupoIndicadoresController extends Controller
 				->select('grupo_indicadores.nome as grupo_indicador', 'perfil_user.nome as perfil', 'grupo_perfil_user.id as id')->get();
 			return view('grupo_indicadores/grupo_indica_vincular_perf_user', compact('grupoIndica', 'perfilUser', 'gpIndi_pfUser'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
 	}
 
@@ -247,9 +290,16 @@ class GrupoIndicadoresController extends Controller
 				->select('grupo_indicadores.nome as grupo_indicador', 'perfil_user.nome as perfil', 'perfil_user.id as perfil_ID', 'grupo_perfil_user.id as id')->get();
 			return view('grupo_indicadores/grupo_indica_Desvincular_perf_user', compact('grupoIndica', 'perfilUser', 'gpIndi_pfUser'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
 	}
 
@@ -271,9 +321,16 @@ class GrupoIndicadoresController extends Controller
 			return view('grupo_indicadores/grupo_indica_Desvincular_perf_user_', compact('grupoIndica', 'perfilUser', 'gpIndi_pfUser'))
 				->withInput(session()->flashInput($request->input()));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
 	}
 

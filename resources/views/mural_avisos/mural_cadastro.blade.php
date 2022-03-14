@@ -60,6 +60,11 @@
 					@endforeach
 				</tbody>
 			</table>
+			<table>
+			 <tr>
+			  <td> {{ $murais->appends(['pesq' => isset($pesq) ? $pesq : '','pesq2' => isset($pesq2) ? $pesq2 : ''])->links() }} </td>
+			 </tr> 
+		 	</table>
 		</div>
 	</div> 
 </div>

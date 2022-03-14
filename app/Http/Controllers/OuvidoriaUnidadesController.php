@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\OuvidoriaUnidades;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Logger;
+use App\Models\UserPerfil;
 use App\Http\Controllers\PermissaoController;
 use Validator;
 use DB;
@@ -19,12 +20,19 @@ class OuvidoriaUnidadesController extends Controller
 		$idTela = 8;
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
 		if($validacao == "ok") {
-			$ouvidorias = OuvidoriaUnidades::all();
+			$ouvidorias = OuvidoriaUnidades::paginate(20);
             return view('ouvidoria_unidades/ouvidoria_unidades_cadastro', compact('ouvidorias'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -40,13 +48,20 @@ class OuvidoriaUnidadesController extends Controller
             $pesq  = $input['pesq'];
             $pesq2 = $input['pesq2']; 
             if($pesq2 == "1") {
-                $ouvidorias = OuvidoriaUnidades::where('nome','like','%'.$pesq.'%')->get();
+                $ouvidorias = OuvidoriaUnidades::where('nome','like','%'.$pesq.'%')->paginate(20);
             } 
             return view('ouvidoria_unidades/ouvidoria_unidades_cadastro', compact('ouvidorias','pesq','pesq2'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -58,9 +73,16 @@ class OuvidoriaUnidadesController extends Controller
 		if($validacao == "ok") {
 			return view('ouvidoria_unidades/ouvidoria_unidades_novo');
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -80,6 +102,7 @@ class OuvidoriaUnidadesController extends Controller
 			$id = OuvidoriaUnidades::all()->max('id');
 			$input['idTabela'] = $id;
 			$loggers   = Logger::create($input);
+			$ouvidorias = OuvidoriaUnidades::paginate(20);
 			$validator = 'Ouvidoria da Unidade Cadastrado com Sucesso!';
 			return redirect()->route('cadastroOuvidorias')
                 ->withErrors($validator)
@@ -96,9 +119,16 @@ class OuvidoriaUnidadesController extends Controller
 			$ouvidorias = OuvidoriaUnidades::where('id',$id)->get();
             return view('ouvidoria_unidades/ouvidoria_unidades_alterar', compact('ouvidorias'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -119,6 +149,7 @@ class OuvidoriaUnidadesController extends Controller
 	    	$ouvidorias = OuvidoriaUnidades::all();
 			$input['idTabela'] = $id;
 			$loggers   = Logger::create($input);
+			$ouvidorias = OuvidoriaUnidades::paginate(20);
 			$validator ='Ouvidoria da Unidade Alterado com Sucesso!';
 			return redirect()->route('cadastroOuvidorias')
                 ->withErrors($validator)
@@ -135,9 +166,16 @@ class OuvidoriaUnidadesController extends Controller
 			$ouvidorias = OuvidoriaUnidades::where('id',$id)->get();
             return view('ouvidoria_unidades/ouvidoria_unidades_excluir', compact('ouvidorias'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -149,6 +187,7 @@ class OuvidoriaUnidadesController extends Controller
         OuvidoriaUnidades::find($id)->delete();
         $input = $request->all();
 		$ouvidorias = OuvidoriaUnidades::all();
+		$ouvidorias = OuvidoriaUnidades::paginate(20);
         $validator = 'Ouvidoria da Unidade excluído com sucesso!';
 		return redirect()->route('cadastroOuvidorias')
             ->withErrors($validator)

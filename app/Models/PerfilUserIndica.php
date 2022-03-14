@@ -5,17 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Ramais extends Model
+class PerfilUserIndica extends Model
 {
-    protected $table = 'ramais';
+    protected $table = 'perfil_user_indica';
 
     protected $fillable = [
-        'nome',
-        'telefone',
-        'funcionario',
-        'unidade_id',
-        'setor_id',
+        'perfil_id',
+        'indicador_id',
         'created_at',
         'updated_at'
-    ];
+    ]; 
 }

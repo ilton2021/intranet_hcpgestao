@@ -26,6 +26,9 @@
                     <td style="width: 150px;">
 					 <select id="pesq2" name="pesq2" style="width: 150px;" class="form-control">
 						<option id="pesq2" name="pesq2" value="1">NOME</option>
+						<option id="pesq2" name="pesq2" value="2">E-MAIL</option>
+						<option id="pesq2" name="pesq2" value="3">PERFIL</option>
+						<option id="pesq2" name="pesq2" value="4">UNIDADE</option>
 					 </select>
                     </td>
                     <td> 
@@ -43,11 +46,12 @@
 			<table class="table table-sm " id="my_table">
 				<thead class="bg-success">
 					<tr>
-						<th scope="col" width="600px">NOME</th>
-                        <th scope="col" width="600px">E-MAIL</th>
-						<th scope="col" width="600px">PERFIL</th>
-						<th scope="col"><center>ALTERAR</center></th>
-						<th scope="col"><center>EXCLUIR</center></th>
+						<th scope="col" width="300px">NOME</th>
+                        <th scope="col" width="300px">E-MAIL</th>
+						<th scope="col" width="150px">PERFIL</th>
+						<th scope="col" width="150px">Unidade</th>
+						<th scope="col" width="50px"><center>ALTERAR</center></th>
+						<th scope="col" width="50px"><center>EXCLUIR</center></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -56,6 +60,7 @@
 						<td style="font-size: 15px;">{{$usuario->name}}</td>
                         <td style="font-size: 15px;">{{$usuario->email}}</td>
 						<td style="font-size: 15px;">{{$usuario->perfil}}</td>
+						<td style="font-size: 15px;">{{$usuario->unidade}}</td>
 						<td><center><a class="btn btn-info btn-sm" href="{{ route('usuariosAlterar', $usuario->id) }}" ><i class="fas fa-edit"></i></center></td>
                         <td><center><a class="btn btn-danger btn-sm" href="{{ route('usuariosExcluir', $usuario->id) }}" ><i class="fas fa-times-circle"></i></center></td>
 					</tr>

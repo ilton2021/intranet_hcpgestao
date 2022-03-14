@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class GrupoPerfilUser extends Model
+class UserPerfil extends Model
 {
-    protected $table = 'grupo_perfil_user';
+    protected $table = 'user_perfil';
 
     protected $fillable = [
-        'grupo_indic_id',
-        'perfil_user_id',
+        'users_id',
+        'perfil_id',
         'created_at',
         'updated_at'
-    ];
+    ]; 
 }

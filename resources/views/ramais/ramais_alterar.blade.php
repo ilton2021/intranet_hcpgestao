@@ -31,6 +31,12 @@
 							<td>
 								<input class="form-control" style="width: 500px;" type="text" id="telefone" name="telefone" required value="<?php echo $ramais[0]->telefone; ?>" />
 							</td>
+						 </tr>
+						 <tr>
+							<td> Funcionário: </td>
+							<td>
+								<input class="form-control" type="text" id="funcionario" name="funcionario" value="<?php echo $ramais[0]->funcionario; ?>" />
+							</td>
 						 </tr> 
 						 <tr>
 							<td> Sala: </td>

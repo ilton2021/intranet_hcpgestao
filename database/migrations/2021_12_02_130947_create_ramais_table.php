@@ -17,6 +17,7 @@ class CreateRamaisTable extends Migration
             $table->bigincrements('id');
             $table->string('nome');
             $table->string('telefone');
+            $table->string('funcionario');
             $table->unsignedBigInteger('unidade_id');
             $table->foreign('unidade_id')->references('id')->on('unidades');
             $table->unsignedBigInteger('setor_id');

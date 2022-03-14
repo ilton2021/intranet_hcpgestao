@@ -43,23 +43,28 @@
 			<table class="table table-sm " id="my_table">
 				<thead class="bg-success">
 					<tr>
-						<th scope="col" width="600px">TÍTULO</th>
-						<th scope="col">TEXTO</th>
-						<th scope="col"><center>ALTERAR</center></th>
-						<th scope="col"><center>EXCLUIR</center></th>
+						<th scope="col" width="200px">TÍTULO</th>
+						<th scope="col" width="300px">TEXTO</th>
+						<th scope="col" width="6px"><center>ALTERAR</center></th>
+						<th scope="col" width="6px"><center>EXCLUIR</center></th>
 					</tr>
 				</thead>
 				<tbody>
 					@foreach($destaques as $destaque)
 					<tr>
 						<td style="font-size: 15px;">{{$destaque->titulo}}</td>
-						<td style="font-size: 15px;">{{substr($destaque->texto, 0, 300)}}</td>
+						<td style="font-size: 15px; max-width: 25ch; overflow: hidden; text-overflow: ellipsis;white-space: nowrap;">{{substr($destaque->texto, 0, 300)}}</td>
 						<td><center><a class="btn btn-info btn-sm" href="{{ route('destaquesAlterar', $destaque->id) }}" ><i class="fas fa-edit"></i></center></td>
                         <td><center><a class="btn btn-danger btn-sm" href="{{ route('destaquesExcluir', $destaque->id) }}" ><i class="fas fa-times-circle"></i></center></td>
 					</tr>
 					@endforeach
 				</tbody>
 			</table>
+			<table>
+			 <tr>
+			  <td> {{ $destaques->appends(['pesq' => isset($pesq) ? $pesq : '','pesq2' => isset($pesq2) ? $pesq2 : ''])->links() }} </td>
+			 </tr> 
+		 	</table>
 		</div>
 	</div> 
 </div>

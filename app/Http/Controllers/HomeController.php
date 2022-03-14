@@ -14,13 +14,22 @@ use App\Models\Ramais;
 use App\Models\Emails;
 use App\Models\Setor;
 use App\Models\ProtocolosInstitucionais;
+use App\Models\UserPerfil;
 use Mail;
+use Auth;
+
 
 class HomeController extends Controller
 {
     public function index()
     {
-        return view('home');
+        $id_user = Auth::user()->id;
+        $UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+        $perfil_user = array();
+        for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+            $perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+        }
+        return view('home', compact('perfil_user'));
     }
 
     public function oquee()
@@ -56,14 +65,16 @@ class HomeController extends Controller
         return view('unidade', compact('unidade', 'unidades', 'murais', 'destaques', 'destaDaUnd', 'muraisDaUnd', 'und_Matriz'));
     }
 
-    public function destaquesDetalhes($id)
+    public function destaquesDetalhes($id, $id_d)
     {
         $unidades = Unidades::all();
-        $destaques = Destaques::all();
-        //$destaques2 = Destaques::all();
-        if ($id == 0) {
+        $und_atual = $id;
+        if ($id == 1) {
+            $destaSelect = Destaques::where('id', $id_d)->get();
             $destaques  = Destaques::all();
         } else {
+            $destaques = Destaques::all();
+            $destaSelect = Destaques::where('id', $id_d)->get();
             $destaDaUnd = array();
             for ($u = 0; $u < sizeof($destaques); $u++) {
                 $und_atuais2 = explode(",", $destaques[$u]->unidade_id);
@@ -73,7 +84,7 @@ class HomeController extends Controller
             }
             $destaques = $destaDaUnd;
         }
-        return view('destaques_detalhes', compact('destaques', 'unidades'));
+        return view('destaques_detalhes', compact('destaSelect', 'destaques', 'unidades', 'und_atual'));
     }
 
     public function muraisDetalhes($id)

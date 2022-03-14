@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\PoliticasNormas;
 use App\Models\Setor;
 use App\Models\Logger;
+use App\Models\UserPerfil;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PermissaoController;
 use Validator;
@@ -19,12 +20,25 @@ class PoliticasNormasController extends Controller
 		$idTela = 12;
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
 		if($validacao == "ok") {
-			$politicas = PoliticasNormas::all();
+			$politicas = PoliticasNormas::paginate(20);
         	return view('politicas_normas/politicas_normas_cadastro', compact('politicas'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -40,15 +54,22 @@ class PoliticasNormasController extends Controller
 			$pesq  = $input['pesq'];
 			$pesq2 = $input['pesq2']; 
 			if($pesq2 == "1") {
-				$politicas = PoliticasNormas::where('nome','like','%'.$pesq.'%')->get();
+				$politicas = PoliticasNormas::where('nome','like','%'.$pesq.'%')->paginate(20);
 			} else if($pesq2 == "2"){
-				$politicas = PoliticasNormas::where('setor','like','%'.$pesq.'%')->get();
+				$politicas = PoliticasNormas::where('setor','like','%'.$pesq.'%')->paginate(20);
 			}
 			return view('politicas_normas/politicas_normas_cadastro', compact('politicas','pesq','pesq2'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -61,9 +82,16 @@ class PoliticasNormasController extends Controller
 			$setores = Setor::all();
         	return view('politicas_normas/politicas_normas_novo', compact('setores'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -96,6 +124,7 @@ class PoliticasNormasController extends Controller
 					$id = PoliticasNormas::all()->max('id');
 					$input['idTabela'] = $id;
 					$loggers   = Logger::create($input);
+					$politicas = PoliticasNormas::paginate(20);
 					$validator = 'Políticas e Normas Cadastrado com Sucesso!';
 					return redirect()->route('cadastroPoliticas', 'setores')
 						->withErrors($validator)
@@ -120,9 +149,16 @@ class PoliticasNormasController extends Controller
 			$setores   = Setor::all();
 			return view('politicas_normas/politicas_normas_alterar', compact('politicas','setores'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -164,6 +200,7 @@ class PoliticasNormasController extends Controller
 					$politicas = PoliticasNormas::all();
 					$input['idTabela'] = $id;
 					$loggers   = Logger::create($input);
+					$politicas = PoliticasNormas::paginate(20);
 					$validator ='Polícitas e Normas Alterado com Sucesso!';
 					return redirect()->route('cadastroPoliticas')
 						->withErrors($validator)
@@ -187,9 +224,16 @@ class PoliticasNormasController extends Controller
 			$politicas = PoliticasNormas::where('id',$id)->get();
         	return view('politicas_normas/politicas_normas_excluir', compact('politicas'));
 		} else {
+			$id_user = Auth::user()->id;
+			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
+			$perfil_user = array();
+			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
+				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
+			}
 			$validator = "Você não tem Permissão para acessar esta tela!!!";
-			return view('home')
-				->withErrors($validator);
+			return redirect()->route('home')
+				->withErrors($validator)
+				->with('perfil_user', 'validator');
 		}
     }
 
@@ -202,7 +246,7 @@ class PoliticasNormasController extends Controller
 	    $image_path = public_path().'/storage/'.$data->caminho;
 	    unlink($image_path);
 	    $data->delete();
-		$politicas = PoliticasNormas::all();
+		$politicas = PoliticasNormas::paginate(20);
         $validator = 'Políticas e Normas excluído com sucesso!';
 		return redirect()->route('cadastroPoliticas')
 			->withErrors($validator)

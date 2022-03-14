@@ -1,4 +1,39 @@
 @extends('layouts.adm')
+<script type="text/javascript">
+	function selects() {
+		var ele = document.getElementsByClassName('unidade');
+		for (var i = 0; i < ele.length; i++) {
+			if (ele[i].type == 'checkbox')
+				ele[i].checked = true;
+		}
+	}
+
+	function deSelect() {
+		var ele = document.getElementsByClassName('unidade');
+		for (var i = 0; i < ele.length; i++) {
+			if (ele[i].type == 'checkbox')
+				ele[i].checked = false;
+
+		}
+	}
+
+	function selects_und_cad() {
+		var ele = document.getElementsByClassName('unidade_cad');
+		for (var i = 0; i < ele.length; i++) {
+			if (ele[i].type == 'checkbox')
+				ele[i].checked = true;
+		}
+	}
+
+	function deSelect_und_cad() {
+		var ele = document.getElementsByClassName('unidade_cad');
+		for (var i = 0; i < ele.length; i++) {
+			if (ele[i].type == 'checkbox')
+				ele[i].checked = false;
+
+		}
+	}
+</script>
 <div class="container-fluid">
 	<div class="row" style="margin-top: 0px;">
 		<div class="col-md-12 text-center">
@@ -78,7 +113,7 @@
 						</tr>
 						<tr>
 							<td><input hidden type="text" id="tela" name="tela" class="form-control" value="alterar_murais" /></td>
-							<td><input hidden type="text" id="user_id" name="user_id" class="form-control" value="<?php echo Auth::user()->id; ?>"  /></td>
+							<td><input hidden type="text" id="user_id" name="user_id" class="form-control" value="<?php echo Auth::user()->id; ?>" /></td>
 							<td><input hidden type="text" id="idTabela" name="idTabela" class="form-control" value="" /> </td>
 						</tr>
 					</table>

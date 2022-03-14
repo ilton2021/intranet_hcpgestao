@@ -28,6 +28,7 @@
 						<option id="pesq2" name="pesq2" value="1">NOME</option>
 						<option id="pesq2" name="pesq2" value="2">GRUPO</option>
 						<option id="pesq2" name="pesq2" value="3">UNIDADE</option>
+						<option id="pesq2" name="pesq2" value="4">LINK</option>
 					 </select>
                     </td>
                     <td> 
@@ -49,6 +50,7 @@
 						<th scope="col">GRUPO</th>
 						<th scope="col">LINK</th>
 						<th scope="col">UNIDADE</th>
+						<th scope="col"><center>VINCULAR PERFIL</center></th>
 						<th scope="col"><center>ALTERAR</center></th>
 						<th scope="col"><center>EXCLUIR</center></th>
 					</tr>
@@ -64,14 +66,15 @@
 						@endforeach
 						<td style="font-size: 15px;">{{substr($indicador->link,0,30)}}</td>
 						<td style="font-size: 15px;">
-						<?php 
+						<center><?php 
 							for ($i=0 ; $i < sizeof($unidades); $i++ ) { 
 								if($indicador->unidade_id == $unidades[$i]->id){
 									echo $unidades[$i]->sigla;
 								}
 							}
-						?>
+						?></center>
 						</td>
+						<td><center><a class="btn btn-success btn-sm" href="{{ route('indicadorVincular', $indicador->id) }}" ><i class="fas fa-check"></i></a></center></td>
 						<td><center><a class="btn btn-info btn-sm" href="{{ route('indicadoresAlterar', $indicador->id) }}" ><i class="fas fa-edit"></i></center></td>
                         <td><center><a class="btn btn-danger btn-sm" href="{{ route('indicadoresExcluir', $indicador->id) }}" ><i class="fas fa-times-circle"></i></center></td>
 					</tr>

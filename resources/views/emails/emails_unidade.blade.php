@@ -21,7 +21,7 @@
               <p align="justify">
                 <table class="table table-bordered table-striped">
                     <tr>
-                        <td><b>NOME:</b></td>
+                        <td><b>FUNCIONÁRIO:</b></td>
                         <td><b>E-MAIL:</b></td>
                     </tr>
                     @foreach($emails as $email)
