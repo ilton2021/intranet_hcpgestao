@@ -78,7 +78,7 @@
 					<thead class="bg-info">
 						<tr>
 							<td style="width: 500px;">
-								<center><b>GRUPO INDICADOR</b></center>
+								<center><b>INDICADOR</b></center>
 							</td>
 							<td style="width: 500px;">
 								<center><b>PERFIL DE USUÁRIO</b></center>

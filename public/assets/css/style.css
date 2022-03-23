@@ -1343,7 +1343,6 @@ section {
 .card {
   display: flex;
   flex-direction: column;
-  
   cursor: pointer;
   transition: all 0.3s ease 0s;
   border-radius: 5px;
