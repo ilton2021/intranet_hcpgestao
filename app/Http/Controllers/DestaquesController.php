@@ -23,7 +23,6 @@ class DestaquesController extends Controller
 			$destaques = Destaques::paginate(20);
 			return view('destaques/destaques_cadastro', compact('destaques'));
 		} else {
-			$id_user = Auth::user()->id;
 			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
 			$perfil_user = array();
 			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
@@ -56,9 +55,9 @@ class DestaquesController extends Controller
 			} else if ($pesq2 == "2") {
 				$destaques = Destaques::where('texto', 'like', '%' . $pesq . '%')->paginate(20);
 			}
+			$destaques = Destaques::paginate(20);
 			return view('destaques/destaques_cadastro', compact('destaques', 'pesq', 'pesq2'));
 		} else {
-			$id_user = Auth::user()->id;
 			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
 			$perfil_user = array();
 			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
@@ -120,13 +119,15 @@ class DestaquesController extends Controller
 					$request->file('imagem')->move('public/storage/destaques/', $nome);
 					$input['imagem'] = $nome;
 					$input['caminho'] = 'destaques/' . $nome;
-
 					for ($a = 2; $a <= 6; $a++) {
 						if ($request->file('imagem' . $a) != NULL) {
 							$nome1 = $_FILES['imagem' . $a]['name'];
 							$input['imagem' . $a]  = $nome1;
 							$input['caminho' . $a] = 'destaques/' . $nome1;
 							$request->file('imagem' . $a)->move('public/storage/destaques/', $nome1);
+						} else {
+							$input['imagem' . $a]  = "";
+							$input['caminho' . $a] = "";
 						}
 					}
 					//Verificação de unidades
@@ -136,27 +137,6 @@ class DestaquesController extends Controller
 						$input['unidade_id'] = $und_destaq;
 					} else {
 						$und_destaq = "";
-					}
-					//Verificação de imagens
-					if (isset($input['imagem2']) == false) {
-						$input['imagem2'] = "";
-						$input['caminho2'] = "";
-					}
-					if (isset($input['imagem3']) == false) {
-						$input['imagem3'] = "";
-						$input['caminho3'] = "";
-					}
-					if (isset($input['imagem4']) == false) {
-						$input['imagem4'] = "";
-						$input['caminho4'] = "";
-					}
-					if (isset($input['imagem5']) == false) {
-						$input['imagem5'] = "";
-						$input['caminho5'] = "";
-					}
-					if (isset($input['imagem6']) == false) {
-						$input['imagem6'] = "";
-						$input['caminho6'] = "";
 					}
 					$destaques = Destaques::create($input);
 					$destaques = Destaques::all();
@@ -189,7 +169,6 @@ class DestaquesController extends Controller
 			$und_atual = explode(',', $destaques[0]->unidade_id);
 			return view('destaques/destaques_alterar', compact('destaques', 'unidades', 'und_atual'));
 		} else {
-			$id_user = Auth::user()->id;
 			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
 			$perfil_user = array();
 			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
@@ -208,95 +187,87 @@ class DestaquesController extends Controller
 		$destaques = Destaques::where('id', $id)->get();
 		$und_atual = explode(',', $destaques[0]->unidade_id);
 		$input = $request->all();
-		$nome1 = "";
-		if ($request->file('imagem') === NULL && $input['imagem_'] == "") {
-			$validator = 'Selecione a imagem do Destaque!!';
+		$validator = Validator::make($request->all(), [
+			'texto'       => 'required|max:8000',
+			'titulo'      => 'required|max:255',
+			'data_inicio' => 'required|date',
+			'data_fim'    => 'required|date'
+		]);
+		if ($validator->fails()) {
 			return view('destaques/destaques_alterar', compact('destaques', 'unidades', 'und_atual'))
 				->withErrors($validator)
 				->withInput(session()->flashInput($request->input()));
 		} else {
-			if ($request->file('imagem') !== null) {
+			if ($request->file('imagem') !== NULL) {
 				$nome1 = $_FILES['imagem']['name'];
-				$extensao = pathinfo($nome1, PATHINFO_EXTENSION);
-			} else {
-				$nome2 = $input['imagem_'];
-				$extensao = pathinfo($nome2, PATHINFO_EXTENSION);
-			}
-			if ($extensao == 'jpg' || $extensao == 'png' || $extensao == 'jpeg') {
-				$validator = Validator::make($request->all(), [
-					'texto'       => 'required|max:8000',
-					'titulo'      => 'required|max:255',
-					'data_inicio' => 'required|date',
-					'data_fim'    => 'required|date'
-				]);
-				if ($validator->fails()) {
+				$extensao = strtolower(pathinfo($nome1, PATHINFO_EXTENSION));
+				if ($extensao == 'jpg' || $extensao == 'png' || $extensao == 'jpeg') {
+					$request->file('imagem')->move('public/storage/destaques/', $nome1);
+					$input['imagem'] = $nome1;
+					$input['caminho'] = 'destaques/' . $nome1;
+				} else {
+					$validator = 'Só é permitido imagens: .jpg, .jpeg ou .png!';
 					return view('destaques/destaques_alterar', compact('destaques', 'unidades', 'und_atual'))
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
-				} else {
-					if ($nome1 != "") {
-						$request->file('imagem')->move('public/storage/destaques/', $nome1);
-						$input['imagem'] = $nome1;
-						$input['caminho'] = 'destaques/' . $nome1;
-					} else {
-						$input['imagem'] = $nome2;
-						$input['caminho'] = 'destaques/' . $nome2;
-					}
-					$extenIncor = array();
-					for ($a = 2; $a <= 6; $a++) {
-						if ($request->file('imagem' . $a) != "") {
-							$extensao = pathinfo($input['imagem' . $a], PATHINFO_EXTENSION);
-							if ($extensao == 'jpg' || $extensao == 'png' || $extensao == 'jpeg') {
-								$nome = $_FILES['imagem' . $a]['name'];
-								$input['imagem' . $a]  = $nome;
-								$input['caminho' . $a] = 'destaques/' . $nome;
-								$request->file('imagem' . $a)->move('public/storage/destaques/', $nome);
-							} else {
-								$extenIncor[$a] = $a;
-							}
-						} else {
-							if (isset($input['imagem' . $a . '_']) == false) {
-								$input['imagem2'] = "";
-								$input['caminho2'] = "";
-							} else {
-								$nome = $input['imagem' . $a . '_'];
-								$input['imagem' . $a] = $nome;
-								$input['caminho' . $a] = 'destaques/' . $nome;
-							}
-						}
-					}
-					//Verificação de erros de extensão das imagens.
-					if (sizeof($extenIncor) > 0) {
-						$validator = 'As extencoes das imagens ' . implode(", ", $extenIncor) . ' Só é permitido imagens: .jpg, .jpeg ou .png!';
-						return view('destaques/destaques_alterar', compact('destaques', 'unidades', 'und_atual'))
-							->withErrors($validator)
-							->withInput(session()->flashInput($request->input()));
-					}
-					//Verificação de unidades
-					$Und = isset($input['unidade_id']);
-					if ($Und == true) {
-						$und_destaq = implode(',', $input['unidade_id']);
-						$input['unidade_id'] = $und_destaq;
-					} else {
-						$und_destaq = "";
-					}
-					$destaques = Destaques::find($id);
-					$destaques->update($input);
-					$destaques = Destaques::all();
-					$input['idTabela'] = $id;
-					$loggers = Logger::create($input);
-					$destaques = Destaques::paginate(20);
-					$validator = 'Destaque Alterado com Sucesso!';
-					return redirect()->route('cadastroDestaques')
-						->withErrors($validator)
-						->with('destaques', 'validator');
+				}
+			} elseif ($input['imagem_'] !== NULL) {
+				$nome2 = $input['imagem_'];
+				$extensao = strtolower(pathinfo($nome2, PATHINFO_EXTENSION));
+				if ($extensao == 'jpg' || $extensao == 'png' || $extensao == 'jpeg') {
+					$input['imagem'] = $nome2;
+					$input['caminho'] = 'destaques/' . $nome2;
 				}
 			} else {
-				$validator = 'Só é permitido imagens: .jpg, .jpeg ou .png!';
+				$validator = 'Selecione a imagem principal do Destaque!!';
 				return view('destaques/destaques_alterar', compact('destaques', 'unidades', 'und_atual'))
 					->withErrors($validator)
 					->withInput(session()->flashInput($request->input()));
 			}
+			//Verificação de imagens secundárias
+			$extenIncor = array();
+			for ($a = 2; $a <= 6; $a++) {
+				$imagem = $_FILES['imagem' . $a]['name'];
+				if ($request->file('imagem' . $a) != "") {
+					$extensao = strtolower(pathinfo($imagem, PATHINFO_EXTENSION));
+					if ($extensao == 'jpg' || $extensao == 'png' || $extensao == 'jpeg') {
+						$nome = $_FILES['imagem' . $a]['name'];
+						$input['imagem' . $a]  = $imagem;
+						$input['caminho' . $a] = 'destaques/' . $imagem;
+						$request->file('imagem' . $a)->move('public/storage/destaques/', $imagem);
+					} else {
+						$extenIncor[$a] = $a;
+					}
+				} else {
+					if (isset($input['imagem' . $a . '_']) == false) {
+						$input['imagem' . $a] = "";
+						$input['caminho' . $a] = "";
+					}
+				}
+			}
+			//Verificação de erros de extensão das imagens secundárias
+			if (sizeof($extenIncor) > 0) {
+				$validator = 'As extencoes das imagens ' . implode(", ", $extenIncor) . 'está(ão) incorreto(as) Só é permitido imagens: .jpg, .jpeg ou .png!';
+				return view('destaques/destaques_alterar', compact('destaques', 'unidades', 'und_atual'))
+					->withErrors($validator)
+					->withInput(session()->flashInput($request->input()));
+			}
+			//Verificação de unidades
+			$Und = isset($input['unidade_id']);
+			if ($Und == true) {
+				$und_destaq = implode(',', $input['unidade_id']);
+				$input['unidade_id'] = $und_destaq;
+			}
+			$destaques = Destaques::find($id);
+			$destaques->update($input);
+			$destaques = Destaques::all();
+			$input['idTabela'] = $id;
+			$loggers = Logger::create($input);
+			$destaques = Destaques::paginate(20);
+			$validator = 'Destaque Alterado com Sucesso!';
+			return redirect()->route('cadastroDestaques')
+				->withErrors($validator)
+				->with('destaques', 'validator');
 		}
 	}
 

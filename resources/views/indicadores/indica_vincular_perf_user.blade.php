@@ -2,7 +2,7 @@
 <div class="container-fluid">
 	<div class="row" style="margin-top: 0px;">
 		<div class="col-md-12 text-center">
-			<h3 style="font-size: 18px;">VINCULAR - INDICADORES / PERFIL USUÁRIO:</h3>
+			<h3 style="font-size: 18px;">VINCULAR - INDICADOR / PERFIL USUÁRIO:</h3>
 		</div>
 	</div>
 	@if ($errors->any())
@@ -20,14 +20,14 @@
 			<div class="accordion" id="accordionExample">
 				<div class="card">
 					<a class="card-header bg-success text-decoration-none text-white bg-success" type="button" data-toggle="collapse" data-target="#PESSOAL" aria-expanded="true" aria-controls="PESSOAL">
-						Grupo de Indicadores: <i class="fas fa-check-circle"></i>
+						Indicador: <i class="fas fa-check-circle"></i>
 					</a>
 				</div>
 				<form action="{{\Request::route('storeGpIndiPerfUsers')}}" method="post">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					<table border="0" class="table-sm" style="line-height: 1.5;">
 						<tr>
-							<td> Grupo de indicador: </td>
+							<td>Indicador: </td>
 							<td>
 								@foreach($Indicadores as $Indicador)
 								<?php $indicador_id = $Indicador->id ?>
@@ -71,7 +71,7 @@
 			<div class="accordion" id="accordionExample">
 				<div class="card">
 					<a class="card-header bg-success text-decoration-none text-white bg-success" type="button" data-toggle="collapse" data-target="#PESSOAL" aria-expanded="true" aria-controls="PESSOAL">
-						Vincular Grupo indicador ao Perfil do Usuário: <i class="fas fa-check-circle"></i>
+						Vincular indicador ao Perfil do Usuário: <i class="fas fa-check-circle"></i>
 					</a>
 				</div>
 				<table border="1" class="table-sm" style="line-height: 1.5; margin-bottom:40px">
