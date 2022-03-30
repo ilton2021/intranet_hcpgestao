@@ -27,7 +27,6 @@ class EmailsController extends Controller
 			$setores  = Setor::all();
 			return view('emails/emails_cadastro', compact('emails', 'unidades', 'setores'));
 		} else {
-			$id_user = Auth::user()->id;
 			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
 			$perfil_user = array();
 			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
@@ -63,7 +62,7 @@ class EmailsController extends Controller
 				$emails = DB::table('emails')
 					->join('unidades', 'unidades.id', '=', 'emails.unidade_id')
 					->where('unidades.sigla', 'like', '%' . $pesq . '%')
-					->select('emails.nome as nome','emails.email as email','emails.id as id','emails.unidade_id as unidade_id')
+					->select('emails.nome as nome', 'emails.email as email', 'emails.id as id', 'emails.unidade_id as unidade_id')
 					->orderby('emails.nome', 'asc')
 					->paginate(20);
 			}
@@ -90,7 +89,7 @@ class EmailsController extends Controller
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
 		if ($validacao == "ok") {
 			$unidades = Unidades::all();
-			$setores = setor::orderBy('nome','ASC')->get();
+			$setores = setor::orderBy('nome', 'ASC')->get();
 			return view('emails/emails_novo', compact('unidades', 'setores'));
 		} else {
 			$id_user = Auth::user()->id;

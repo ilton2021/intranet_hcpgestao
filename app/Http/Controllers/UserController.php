@@ -302,7 +302,8 @@ class UserController extends Controller
 	public function telaReset()
 	{
 		$token = '';
-		return view('auth.passwords.reset', compact('token'));
+		$unidades = Unidades::all();
+		return view('auth.passwords.reset', compact('token','unidades'));
 	}
 
 	public function Login(Request $request)

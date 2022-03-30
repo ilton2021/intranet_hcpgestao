@@ -478,7 +478,7 @@ class IndicadoresController extends Controller
                     ->whereIn('perfil_user_indica.perfil_id', $perfisUser)
                     ->where('indicadores.grupo_id', $id_g)
                     ->where('indicadores.unidade_id', $unidade)
-                    ->where('indicadores.id',$id)
+                    ->where('indicadores.id', $id)
                     ->orderBy('indicadores.nome', 'ASC')->get();
                 $qtd = sizeof($indicadores);
 
@@ -498,7 +498,7 @@ class IndicadoresController extends Controller
                     ->join('indicadores', 'indicadores.id', '=', 'perfil_user_indica.indicador_id')
                     ->whereIn('perfil_user_indica.perfil_id', $perfisUser)
                     ->where('indicadores.grupo_id', $id_g)
-                    ->where('indicadores.id',$id)
+                    ->where('indicadores.id', $id)
                     ->orderBy('indicadores.nome', 'ASC')->get();
                 $qtd = sizeof($indicadores);
             }

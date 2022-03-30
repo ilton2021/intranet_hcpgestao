@@ -19,7 +19,7 @@ class MuralController extends Controller
 		$id_user = Auth::user()->id;
 		$idTela = 1;
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
-		if($validacao == "ok") {
+		if ($validacao == "ok") {
 			$murais = Mural::paginate(20);
 			return view('mural_avisos/mural_cadastro', compact('murais'));
 		} else {
@@ -41,7 +41,7 @@ class MuralController extends Controller
 		$id_user = Auth::user()->id;
 		$idTela = 1;
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
-		if($validacao == "ok") {
+		if ($validacao == "ok") {
 			$input  = $request->all();
 			if (empty($input['pesq'])) {
 				$input['pesq'] = "";
@@ -76,7 +76,7 @@ class MuralController extends Controller
 		$id_user = Auth::user()->id;
 		$idTela = 1;
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
-		if($validacao == "ok") {
+		if ($validacao == "ok") {
 			$unidades = Unidades::all();
 			return view('mural_avisos/mural_novo', compact('unidades'));
 		} else {
@@ -153,7 +153,7 @@ class MuralController extends Controller
 		$id_user = Auth::user()->id;
 		$idTela = 1;
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
-		if($validacao == "ok") {
+		if ($validacao == "ok") {
 			$unidades = Unidades::all();
 			$murais = Mural::where('id', $id)->get();
 			$und_atual = explode(',', $murais[0]->unidade_id);
@@ -242,7 +242,7 @@ class MuralController extends Controller
 		$id_user = Auth::user()->id;
 		$idTela = 1;
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
-		if($validacao == "ok") {
+		if ($validacao == "ok") {
 			$murais = Mural::where('id', $id)->get();
 			return view('mural_avisos/mural_excluir', compact('murais'));
 		} else {
@@ -273,6 +273,6 @@ class MuralController extends Controller
 		$validator = 'Mural de Avisos excluído com sucesso!';
 		return redirect()->route('cadastroMural')
 			->withErrors($validator)
-  			->with('murais');
+			->with('murais');
 	}
 }

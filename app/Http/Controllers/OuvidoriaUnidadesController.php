@@ -14,14 +14,14 @@ use Storage;
 
 class OuvidoriaUnidadesController extends Controller
 {
-    public function cadastroOuvidorias()
-    {
-        $id_user = Auth::user()->id;
+	public function cadastroOuvidorias()
+	{
+		$id_user = Auth::user()->id;
 		$idTela = 8;
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
-		if($validacao == "ok") {
+		if ($validacao == "ok") {
 			$ouvidorias = OuvidoriaUnidades::paginate(20);
-            return view('ouvidoria_unidades/ouvidoria_unidades_cadastro', compact('ouvidorias'));
+			return view('ouvidoria_unidades/ouvidoria_unidades_cadastro', compact('ouvidorias'));
 		} else {
 			$id_user = Auth::user()->id;
 			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
@@ -34,23 +34,27 @@ class OuvidoriaUnidadesController extends Controller
 				->withErrors($validator)
 				->with('perfil_user', 'validator');
 		}
-    }
+	}
 
-    public function pesquisarOuvidorias(Request $request)
-    {
-        $id_user = Auth::user()->id;
+	public function pesquisarOuvidorias(Request $request)
+	{
+		$id_user = Auth::user()->id;
 		$idTela = 8;
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
-		if($validacao == "ok") {
-			$input  = $request->all();  
-            if(empty($input['pesq'])) { $input['pesq'] = ""; }
-            if(empty($input['pesq2'])) { $input['pesq2'] = ""; }
-            $pesq  = $input['pesq'];
-            $pesq2 = $input['pesq2']; 
-            if($pesq2 == "1") {
-                $ouvidorias = OuvidoriaUnidades::where('nome','like','%'.$pesq.'%')->paginate(20);
-            } 
-            return view('ouvidoria_unidades/ouvidoria_unidades_cadastro', compact('ouvidorias','pesq','pesq2'));
+		if ($validacao == "ok") {
+			$input  = $request->all();
+			if (empty($input['pesq'])) {
+				$input['pesq'] = "";
+			}
+			if (empty($input['pesq2'])) {
+				$input['pesq2'] = "";
+			}
+			$pesq  = $input['pesq'];
+			$pesq2 = $input['pesq2'];
+			if ($pesq2 == "1") {
+				$ouvidorias = OuvidoriaUnidades::where('nome', 'like', '%' . $pesq . '%')->paginate(20);
+			}
+			return view('ouvidoria_unidades/ouvidoria_unidades_cadastro', compact('ouvidorias', 'pesq', 'pesq2'));
 		} else {
 			$id_user = Auth::user()->id;
 			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
@@ -63,14 +67,14 @@ class OuvidoriaUnidadesController extends Controller
 				->withErrors($validator)
 				->with('perfil_user', 'validator');
 		}
-    }
+	}
 
-    public function ouvidoriasNovo()
-    {
-        $id_user = Auth::user()->id;
+	public function ouvidoriasNovo()
+	{
+		$id_user = Auth::user()->id;
 		$idTela = 8;
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
-		if($validacao == "ok") {
+		if ($validacao == "ok") {
 			return view('ouvidoria_unidades/ouvidoria_unidades_novo');
 		} else {
 			$id_user = Auth::user()->id;
@@ -84,19 +88,19 @@ class OuvidoriaUnidadesController extends Controller
 				->withErrors($validator)
 				->with('perfil_user', 'validator');
 		}
-    }
+	}
 
-    public function storeOuvidorias(Request $request)
-    {
-        $input = $request->all();
+	public function storeOuvidorias(Request $request)
+	{
+		$input = $request->all();
 		$validator = Validator::make($request->all(), [
 			'nome' => 'required|max:255',
-    	]);
+		]);
 		if ($validator->fails()) {
 			return view('ouvidoria_unidades/ouvidoria_unidades_novo')
-					->withErrors($validator)
-					->withInput(session()->flashInput($request->input()));
-		}else {
+				->withErrors($validator)
+				->withInput(session()->flashInput($request->input()));
+		} else {
 			$ouvidorias = OuvidoriaUnidades::create($input);
 			$ouvidorias = OuvidoriaUnidades::all();
 			$id = OuvidoriaUnidades::all()->max('id');
@@ -105,19 +109,19 @@ class OuvidoriaUnidadesController extends Controller
 			$ouvidorias = OuvidoriaUnidades::paginate(20);
 			$validator = 'Ouvidoria da Unidade Cadastrado com Sucesso!';
 			return redirect()->route('cadastroOuvidorias')
-                ->withErrors($validator)
-                ->with('ouvidorias');
+				->withErrors($validator)
+				->with('ouvidorias');
 		}
 	}
 
-    public function ouvidoriasAlterar($id)
-    {
-        $id_user = Auth::user()->id;
+	public function ouvidoriasAlterar($id)
+	{
+		$id_user = Auth::user()->id;
 		$idTela = 8;
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
-		if($validacao == "ok") {
-			$ouvidorias = OuvidoriaUnidades::where('id',$id)->get();
-            return view('ouvidoria_unidades/ouvidoria_unidades_alterar', compact('ouvidorias'));
+		if ($validacao == "ok") {
+			$ouvidorias = OuvidoriaUnidades::where('id', $id)->get();
+			return view('ouvidoria_unidades/ouvidoria_unidades_alterar', compact('ouvidorias'));
 		} else {
 			$id_user = Auth::user()->id;
 			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
@@ -130,41 +134,41 @@ class OuvidoriaUnidadesController extends Controller
 				->withErrors($validator)
 				->with('perfil_user', 'validator');
 		}
-    }
+	}
 
-    public function updateOuvidorias($id, Request $request)
-    {
-        $input   = $request->all();
-	    $ouvidorias = OuvidoriaUnidades::where('id',$id)->get();
+	public function updateOuvidorias($id, Request $request)
+	{
+		$input   = $request->all();
+		$ouvidorias = OuvidoriaUnidades::where('id', $id)->get();
 		$validator = Validator::make($request->all(), [
 			'nome' => 'required|max:255',
-        ]);
+		]);
 		if ($validator->fails()) {
 			return view('ouvidoria_unidades/ouvidoria_unidades_alterar', compact('ouvidorias'))
 				->withErrors($validator)
-	    		->withInput(session()->flashInput($request->input()));
-		}else {
-			$ouvidorias = OuvidoriaUnidades::find($id); 
+				->withInput(session()->flashInput($request->input()));
+		} else {
+			$ouvidorias = OuvidoriaUnidades::find($id);
 			$ouvidorias->update($input);
-	    	$ouvidorias = OuvidoriaUnidades::all();
+			$ouvidorias = OuvidoriaUnidades::all();
 			$input['idTabela'] = $id;
 			$loggers   = Logger::create($input);
 			$ouvidorias = OuvidoriaUnidades::paginate(20);
-			$validator ='Ouvidoria da Unidade Alterado com Sucesso!';
+			$validator = 'Ouvidoria da Unidade Alterado com Sucesso!';
 			return redirect()->route('cadastroOuvidorias')
-                ->withErrors($validator)
-                ->with('ouvidorias');
+				->withErrors($validator)
+				->with('ouvidorias');
 		}
-    }
+	}
 
-    public function ouvidoriasExcluir($id)
-    {
-        $id_user = Auth::user()->id;
+	public function ouvidoriasExcluir($id)
+	{
+		$id_user = Auth::user()->id;
 		$idTela = 8;
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
-		if($validacao == "ok") {
-			$ouvidorias = OuvidoriaUnidades::where('id',$id)->get();
-            return view('ouvidoria_unidades/ouvidoria_unidades_excluir', compact('ouvidorias'));
+		if ($validacao == "ok") {
+			$ouvidorias = OuvidoriaUnidades::where('id', $id)->get();
+			return view('ouvidoria_unidades/ouvidoria_unidades_excluir', compact('ouvidorias'));
 		} else {
 			$id_user = Auth::user()->id;
 			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
@@ -177,20 +181,20 @@ class OuvidoriaUnidadesController extends Controller
 				->withErrors($validator)
 				->with('perfil_user', 'validator');
 		}
-    }
+	}
 
-    public function destroyOuvidorias($id, Request $request)
-    {
+	public function destroyOuvidorias($id, Request $request)
+	{
 		$input = $request->all();
 		$input['idTabela'] = $id;
 		$loggers   = Logger::create($input);
-        OuvidoriaUnidades::find($id)->delete();
-        $input = $request->all();
+		OuvidoriaUnidades::find($id)->delete();
+		$input = $request->all();
 		$ouvidorias = OuvidoriaUnidades::all();
 		$ouvidorias = OuvidoriaUnidades::paginate(20);
-        $validator = 'Ouvidoria da Unidade excluído com sucesso!';
+		$validator = 'Ouvidoria da Unidade excluído com sucesso!';
 		return redirect()->route('cadastroOuvidorias')
-            ->withErrors($validator)
-            ->with('ouvidorias');
-    }
+			->withErrors($validator)
+			->with('ouvidorias');
+	}
 }

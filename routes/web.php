@@ -42,6 +42,7 @@ Route::middleware(['auth'])->group( function() {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     
     //Usuários
+    Route::get('/cadastro_usuarios/show/{id}', [App\Http\Controllers\UserController::class, 'show'])->name('show');
     Route::get('/cadastro_usuarios', [App\Http\Controllers\UserController::class, 'cadastroUsuarios'])->name('cadastroUsuarios');
     Route::get('/pesquisar_usuarios', [App\Http\Controllers\UserController::class, 'pesquisarUsuarios'])->name('pesquisarUsuarios');
     Route::post('/pesquisar_usuarios', [App\Http\Controllers\UserController::class, 'pesquisarUsuarios'])->name('pesquisarUsuarios');

@@ -189,7 +189,6 @@ class DocumentosQualidadeController extends Controller
 					}
 					$documentos = DocumentosQualidade::find($id);
 					$documentos->update($input);
-					$documentos = DocumentosQualidade::all();
 					$input['idTabela'] = $id;
 					$loggers    = Logger::create($input);
 					$documentos = DocumentosQualidade::paginate(20);
