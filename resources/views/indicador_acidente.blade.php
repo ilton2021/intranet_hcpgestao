@@ -22,6 +22,15 @@
       document.getElementById('dia_semana').value = "";
     }
   }
+
+  function agenteCausador() {
+    value = document.getElementById('agente_causador').value;
+    if (value == 'outros') {
+      document.getElementById('agente_causador_outros').hidden = false;
+    } else {
+      document.getElementById('agente_causador_outros').hidden = true;
+    }
+  }
 </script>
 
 <body onselectstart="return false">
@@ -56,12 +65,12 @@
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                  <div class="border-bottom border-gray p-1">
                   <div>
-                    <h5 class="modal-title text-dark">Informações do Solicitante:<?php ?></h5>
+                    <h5 class="modal-title text-dark">Informações do Acidentado:<?php ?></h5>
                   </div>
                   <div class="d-flex justify-content-between">
                     <div class="m-2 col-5">
-                     <label for="recipient-colaborador" class="col-form-label">Nome do Solicitante: <label style="color: red">*</label></label>
-                     <input type="text" class="form-control" id="nome" name="nome" value="{{ old('nome') }}" placeholder="Informe o Nome Completo do Solicitante..." required>
+                     <label for="recipient-colaborador" class="col-form-label">Nome do Acidentado: <label style="color: red">*</label></label>
+                     <input type="text" class="form-control" id="nome" name="nome" value="{{ old('nome') }}" placeholder="Informe o Nome Completo do Acidentado..." required>
                     </div>
                     <div class="m-2 col-5">
                       <label for="recipient-area" class="col-form-label">Gênero:<label style="color: red">*</label></label>
@@ -74,9 +83,9 @@
                   </div>
                   <div class="d-flex justify-content-between">
                     <div class="m-2 col-5">
-                     <label for="recipient-gestor" class="col-form-label">Setor do Solicitante: <label style="color: red">*</label></label>
+                     <label for="recipient-gestor" class="col-form-label">Setor do Acidentado: <label style="color: red">*</label></label>
                      <select id="setor" name="setor" class="form-select" required>
-                        <option value=""> Selecione o Setor do Solicitante...</option>
+                        <option value=""> Selecione o Setor do Acidentado...</option>
                         @foreach($setores as $setor)
                           <option value="<?php echo $setor->nome; ?>" <?php if(old('setor') == $setor->nome) { echo 'selected'; } ?>>{{ $setor->nome }}</option>
                         @endforeach
@@ -89,9 +98,9 @@
                   </div>
                   <div class="d-flex justify-content-between">
                     <div class="m-2 col-5">
-                      <label for="recipient-vaga" class="col-form-label">Função do Solicitante: <label style="color: red">*</label></label>
+                      <label for="recipient-vaga" class="col-form-label">Função do Acidentado: <label style="color: red">*</label></label>
                       <select id="funcao" name="funcao" class="form-select" required>
-                        <option value=""> Selecione a Função do Solicitante...</option>
+                        <option value=""> Selecione a Função do Acidentado...</option>
                         @foreach($cargos as $cargo)
                           <option value="<?php echo $cargo->nome; ?>" <?php if(old('funcao') == $cargo->nome) { echo 'selected'; } ?>>{{ $cargo->nome }}</option>
                         @endforeach
@@ -134,12 +143,14 @@
                   <div class="d-flex justify-content-between">
                     <div class="m-2 col-5">
                       <label for="recipient-area" class="col-form-label">Agente Causador do Acidente: <label style="color: red">*</label></label>
-                      <select id="agente_causador" name="agente_causador" class="form-select" required>
+                      <select id="agente_causador" name="agente_causador" class="form-select" required onchange="agenteCausador(this)">
                         <option value=""> Selecione o Agente Causador do Acidente...</option>
                         @foreach($agente_c as $ac)
                           <option value="<?php echo $ac->descricao; ?>" <?php if(old('agente_causador') == $ac->descricao) { echo 'selected'; } ?>>{{ $ac->descricao }}</option>
                         @endforeach
+                        <option value="outros">Outros</option>
                       </select>
+                      <input type="text" class="form-control" id="agente_causador_outros" name="agente_causador_outros" value="{{ old('agente_causador_outros') }}" hidden>
                     </div>
                     <div class="m-2 col-5">
                       <label for="recipient-area" class="col-form-label">Turno do Acidente: <label style="color: red">*</label></label>
@@ -195,6 +206,16 @@
                     <div class="m-2 col-5">
                       <label for="recipient-area" class="col-form-label">Dias de Afastamento: <label style="color: red">*</label></label>
                       <input type="number" min="1" max="100" class="form-control" id="dias_afastamento" name="dias_afastamento" value="{{ old('dias_afastamento') }}" placeholder="Informe o Número de Dias de Afastamento...">
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <div class="m-2 col-5">
+                      <label for="recipient-area" class="col-form-label">Responsável pelo Preenchimento: <label style="color:red">*</label></label>
+                      <input type="text" class="form-control" id="responsavel_preenchimento" name="responsavel_preenchimento" required value="{{ old('responsavel_preenchimento') }}" placeholder="Informe o nome do Responsável pelo Preenchimento" />
+                    </div>
+                    <div class="m-2 col-5">
+                      <label for="recipient-area" class="col-form-label">Após Quantas Horas Trabalhadas: <label style="color: red">*</label></label>
+                      <input type="number" min="0" class="form-control" id="apos_horas_trabalhadas" name="apos_horas_trabalhadas" required value="{{ old('apos_horas_trabalhadas') }}" placeholder="Informe Após Quantas Horas Trabalhadas" />
                     </div>
                   </div>
                   <div class="d-flex justify-content-between">

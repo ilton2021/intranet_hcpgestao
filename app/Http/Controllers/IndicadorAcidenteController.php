@@ -58,7 +58,9 @@ class IndicadorAcidenteController extends Controller
             'parte_corpo_atingida' => 'required|max:255',
             'status'               => 'required|max:255',
             'dias_afastamento'     => 'required|max:255',
-            'descricao_acidente'   => 'required|max:800'
+            'descricao_acidente'   => 'required|max:800',
+            'responsavel_preenchimento' => 'required|max:255',
+            'apos_horas_trabalhadas' => 'required|max:255'
     	]);
 		if ($validator->fails()) {
 			return redirect()->route('indicadorAcidente')
@@ -66,6 +68,9 @@ class IndicadorAcidenteController extends Controller
                 ->with('unidades', 'partes_corpo', 'setores', 'cargos', 'agente_c')
                 ->withInput(session()->flashInput($request->input()));
 		} else {
+            if($input['agente_causador'] == 'outros') {
+                $input['agente_causador'] = $input['agente_causador_outros'];
+            }
             indicadorAcidente::create($input);
             $validator = 'Indicador de Acidente Cadastrado com Sucesso!';
 			return redirect()->route('indicadorAcidenteInfo')

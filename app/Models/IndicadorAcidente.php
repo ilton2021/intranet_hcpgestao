@@ -28,6 +28,8 @@ class IndicadorAcidente extends Model
         'parte_corpo_atingida',
         'status',
         'dias_afastamento',
-        'descricao_acidente'
+        'descricao_acidente',
+        'responsavel_preenchimento',
+        'apos_horas_trabalhadas'
     ];
 }
