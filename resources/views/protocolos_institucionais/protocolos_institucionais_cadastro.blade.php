@@ -42,7 +42,9 @@
 			<table class="table table-sm " id="my_table">
 				<thead class="bg-success">
 					<tr>
-						<th scope="col" width="600px">NOME</th>
+						<th scope="col">NOME</th>
+						<th scope="col">SIGLA</th> 
+						<th scope="col">IMPRESSÃO</th>
 						<th scope="col"><center>ALTERAR</center></th>
 						<th scope="col"><center>EXCLUIR</center></th>
 					</tr>
@@ -51,6 +53,8 @@
 					@foreach($protocolos as $protocolo)
 					<tr>
 						<td style="font-size: 15px;">{{$protocolo->nome}}</td>
+						<td style="font-size: 15px;">{{$protocolo->sigla}}</td>
+						<td style="font-size: 15px;">{{$protocolo->imprimir == 1 ? "Sim " : "Não"}}</td>
 						<td><center><a class="btn btn-info btn-sm" href="{{ route('protocolosAlterar', $protocolo->id) }}" ><i class="fas fa-edit"></i></center></td>
                         <td><center><a class="btn btn-danger btn-sm" href="{{ route('protocolosExcluir', $protocolo->id) }}" ><i class="fas fa-times-circle"></i></center></td>
 					</tr>

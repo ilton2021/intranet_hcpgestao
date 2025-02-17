@@ -14,59 +14,36 @@
 		</ul>
 	</div>
 	@endif <br><br><br>
-	<div class="row" style="margin-top: -80px;">
-		<div class="col-md-12">
-			<table class="table" id="table_pesq">
-				<form action="{{ route('pesquisarIndicadoresGestores') }}" method="post">
-					<input type="hidden" name="_token" value="{{ csrf_token() }}">
-					<tr>
-						<td style="width: 400px;"> Grupo:
-							<select id="pesq2" name="pesq2" class="form-control">
-								<option id="pesq2" name="pesq2" value="">Selecione...</option>
-								@foreach($grupo_indicadores as $grupo)
-								<option id="pesq2" name="pesq2" value="<?php echo $grupo->id; ?>">{{ $grupo->nome }}</option>
-								@endforeach
-							</select>
-						</td>
-						<td> <br>
-							<input type="submit" id="btn" name="btn" class="btn btn-info btn-sm" value="Pesquisar" />
-						</td>
-					</tr>
-			</table>
-			<table class="table table-sm ">
-				<thead class="bg-success">
-					<tr>
-						<th scope="col" width="400px">NOME</th>
-						<th scope="col">GRUPO</th>
-						<th scope="col">LINK</th>
-						<th scope="col">UNIDADE</th>
-					</tr>
-				</thead>
-				@foreach($indicadores as $indicador)
-				<tbody>
-					<tr>
-						<td style="font-size: 15px;">{{$indicador->nome}}</td>
-						@foreach($grupo_indicadores as $grupo)
-						@if($grupo->id == $indicador->grupo_id)
-						<td style="font-size: 15px;">{{$grupo->nome}}</td>
+	
+	<div class="row gy-4" style="display: flex; align-items: center; justify-content: center;">
+	@foreach($grupo_indicadores as $gi)			
+	  @if($gi->exibe == 0)
+		<div class="card mb-3" style="width: 28rem;">
+			<div class="row g-0">
+				<div class="col-md-4">
+					@if($gi->status == "Relatorio")
+					 <img src="{{asset('img/graph.jpg')}}" class="card-img-top" alt="...">
+					@else <br>
+					 <img src="{{asset('img/arquivo.png')}}" class="card-img-top" alt="...">
+					@endif
+				</div>
+				<div class="col-md-8">
+					<div class="card-body">
+						<h5 class="card-title">{{ $gi->nome }}</h5>
+						<p class="card-text">{{ $gi->nomeInd }}</p>
+						@if($gi->status == "Relatorio")
+						  <p class="card-text"><small class="text-body-secondary"><center><a href="{{ $gi->link }}" class="btn btn-primary btn-sm">Acessar</a></center></small></p>
+						@else
+						  <p class="card-text"><small class="text-body-secondary"><center><a href="{{ route('exibeRelatoriosInsumos', $gi->id) }}" class="btn btn-primary btn-sm">Acessar</a></center></small></p>
 						@endif
-						@endforeach
-						<td style="font-size: 15px;"><a display="none" href="{{$indicador->link}}" target="_blank" class="btn btn-sm btn-success">ACESSE</a></td>
-						<td style="font-size: 15px;">
-							<?php
-							for ($i = 0; $i < sizeof($unidades); $i++) {
-								if ($indicador->unidade_id == $unidades[$i]->id) {
-									echo $unidades[$i]->sigla;
-								}
-							}
-							?>
-						</td>
-					</tr>
-				</tbody>
-				@endforeach
-			</table>
+					</div>
+				</div>
+			</div>
 		</div>
+	  @endif
+	@endforeach
 	</div>
+	
 </div>
 </div>
 </div>

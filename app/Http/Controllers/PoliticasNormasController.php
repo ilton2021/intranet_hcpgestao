@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PoliticasNormas;
-use App\Models\Setor;
+use App\Models\SetorDocumento;
 use App\Models\Logger;
+use App\Models\Unidades;
 use App\Models\UserPerfil;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PermissaoController;
@@ -23,12 +24,6 @@ class PoliticasNormasController extends Controller
 			$politicas = PoliticasNormas::paginate(20);
         	return view('politicas_normas/politicas_normas_cadastro', compact('politicas'));
 		} else {
-			$id_user = Auth::user()->id;
-			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
-			$perfil_user = array();
-			for ($i = 0; $i < sizeof($UserPerfil); $i++) {
-				$perfil_user[$i] = $UserPerfil[$i]->perfil_id;
-			}
 			$id_user = Auth::user()->id;
 			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
 			$perfil_user = array();
@@ -79,8 +74,10 @@ class PoliticasNormasController extends Controller
 		$idTela = 12;
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
 		if($validacao == "ok") {
-			$setores = Setor::all();
-        	return view('politicas_normas/politicas_normas_novo', compact('setores'));
+			$setores = SetorDocumento::join('unidades', 'setor_documento.unidade_id', '=', 'unidades.id')
+				->select('setor_documento.*', 'setor_documento.setor as setor', 'unidades.nome as unidade')->get();
+			$unidades = Unidades::all();
+        	return view('politicas_normas/politicas_normas_novo', compact('setores','unidades'));
 		} else {
 			$id_user = Auth::user()->id;
 			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
@@ -98,7 +95,8 @@ class PoliticasNormasController extends Controller
     public function storePoliticas(Request $request)
     {
         $input    = $request->all();
-        $setores  = Setor::all();
+        $setores = SetorDocumento::join('unidades', 'setor_documento.unidade_id', '=', 'unidades.id')
+					->select('setor_documento.*', 'setor_documento.setor as setor', 'unidades.nome as unidade')->get();
 		$nome     = $_FILES['imagem']['name'];
 		$extensao = pathinfo($nome, PATHINFO_EXTENSION);
 		if($request->file('imagem') === NULL) {	
@@ -116,7 +114,7 @@ class PoliticasNormasController extends Controller
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
 				}else {
-					$request->file('imagem')->move('public/storage/politicas_normas/', $nome);
+					$request->file('imagem')->move('../public/storage/politicas_normas/', $nome);
 					$input['imagem'] = $nome; 
 					$input['caminho'] = 'politicas_normas/'.$nome; 
 					$politicas = PoliticasNormas::create($input);
@@ -145,9 +143,11 @@ class PoliticasNormasController extends Controller
 		$idTela = 12;
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
 		if($validacao == "ok") {
-			$politicas = PoliticasNormas::where('id',$id)->get();
-			$setores   = Setor::all();
-			return view('politicas_normas/politicas_normas_alterar', compact('politicas','setores'));
+			$politicas  = PoliticasNormas::where('id',$id)->get();
+			$setores = SetorDocumento::join('unidades', 'setor_documento.unidade_id', '=', 'unidades.id')
+				->select('setor_documento.*', 'setor_documento.setor as setor', 'unidades.nome as unidade')->get();
+			$unidades   = Unidades::all();
+			return view('politicas_normas/politicas_normas_alterar', compact('politicas','setores','unidades'));
 		} else {
 			$id_user = Auth::user()->id;
 			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
@@ -166,7 +166,8 @@ class PoliticasNormasController extends Controller
     {
         $input = $request->all();
 		$nome1 = "";
-        $setores   = Setor::all();
+        $setores = SetorDocumento::join('unidades', 'setor_documento.unidade_id', '=', 'unidades.id')
+				->select('setor_documento.*', 'setor_documento.setor as setor', 'unidades.nome as unidade')->get();
         $politicas = PoliticasNormas::where('id',$id)->get();
 		if($request->file('imagem') === NULL && $input['imagem_'] == "") {	
 			$validator = 'Selecione o arquivo da Política e Normas!';	
@@ -191,7 +192,7 @@ class PoliticasNormasController extends Controller
 						->withInput(session()->flashInput($request->input()));
 				}else {
 					if($nome1 != "") {
-					  $request->file('imagem')->move('public/storage/politicas_normas/', $nome1);
+					  $request->file('imagem')->move('../public/storage/politicas_normas/', $nome1);
 					  $input['imagem'] = $nome1; 
 					  $input['caminho'] = 'politicas_normas/'.$nome1; 
 					} 

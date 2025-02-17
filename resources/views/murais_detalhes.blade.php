@@ -15,36 +15,61 @@
 
     <section id="portfolio-details" class="portfolio-details">
       <div class="container">
-
         <div class="row gy-20">
-          <div class="col-lg-6">
-            <div class="portfolio-details-slider swiper">
-              <div class="swiper-wrapper align-items-center">
-                <div class="swiper-slide">
-                  @foreach($murais as $mural)
-                    <a href="{{asset('storage')}}/{{$mural->caminho}}" data-gallery="portfolioGallery" class="portfolio-lightbox" title="<?php echo $mural->titulo; ?>"><img src="{{asset('storage')}}/{{$mural->caminho}}" class="img-fluid" alt="" width="500px"></a>
-                  @endforeach
-                </div>
-              </div>
-              <div class="swiper-pagination"></div>
-            </div>
-          </div>
+                    <div class="col-lg-6">
+                        <div class="member-img text-center" style="height:400px;">
 
-          <div class="col-lg-6"> 
-            <div class="portfolio-info">
-              <h3><font color="green">Mural de Avisos:</font></h3>
-              <ul>
-                @foreach($murais2 as $mural)
-                <ul>
-                <li><strong><p align="justify"><font size="2"><a href="{{ route('muraisDetalhes', $mural->id) }}" title="<?php echo $mural->titulo; ?>">{{ substr($mural->titulo,0,70) }}</a></font></p></strong>
-                <img src="{{asset('img')}}/{{('calendar.png')}}" width="30"/> 
-                <font size="2">{{ date('d/m/Y', strtotime($mural->created_at)) }} </font></li>
-                </ul> <br>
-                @endforeach
-              </ul>
-            </div>
-          </div>
-        </div>
+                            @foreach ($murais as $mural)
+                                <div class="member-img">
+                                    @if ($mural->tipo == 1)
+                                        @if ($mural->caminho !== '')
+                                            
+                                                <img src="{{ asset('storage') }}/{{ $mural->caminho }}"
+                                                    class="img-fluid" alt="" style="height:400px;">
+                                            
+                                        @endif
+                                    @else
+                                        @if ($mural->video !== '')
+												<iframe class="rounded" width="527" height="300"
+                                                    src="{{ $mural->video }}" frameborder="0"
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                    allowfullscreen></iframe>
+                                        @endif
+                                    @endif
+                                    <div class="social"> </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="portfolio-info">
+                            <h3>
+                                <font color="green">Mural de Avisos:</font>
+                            </h3>
+                            <ul>
+                                @foreach ($murais2 as $mural)
+                                    <ul>
+                                        <li><strong>
+                                                <p align="justify">
+                                                    <font size="2"><a
+                                                            href="{{ route('muraisDetalhes', $mural->id) }}"
+                                                            title="<?php echo $mural->titulo; ?>">{{ substr($mural->titulo, 0, 70) }}</a>
+                                                    </font>
+                                                </p>
+                                            </strong>
+                                            <img src="{{ asset('img') }}/{{ 'calendar.png' }}" width="30" />
+                                            <font size="2">{{ date('d/m/Y', strtotime($mural->created_at)) }}
+                                            </font>
+                                        </li>
+                                    </ul> <br>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+		
       </div>
     </section>
   </main>

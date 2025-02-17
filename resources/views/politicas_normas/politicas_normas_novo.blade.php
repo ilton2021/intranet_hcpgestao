@@ -25,27 +25,47 @@
                 </div>	
 					<form action="{{\Request::route('storePoliticas')}}" method="post" enctype="multipart/form-data">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
-						<table border="0" class="table-sm" style="line-height: 1.5;" >
+						<table border="0" class="table table-sm" style="line-height: 1.5;" >
 						 <tr>
 							<td> Nome: </td>
 							<td>
-								<input class="form-control" type="text" id="nome" name="nome" required value="{{ old('nome') }}" />
-							</td>
-						 </tr>
-                         <tr>
-							<td> Setor: </td>
-							<td>
-								<select id="setor" name="setor" class="form-control">
-								 @foreach($setores as $setor)
-								  <option id="setor" name="setor" value="<?php echo $setor->nome; ?>">{{ $setor->nome }}</option>
-								 @endforeach
-								</select>
+								<input class="form-control form-control-sm" type="text" id="nome" name="nome" required value="{{ old('nome') }}" />
 							</td>
 						 </tr>
 						 <tr>
-							<td> Imagem: </td>
+							<td> Sigla: </td>
+							<td>
+								<input class="form-control form-control-sm" type="text" id="sigla" name="sigla" required value="{{ old('sigla') }}" />
+							</td>
+						 </tr>
+						 <tr>
+							<td> Arquivo: </td>
 							<td> 
-							  <input class="form-control" style="width: 750px" type="file" id="imagem" name="imagem" required value="" /> 
+							  <input class="form-control form-control-sm" type="file" id="imagem" name="imagem" required value="" /> 
+							</td>
+						 </tr>
+						<tr>
+							<td>Permite impressão ?</td>
+							<td>
+							<div class="d-flex align-items-center text-center">
+								<input type="radio" id="imprimir" name="imprimir" value="1" >
+	  							<label for="imprimir">Sim</label>
+	  							<input type="radio" id="imprimir" name="imprimir" value="0" checked>
+	  							<label for="imprimir">Não</label>
+							</div>
+							</td>
+						 </tr>
+						 <tr>
+							<td>Setor: </td>
+							<td>
+								<div class="d-flex align-items-center text-center">
+									<select name="setor_id" id="setor_id" class="form-control form-control-sm">
+										<option value="">Selecione...</option>
+										@foreach($setores as $setor)
+											<option value="{{ $setor->id }}">{{ strtoupper($setor->setor) }} | {{ $setor->unidade }}</option>
+										@endforeach
+									</select>
+								</div>
 							</td>
 						 </tr>
 						 <tr>

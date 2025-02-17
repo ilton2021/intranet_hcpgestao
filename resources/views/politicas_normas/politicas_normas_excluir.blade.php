@@ -25,23 +25,23 @@
                 </div>	
 					<form action="{{\Request::route('destroyPoliticas')}}" method="post">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
-						<table border="0" class="table-sm" style="line-height: 1.5;" >
+						<table border="0" class="table table-sm" style="line-height: 1.5;" >
 						 <tr>
 							<td> Nome: </td>
 							<td>
-								<input class="form-control" type="text" id="nome" name="nome" readonly value="<?php echo $politicas[0]->nome; ?>" />
+								<input class="form-control form-control-sm" type="text" id="nome" name="nome" readonly value="<?php echo $politicas[0]->nome; ?>" />
 							</td>
 						 </tr>
-                         <tr>
-							<td> Setor: </td>
+						 <tr>
+							<td> Sigla: </td>
 							<td>
-								<input class="form-control" type="text" id="setor" name="setor" readonly value="<?php echo $politicas[0]->setor; ?>" /> 
+								<input class="form-control form-control-sm" type="text" id="sigla" name="sigla" readonly value="<?php echo $politicas[0]->sigla; ?>" />
 							</td>
 						 </tr>
 						 <tr>
 							 <td>Imagem:</td>
 							 <td>
-							    <input class="form-control" style="width: 750px" type="text" id="imagem" name="imagem" readonly value="<?php echo $politicas[0]->imagem; ?>" /> 
+							    <input class="form-control form-control-sm" type="text" id="imagem" name="imagem" readonly value="<?php echo $politicas[0]->imagem; ?>" /> 
 							 </td>
 						 </tr>
                          <tr>

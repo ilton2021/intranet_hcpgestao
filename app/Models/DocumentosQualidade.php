@@ -11,8 +11,11 @@ class DocumentosQualidade extends Model
 
     protected $fillable = [
         'nome',
+        'sigla',
         'caminho',
         'imagem',
+		'imprimir',
+        'setor_id',
         'created_at',
         'updated_at'   
     ];

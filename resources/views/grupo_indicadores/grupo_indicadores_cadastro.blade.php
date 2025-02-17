@@ -1,6 +1,6 @@
 @extends('layouts.adm') 
 <div class="container-fluid">
-	<div class="row" style="margin-bottom: 25px; margin-top: 25px;">
+	<div class="row" style="margin-bottom: 25px;">
 		<div class="col-md-12 text-center">
 			<h5  style="font-size: 18px;"><b>CADASTRO GRUPO DE INDICADORES:</b></h5>
 		</div>
@@ -14,17 +14,17 @@
 		  </ul>
 		</div>
 	@endif
-	<div class="row" style="margin-top: 25px;">
+	<div class="row">
 		<div class="col-md-12">
 			<table class="table" id="table_pesq">
 			<form action="{{ route('pesquisarGrupoIndicadores') }}" method="post">
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
 				<tr>
 					<td style="width: 400px;"> 
-					 <input type="text" id="pesq" name="pesq" style="width: 400px;" class="form-control" />
+					 <input type="text" id="pesq" name="pesq" style="width: 400px;" class="form-control form-control-sm" />
                     </td>
                     <td style="width: 150px;">
-					 <select id="pesq2" name="pesq2" style="width: 150px;" class="form-control">
+					 <select id="pesq2" name="pesq2" style="width: 150px;" class="form-control form-control-sm">
 						<option id="pesq2" name="pesq2" value="1">NOME</option>
 					 </select>
                     </td>
@@ -43,6 +43,7 @@
 				<thead class="bg-success">
 					<tr>
 						<th scope="col" width="600px">NOME</th>
+						<th scope="col">NÍVEL</th>
 						<th scope="col"><center>VINCULAR PERFIL</center></th>
 						<th scope="col"><center>DESVINCULAR PERFIL</center></th>
 						<th scope="col"><center>ALTERAR</center></th>
@@ -53,8 +54,9 @@
 					@foreach($grupo_indicadores as $grupo_indicador)
 					<tr>
 						<td style="font-size: 15px;">{{$grupo_indicador->nome}}</td>
-						<td><center><a class="btn btn-success btn-sm" href="{{ route('grupoVincular', $grupo_indicador->id) }}" ><i class="fas fa-check"></i></center></td>
-						<td><center><a class="btn btn-danger btn-sm" href="{{ route('grupoVincularExcluir', $grupo_indicador->id) }}" ><i class="fas fa-check"></i></center></td>
+						<td style="font-size: 15px;">{{$grupo_indicador->nivel}}</td>
+						<!--td><center><a class="btn btn-success btn-sm" href="{{ route('grupoVincular', $grupo_indicador->id) }}" ><i class="fas fa-check"></i></center></td-->
+						<!--td><center><a class="btn btn-danger btn-sm" href="{{ route('grupoVincularExcluir', $grupo_indicador->id) }}" ><i class="fas fa-check"></i></center></td-->
 						<td><center><a class="btn btn-info btn-sm" href="{{ route('indicadoresGrupoAlterar', $grupo_indicador->id) }}" ><i class="fas fa-edit"></i></center></td>
                         <td><center><a class="btn btn-danger btn-sm" href="{{ route('indicadoresGrupoExcluir', $grupo_indicador->id) }}" ><i class="fas fa-times-circle"></i></center></td>
 					</tr>

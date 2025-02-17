@@ -11,6 +11,7 @@ class Indicadores extends Model
 
     protected $fillable = [
         'grupo_id',
+        'exibe',
         'status',
         'nome',
         'link',

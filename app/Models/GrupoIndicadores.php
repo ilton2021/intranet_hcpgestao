@@ -11,6 +11,7 @@ class GrupoIndicadores extends Model
 
     protected $fillable = [
         'nome',
+        'nivel',
         'created_at',
         'updated_at'
     ];

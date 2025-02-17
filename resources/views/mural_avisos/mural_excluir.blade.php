@@ -1,4 +1,5 @@
 @extends('layouts.adm')
+<link rel="shortcut icon" href="{{asset('assets/img/favico.png')}}"/>
 	<div class="container-fluid">
 	<div class="row" style="margin-top: 0px;">
 		<div class="col-md-12 text-center">
@@ -25,7 +26,7 @@
                 </div>	
 					<form action="{{\Request::route('destroyMural')}}" method="post">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
-						<table border="0" class="table-sm" style="line-height: 1.5;" >
+						<table border="0" class="table-sm" style="line-height: 1.5;">
 						 <tr>
 							<td> Título: </td>
 							<td>
@@ -38,14 +39,8 @@
 								<textarea class="form-control" rows="5" type="text" id="texto" name="texto" readonly value="<?php echo $murais[0]->texto; ?>"> {{ $murais[0]->texto }} </textarea>
 							</td>
 						 </tr>
-						 <tr>
-							 <td>Imagem:</td>
-							 <td>
-							    <input class="form-control" style="width: 750px" type="text" id="imagem" name="imagem" readonly value="<?php echo $murais[0]->imagem; ?>" /> 
-							 </td>
-						 </tr>
                          <tr>
-                            <td colspan="4"><br><b>Deseja Realmente Excluir este Aviso?</b></td>
+                            <td colspan="3"><br><b>Deseja Realmente Excluir este Aviso?</b></td>
                          </tr>
 						 <tr>
 							<td><input hidden type="text" id="tela" name="tela" class="form-control" value="excluir_murais" /></td>

@@ -1,13 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>HCPGESTÃO INTRANET - Index</title>
+  <title>HCP GESTÃO INTRANET - Index</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
-  <link rel="shortcut icon" href="{{asset('img/favico.png')}}">
+  <link rel="shortcut icon" href="{{ asset('assets/img/favico.png') }}" />
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Dosis:300,400,500,,600,700,700i|Lato:300,300i,400,400i,700,700i" rel="stylesheet">
   <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
   <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
@@ -20,10 +20,10 @@
 <body>
   <header id="header" class="fixed-top">
     <div class="container d-flex align-items-center justify-content-between">
-      <a href="{{ url('/') }}" class="logo"><img src="{{ asset('assets/img/logo.png') }}" alt="" class="img-fluid"></a>
+      <a href="{{ url('/') }}" class="logo"><img src="{{ asset('assets/img/logo3.jpeg') }}" alt="" class="img-fluid"></a>
       <nav id="navbar" class="navbar">
         <ul>
-          <li class="dropdown"><a href="#"><span>O HCPGESTÃO</span> <i class="bi bi-chevron-down"></i></a>
+          <li class="dropdown"><a href="#"><span>O HCP GESTÃO</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="{{ route('oquee') }}">O que é?</a></li>
               @foreach($unidades as $unidade)
@@ -33,21 +33,31 @@
               @endforeach
             </ul>
           </li>
-          <li><a class="nav-link scrollto" href="http://172.16.0.219/portalrh/WPortalRH.dll/$/" target="_blank">ÁREA DO COLABORADOR</a></li>
+          <input type="hidden" name="" value="https://login.lg.com.br/login/hospitaldecancerdepernambuco">
+          <li><a class="nav-link scrollto" href="{{ route('areaColaborador') }}">ÁREA DO COLABORADOR</a></li>
           <li class="dropdown"><a href="#"><span>SERVIÇOS</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="{{ route('acessoRapido', 1) }}">Ouvidoria das Unidades</a></li>
               <li><a href="{{ route('acessoRapido', 2) }}">Indicadores</a></li>
               <li><a href="{{ route('acessoRapido', 3) }}">Ramais/E-mails</a></li>
               <li><a href="{{ route('acessoRapido', 4) }}">Documentos da Qualidade</a></li>
-              <li><a href="{{ route('acessoRapido', 6) }}">Políticas e Normas</a></li>
+              <!--li><a href="{{ route('acessoRapido', 6) }}">Políticas e Normas</a></li-->
+	    @if (isset($id_und))
+              @if ($id_und == 2)
+              <li><a data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">
+                  Cadastro de Veículo
+                </a>
+              </li>
+              @endif
+            @endif
             </ul>
           </li>
           <li class="dropdown"><a href="#"><span>SISTEMAS</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="https://hcpgestao-portal.hcpgestao.org.br" target="_blank">Portal da Transparência</a></li>
               <li><a href="https://hcpgestao.org.br/mpRH/public/" target="_blank">Portal da MP</a></li>
-              <li><a href="https://hcpgestao.org.br/processoSeletivo/public/" target="_blank">Portal do Processo Seletivo</a></li>
+              <li><a href="https://hcpgestao.org.br/processo_seletivo_hcpgestao/public/" target="_blank">Portal do Processo Seletivo</a></li>
+              <li><a href="{{ route('showPA') }}">Portal de Assinaturas NF</a></li>
             </ul>
           </li>
         </ul>
@@ -94,7 +104,7 @@
 
     <div class="container py-4">
       <div class="copyright">
-        &copy;Copyright <strong><span>HCPGESTÃO</span></strong>. Todos os Direitos Reservados
+        &copy;Copyright <strong><span>HCP GESTÃO</span></strong>. Todos os Direitos Reservados
       </div>
     </div>
   </footer>

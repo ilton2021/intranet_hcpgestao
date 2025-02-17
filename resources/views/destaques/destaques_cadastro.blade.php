@@ -1,6 +1,7 @@
 @extends('layouts.adm') 
+<link rel="shortcut icon" href="{{asset('assets/img/favico.png')}}"/>
 <div class="container-fluid">
-	<div class="row" style="margin-bottom: 25px; margin-top: 25px;">
+	<div class="row" style="margin-bottom: 25px;">
 		<div class="col-md-12 text-center">
 			<h5  style="font-size: 18px;"><b>CADASTRO DESTAQUES:</b></h5>
 		</div>
@@ -14,17 +15,17 @@
 		  </ul>
 		</div>
 	@endif
-	<div class="row" style="margin-top: 25px;">
+	<div class="row">
 		<div class="col-md-12">
 			<table class="table" id="table_pesq">
 			<form action="{{ route('pesquisarDestaques') }}" method="post">
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
 				<tr>
 					<td style="width: 400px;"> 
-					 <input type="text" id="pesq" name="pesq" style="width: 400px;" class="form-control" />
+					 <input type="text" id="pesq" name="pesq" style="width: 400px;" class="form-control form-control-sm" />
                     </td>
                     <td style="width: 150px;">
-					 <select id="pesq2" name="pesq2" style="width: 150px;" class="form-control">
+					 <select id="pesq2" name="pesq2" style="width: 150px;" class="form-control form-control-sm">
 						<option id="pesq2" name="pesq2" value="1">TÍTULO</option>
 						<option id="pesq2" name="pesq2" value="2">TEXTO</option>
 					 </select>

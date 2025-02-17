@@ -14,6 +14,7 @@ use App\Models\PerfilUser;
 use App\Models\PerfilUserIndica;
 use App\Models\UserPerfil;
 use App\Models\Logger;
+use App\Models\PassHash;
 use Spatie\Permission\Models\Role;
 use DB;
 use Str;
@@ -318,52 +319,60 @@ class UserController extends Controller
 				->withErrors($validator)
 				->withInput(session()->flashInput($request->input()));
 		} else {
-			$email = $input['email'];
-			$senha = $input['password'];
-			$user  = User::where('email', $email)->get();
-			$qtd   = sizeof($user);
-			if (empty($qtd)) {
-				$validator = 'Login Inválido!';
-				return view('auth.login')
-					->withErrors($validator)
-					->withInput(session()->flashInput($request->input()));
-			} else {
-				$unidades = $this->unidade->all();
-				$user 	  = User::find($user[0]->id);
-				Auth::login($user);
-				$idU    = Auth::user()->unidade_id;
-				$user_perfil = UserPerfil::where('users_id', $user->id)->get();
-				$perfisHome = array(1, 2, 3); //Administrador, comunicação e qualidade.
-				$qtdHome = 0;
-				for ($i = 0; $i < sizeof($user_perfil); $i++) {
-					if (in_array($user_perfil[$i]->perfil_id, $perfisHome)) {
-						$qtdHome = $qtdHome + 1;
-					}
-				}
-				if ($qtdHome > 0) {
-					$perfil_user = array();
+			$email   = $input['email'];
+			$user    = User::where('email', $email)->get();
+			$qtdUser = sizeof($user);
+			if($qtdUser > 0) {
+				if (PassHash::check_password($user[0]->password, $_POST['password'])) {
+					$unidades = $this->unidade->all();
+					$user 	  = User::find($user[0]->id);
+					Auth::login($user);
+					$idU    = Auth::user()->unidade_id;
+					$user_perfil = UserPerfil::where('users_id', $user->id)->get();
+					$perfisHome = array(1, 2, 3, 19, 21, 22); //Administrador, comunicação, qualidade, Controle de veiculos.
+					$qtdHome = 0;
 					for ($i = 0; $i < sizeof($user_perfil); $i++) {
-						$perfil_user[$i] = $user_perfil[$i]->perfil_id;
+						if (in_array($user_perfil[$i]->perfil_id, $perfisHome)) {
+							$qtdHome = $qtdHome + 1;
+						}
 					}
-					return view('home', compact('perfil_user'))
-						->withErrors($validator)
-						->withInput(session()->flashInput($request->input()));
-				} else {
-					$indicadores = Indicadores::where('id', 0)->get();
-					if ($idU != 1) {
-						$grupo_indicadores = DB::table('grupo_indicadores')
-							->join('indicadores', 'indicadores.grupo_id', '=', 'grupo_indicadores.id')
-							->select('grupo_indicadores.nome', 'grupo_indicadores.id')
-							->where('indicadores.unidade_id', $idU)
-							->groupby('grupo_indicadores.nome', 'grupo_indicadores.id')->get();
+					if ($qtdHome > 0) {
+						$perfil_user = array();
+						for ($i = 0; $i < sizeof($user_perfil); $i++) {
+							$perfil_user[$i] = $user_perfil[$i]->perfil_id;
+						}
+						return view('home', compact('perfil_user'))
+							->withErrors($validator)
+							->withInput(session()->flashInput($request->input()));
 					} else {
-						$grupo_indicadores = GrupoIndicadores::orderBy('nome', 'ASC')->get();
+						$indicadores = Indicadores::where('id', 0)->get();
+						if ($idU != 1) {
+							$grupo_indicadores = DB::table('grupo_indicadores')
+								->join('indicadores', 'indicadores.grupo_id', '=', 'grupo_indicadores.id')
+								->select('grupo_indicadores.nome', 'grupo_indicadores.id', 'indicadores.link as link', 
+										 'indicadores.nome as nomeInd', 'indicadores.status as status', 'indicadores.exibe')
+								->where('indicadores.unidade_id', $idU)
+								->groupby('grupo_indicadores.nome', 'grupo_indicadores.id', 'indicadores.link', 
+								'indicadores.nome', 'indicadores.status', 'indicadores.exibe')
+								->orderby('indicadores.nome')->get(); 
+						} else {
+							$grupo_indicadores = GrupoIndicadores::orderBy('nome', 'ASC')->get();
+						}
+						return view('indicadores/lista_indicadores', compact('unidades', 'user', 'grupo_indicadores', 'indicadores'))
+							->withErrors($validator)
+							->withInput(session()->flashInput($request->input()));
 					}
-					$grupo_indicadores = GrupoIndicadores::orderBy('nome', 'ASC')->get();
-					return view('indicadores/lista_indicadores', compact('unidades', 'user', 'grupo_indicadores', 'indicadores'))
+				} else {
+					$validator = 'Login Inválido!';
+					return view('auth.login')
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
 				}
+			} else {
+				$validator = 'Usuário não cadastrado!';
+					return view('auth.login')
+						->withErrors($validator)
+						->withInput(session()->flashInput($request->input()));
 			}
 		}
 	}
@@ -399,10 +408,10 @@ class UserController extends Controller
 						DB::statement('DELETE FROM alterar_senha WHERE user_id = ' . $input['user_id']);
 					}
 					$alt_senha = AlterarSenha::create($input);
-					$token = DB::table('alterar_senha')->max('token');
-					$email2 = 'ilton.albuquerque@hcpgestao.org.br';
+					$token  = DB::table('alterar_senha')->where('user_id',$input['user_id'])->max('token');
+					$email2 = 'portal@hcpgestao.org.br';
 					Mail::send('email.emailReset', ['token' => $token], function ($m) use ($email, $email2, $token) {
-						$m->from('ilton.albuquerque@hcpgestao.org.br', 'INTRANET HCPGESTÃO');
+						$m->from('portal@hcpgestao.org.br', 'INTRANET HCPGESTÃO');
 						$m->subject('Solicitação de Alteração de Senha');
 						$m->to($email);
 						$m->cc($email2);
@@ -441,10 +450,10 @@ class UserController extends Controller
 			} else {
 				$input = array_except($input, array('password'));
 			}
-			$email = $input['email'];
+			$email  = $input['email'];
 			$token_ = $input['token_'];
-			$user = User::where('email', $email)->get();
-			$qtd = sizeof($user);
+			$user   = User::where('email', $email)->get();
+			$qtd    = sizeof($user);
 			if ($qtd > 0) {
 				$alt_senha = AlterarSenha::where('token', $token_)->where('user_id', $user[0]->id)->get();
 				$qtdAlt = sizeof($alt_senha);

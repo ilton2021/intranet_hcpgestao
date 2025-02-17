@@ -82,6 +82,25 @@ class EmailsController extends Controller
 		}
 	}
 
+	public function pesqEmailsUnidade($id, Request $request) 
+	{
+		$input = $request->all();
+		if(empty($input['pesq'])) { $input['pesq'] = ""; }
+		if(empty($input['pesq2'])) { $input['pesq2'] = ""; }
+		$pesq  = $input['pesq'];
+		$pesq2 = $input['pesq2']; 
+		if($pesq2 == "nome") {
+			$emails = Emails::where('unidade_id',$id)->where('nome','like','%'.$pesq.'%')->get();
+		} else if($pesq2 == "email") {
+			$emails = Emails::where('unidade_id',$id)->where('email','like','%'.$pesq.'%')->get();
+		} else {
+			$emails = Emails::where('unidade_id',$id)->orderby('nome','ASC')->get();
+		}
+		$unidades = Unidades::all();
+        $unidade  = Unidades::where('id',$id)->get();
+        return view('emails/emails_unidade', compact('emails','unidade','unidades'));
+	}
+
 	public function emailsNovo()
 	{
 		$id_user = Auth::user()->id;

@@ -113,7 +113,7 @@ class UnidadesController extends Controller
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
 				}else {
-					$request->file('imagem')->move('public/storage/unidades/', $nome);
+					$request->file('imagem')->move('../public/storage/unidades/', $nome);
 					$input['imagem'] = $nome; 
 					$input['caminho'] = 'unidades/'.$nome; 
 					$unidade  = Unidades::create($input);
@@ -190,7 +190,7 @@ class UnidadesController extends Controller
 						->withInput(session()->flashInput($request->input()));
 				}else {
 					if($nome1 != "") {
-					  $request->file('imagem')->move('public/storage/unidades/', $nome1);
+					  $request->file('imagem')->move('../public/storage/unidades/', $nome1);
 					  $input['imagem'] = $nome1; 
 					  $input['caminho'] = 'unidades/'.$nome1; 
 					} 

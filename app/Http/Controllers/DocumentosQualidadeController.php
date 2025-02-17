@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\DocumentosQualidade;
 use App\Models\Logger;
 use App\Models\UserPerfil;
+use App\Models\Unidades;
+use App\Models\SetorDocumento;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PermissaoController;
 use Storage;
@@ -75,7 +77,10 @@ class DocumentosQualidadeController extends Controller
 		$idTela = 10;
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
 		if ($validacao == "ok") {
-			return view('documentos_qualidade/documentos_qualidade_novo');
+			$unidades = Unidades::all();
+			$setores = SetorDocumento::join('unidades', 'setor_documento.unidade_id', '=', 'unidades.id')
+				->select('setor_documento.*', 'setor_documento.setor as setor', 'unidades.nome as unidade')->get();
+			return view('documentos_qualidade/documentos_qualidade_novo', compact('unidades', 'setores'));
 		} else {
 			$id_user = Auth::user()->id;
 			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
@@ -95,9 +100,11 @@ class DocumentosQualidadeController extends Controller
 		$input    = $request->all();
 		$nome     = $_FILES['imagem']['name'];
 		$extensao = pathinfo($nome, PATHINFO_EXTENSION);
+		$setor 	  = $input['setor_id'];
+		$unidade  = SetorDocumento::select('unidade_id as unidade_id')->where('id', $setor)->get();
 		if ($request->file('imagem') === NULL) {
 			$validator = 'Selecione o arquivo do Documento de Qualidade!';
-			return view('documentos_qualidade/documentos_qualidade_novo')
+			return view('documentos_qualidade/documentos_qualidade_novo', compact('setor'))
 				->withErrors($validator)
 				->withInput(session()->flashInput($request->input()));
 		} else {
@@ -106,11 +113,11 @@ class DocumentosQualidadeController extends Controller
 					'nome' => 'required|max:255'
 				]);
 				if ($validator->fails()) {
-					return view('documentos_qualidade/documentos_qualidade_novo')
+					return view('documentos_qualidade/documentos_qualidade_novo', compact('setor'))
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
 				} else {
-					$request->file('imagem')->move('public/storage/documentos_qualidade/', $nome);
+					$request->file('imagem')->move('../public/storage/documentos_qualidade/', $nome);
 					$input['imagem'] = $nome;
 					$input['caminho'] = 'documentos_qualidade/' . $nome;
 					$documentos = DocumentosQualidade::create($input);
@@ -126,7 +133,7 @@ class DocumentosQualidadeController extends Controller
 				}
 			} else {
 				$validator = 'Só é permitido documentos: .pdf ou .PDF!';
-				return view('documentos_qualidade/documentos_qualidade_novo')
+				return view('documentos_qualidade/documentos_qualidade_novo', compact('setor'))
 					->withErrors($validator)
 					->withInput(session()->flashInput($request->input()));
 			}
@@ -140,7 +147,11 @@ class DocumentosQualidadeController extends Controller
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
 		if ($validacao == "ok") {
 			$documentos = DocumentosQualidade::where('id', $id)->get();
-			return view('documentos_qualidade/documentos_qualidade_alterar', compact('documentos'));
+			$und_atual  = explode(',', $documentos[0]->unidade_id);
+			$unidades   = Unidades::all();
+			$setores = SetorDocumento::join('unidades', 'setor_documento.unidade_id', '=', 'unidades.id')
+				->select('setor_documento.*', 'setor_documento.setor as setor', 'unidades.nome as unidade')->get();
+			return view('documentos_qualidade/documentos_qualidade_alterar', compact('documentos','und_atual','unidades', 'setores'));
 		} else {
 			$id_user = Auth::user()->id;
 			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
@@ -160,6 +171,9 @@ class DocumentosQualidadeController extends Controller
 		$input = $request->all();
 		$nome1 = "";
 		$documentos = DocumentosQualidade::where('id', $id)->get();
+		$setor = $input['setor_id'];
+		$unidade = SetorDocumento::select('unidade_id as unidade_id')->where('id', $setor)->get();
+		$input['unidade_id'] = $unidade[0]->unidade_id;
 		if ($request->file('imagem') === NULL && $input['imagem_'] == "") {
 			$validator = 'Selecione o arquivo do Documento de Qualidade!';
 			return view('documentos_qualidade/documentos_qualidade_alterar', compact('documentos'))
@@ -176,6 +190,7 @@ class DocumentosQualidadeController extends Controller
 			if ($extensao == 'pdf' || $extensao == 'PDF') {
 				$validator = Validator::make($request->all(), [
 					'nome' => 'required|max:255',
+					'setor_id' => 'required'
 				]);
 				if ($validator->fails()) {
 					return view('documentos_qualidade/documentos_qualidade_alterar', compact('documentos'))
@@ -183,7 +198,7 @@ class DocumentosQualidadeController extends Controller
 						->withInput(session()->flashInput($request->input()));
 				} else {
 					if ($nome1 != "") {
-						$request->file('imagem')->move('public/storage/documentos_qualidade/', $nome1);
+						$request->file('imagem')->move('../public/storage/documentos_qualidade/', $nome1);
 						$input['imagem'] = $nome1;
 						$input['caminho'] = 'documentos_qualidade/' . $nome1;
 					}
@@ -213,7 +228,9 @@ class DocumentosQualidadeController extends Controller
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
 		if ($validacao == "ok") {
 			$documentos = DocumentosQualidade::where('id', $id)->get();
-			return view('documentos_qualidade/documentos_qualidade_excluir', compact('documentos'));
+			$setores = SetorDocumento::join('unidades', 'setor_documento.unidade_id', '=', 'unidades.id')
+				->select('setor_documento.*', 'setor_documento.setor as setor', 'unidades.nome as unidade')->get();
+			return view('documentos_qualidade/documentos_qualidade_excluir', compact('documentos', 'setores'));
 		} else {
 			$id_user = Auth::user()->id;
 			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();

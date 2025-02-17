@@ -1,15 +1,15 @@
 @extends('layouts.app')
-
+<link rel="shortcut icon" href="{{asset('assets/img/favico.png')}}"/>
 <body>
   <main id="main">
 
     <section class="breadcrumbs">
       <div class="container">
         <div class="d-flex justify-content-between align-items-center">
-          <h2>O que é HCPGESTÃO?</h2>
+          <h2>O que é HCP GESTÃO?</h2>
           <ol>
             <li><a href="{{ url('/') }}">Home</a></li>
-            <li>O que é HCPGESTÃO?</li>
+            <li>O que é HCP GESTÃO?</li>
           </ol>
         </div>
       </div>

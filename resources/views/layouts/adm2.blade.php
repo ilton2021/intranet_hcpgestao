@@ -16,10 +16,8 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-top" style="background-color:#f8fafc !important;">
             <div class="container">
 				<a href="{{ route('logout') }}" class="navbar-brand" onclick="event.preventDefault(); document.getElementById('logout-form2').submit();"> 
-					<img src="{{asset('img/Imagem1.png')}}"  height="50" class="d-inline-block align-top" alt="">
-					<span class="navbar-brand mb-0 h1" style="margin-left:10px;margin-top:5px ;color: rgb(103, 101, 103) !important">
-						<h4 class="d-none d-sm-block">INTRANET HCPGESTÃO</h4>
-					</span>
+					<!--img src="{{asset('img/Imagem1.png')}}"  height="50" class="d-inline-block align-top" alt=""-->
+					<img src="{{ asset('assets/img/logo4.jpeg') }}" width="400px" alt="" class="img-fluid">
 				</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>

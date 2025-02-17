@@ -7,6 +7,7 @@ use App\Models\Indicadores;
 use App\Models\Unidades;
 use App\Models\GrupoIndicadores;
 use App\Models\Logger;
+use App\Models\User;
 use App\Models\PerfilUser;
 use App\Models\PerfilUserIndica;
 use App\Models\GrupoPerfilUser;
@@ -15,7 +16,10 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PermissaoController;
 use Storage;
 use DB;
+use Str;
+use Hash;
 use Validator;
+use Mail;
 
 class IndicadoresController extends Controller
 {
@@ -200,14 +204,17 @@ class IndicadoresController extends Controller
         $validator = Validator::make($request->all(), [
             'grupo_id' => 'required|max:255',
             'status'   => 'required|max:255',
-            'nome'     => 'required|max:255',
-            'link'     => 'required|max:255'
+            'nome'     => 'required|max:255'
         ]);
         if ($validator->fails()) {
             return view('indicadores/indicadores_novo', compact('indicadores', 'grupo_indicadores', 'unidades'))
                 ->withErrors($validator)
                 ->withInput(session()->flashInput($request->input()));
         } else {
+            if($input['status'] == "Pasta") {
+                $input['link']  = '';
+                $input['exibe'] = 0;
+            }
             $indicadores = Indicadores::create($input);
             $indicadores = Indicadores::paginate(20);
             $grupo_indicadores = GrupoIndicadores::all();
@@ -254,8 +261,7 @@ class IndicadoresController extends Controller
         $validator = Validator::make($request->all(), [
             'grupo_id' => 'required|max:255',
             'status'   => 'required|max:255',
-            'nome'     => 'required|max:255',
-            'link'     => 'required|max:255'
+            'nome'     => 'required|max:255'
         ]);
         if ($validator->fails()) {
             return view('indicadores/indicadores_alterar', compact('indicadores', 'unidades', 'grupo_indicadores'))
@@ -523,5 +529,23 @@ class IndicadoresController extends Controller
                 ->withErrors($validator)
                 ->with('perfil_user', 'validator');
         }
+    }
+
+    public function exibeRelatoriosInsumos($id)
+    {
+        $unidades = Unidades::all();
+		$user 	  = User::find(Auth::user()->id);
+        $indicadores = Indicadores::where('id', 0)->get();
+		$grupo_indicadores = DB::table('grupo_indicadores')
+		    	->join('indicadores', 'indicadores.grupo_id', '=', 'grupo_indicadores.id')
+				->select('grupo_indicadores.nome', 'grupo_indicadores.id', 'indicadores.link as link', 
+						 'indicadores.nome as nomeInd', 'indicadores.status as status', 'indicadores.exibe')
+				->where('indicadores.grupo_id', $id)
+                ->where('indicadores.exibe',1)
+				->groupby('grupo_indicadores.nome', 'grupo_indicadores.id', 'indicadores.link', 
+						'indicadores.nome', 'indicadores.status', 'indicadores.exibe')
+				->orderby('indicadores.nome')->get(); 
+		
+        return view('indicadores/lista_indicadores_pasta', compact('unidades', 'user', 'grupo_indicadores', 'indicadores'));
     }
 }

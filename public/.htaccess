@@ -18,5 +18,32 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+	
+	
     
+</IfModule>
+
+<IfModule php7_module>
+   php_flag display_errors Off
+   php_value max_execution_time 5000
+   php_value max_input_time 5000
+   php_value max_input_vars 5000
+   php_value memory_limit 20GB
+   php_value post_max_size 512M
+   php_value session.gc_maxlifetime 8440
+   php_value session.save_path "/var/cpanel/php/sessions/ea-php70"
+   php_value upload_max_filesize 512M
+   php_flag zlib.output_compression on
+</IfModule>
+<IfModule lsapi_module>
+   php_flag display_errors Off
+   php_value max_execution_time 5000
+   php_value max_input_time 5000
+   php_value max_input_vars 5000
+   php_value memory_limit 20GB
+   php_value post_max_size 512M
+   php_value session.gc_maxlifetime 8440
+   php_value session.save_path "/var/cpanel/php/sessions/ea-php70"
+   php_value upload_max_filesize 512M
+   php_flag zlib.output_compression on
 </IfModule>

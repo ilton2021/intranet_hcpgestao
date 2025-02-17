@@ -11,9 +11,12 @@ class PoliticasNormas extends Model
 
     protected $fillable = [
         'nome',
+        'sigla',
         'setor',
         'imagem',
         'caminho',
+		'imprimir',
+        'setor_id',
         'created_at',
         'updated_at'
     ];

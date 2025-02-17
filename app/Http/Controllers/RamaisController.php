@@ -54,9 +54,9 @@ class RamaisController extends Controller
             $pesq  = $input['pesq'];
             $pesq2 = $input['pesq2']; 
             if($pesq2 == "1") {
-                $ramais = Ramais::where('nome','like','%'.$pesq.'%')->paginate(20);
+                $ramais = Ramais::where('nome','like',$pesq.'%')->paginate(20);
             } else if($pesq2 == "2") {
-                $ramais = Ramais::where('telefone','like','%'.$pesq.'%')->paginate(20);;
+                $ramais = Ramais::where('telefone','like',$pesq.'%')->paginate(20);;
             } else if($pesq2 == "3") {
 				$ramais = DB::table('ramais')
 				->join('unidades', 'unidades.id', '=', 'ramais.unidade_id')
@@ -79,6 +79,26 @@ class RamaisController extends Controller
 				->with('perfil_user', 'validator');
 		}
     }
+
+    public function pesqRamaisUnidade($id, Request $request) 
+    {
+		$input = $request->all();
+
+		if(empty($input['pesq'])) { $input['pesq'] = ""; }
+		if(empty($input['pesq2'])) { $input['pesq2'] = ""; }
+		$pesq  = $input['pesq'];
+		$pesq2 = $input['pesq2']; 
+		if($pesq2 == "nome") {
+			$ramais = Ramais::where('unidade_id',$id)->where('nome','like',$pesq.'%')->get();
+		} else if($pesq2 == "ramal") {
+			$ramais = Ramais::where('unidade_id',$id)->where('telefone','like',$pesq.'%')->get();
+		} else {
+			$ramais = Ramais::where('unidade_id',$id)->orderby('nome','ASC')->get();
+		}
+		$unidades = Unidades::all();
+        $unidade  = Unidades::where('id',$id)->get();
+        return view('ramais/ramais_unidade', compact('ramais','unidade','unidades'));
+   }
 
     public function ramaisNovo()
     {
@@ -228,7 +248,7 @@ class RamaisController extends Controller
     public function ramaisUnidade($id)
     {
         $unidades = Unidades::all();
-        $ramais   = Ramais::where('unidade_id',$id)->get();
+        $ramais   = Ramais::where('unidade_id',$id)->orderby('nome','ASC')->get();
         $unidade  = Unidades::where('id',$id)->get();
         return view('ramais/ramais_unidade', compact('ramais','unidade','unidades'));
     }

@@ -1,4 +1,16 @@
 @extends('layouts.adm')
+<script type="text/javascript">
+		function desativarStatus(){
+			x = document.getElementById("status").value;
+			if(x == "Relatorio") {
+				document.getElementById('link').disabled = false;
+				document.getElementById('exibe').disabled = false;
+			} else {
+				document.getElementById('link').disabled = true;
+				document.getElementById('exibe').disabled = true;
+			}
+		}
+</script>
 	<div class="container-fluid">
 	<div class="row" style="margin-top: 0px;">
 		<div class="col-md-12 text-center">
@@ -35,7 +47,7 @@
 						 <tr>
 							<td> Grupo: </td>
 							<td>
-								<select class="form-control" id="grupo_id" name="grupo_id" style="width: 400px">
+								<select class="form-control" id="grupo_id" name="grupo_id" style="width: 400px" required>
 									@foreach($grupo_indicadores as $GI)
 									<option value="<?php echo $GI->id ?>" id="grupo_id" name="grupo_id">{{ $GI->nome }}</option>
 									@endforeach
@@ -45,9 +57,20 @@
 						 <tr>
 							<td> Status: </td>
 							<td>
-								<select id="status" name="status" class="form-control">
-									<option id="status" name="status" value="Pacote">Pacote</option> 
-									<option id="status" name="status" value="Novo">Novo</option> 
+								<select id="status" name="status" class="form-control" onchange="desativarStatus('sim')" required>
+									<option id="status" name="status" value="">Selecione...</option> 
+									<option id="status" name="status" value="Pasta">Pasta</option> 
+									<option id="status" name="status" value="Relatorio">Relatório</option> 
+							    </select>
+							</td>
+						 </tr>
+						 <tr>
+							<td> Tipo: </td>
+							<td>
+								<select id="exibe" name="exibe" class="form-control" required>
+									<option id="exibe" name="exibe" value="">Selecione...</option> 
+									<option id="exibe" name="exibe" value="0">Exibe na Pasta</option> 
+									<option id="exibe" name="exibe" value="1">Exibe na Index</option> 
 							    </select>
 							</td>
 						 </tr>

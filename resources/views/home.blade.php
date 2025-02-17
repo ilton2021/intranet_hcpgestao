@@ -1,4 +1,5 @@
 @extends('layouts.adm2')
+<link rel="shortcut icon" href="{{asset('assets/img/favico.png')}}"/>
 <br><br>
 @section('content')
 @if ($errors->any())
@@ -43,13 +44,34 @@
                                         <a class="dropdown-item" href="{{ route('cadastroOuvidorias') }}">Ouvidoria das Unidades</a>
                                         <a class="dropdown-item" href="{{ route('cadastroIndicadores') }}">Indicadores</a>
                                         <a class="dropdown-item" href="{{ route('cadastroSetores') }}">Setores</a>
+                                        
                                     <?php } ?>
                                     <?php if ((in_array(3, $perfil_user)) || (in_array(1, $perfil_user))) { ?>
                                         <a class="dropdown-item" href="{{ route('cadastroDocumentos') }}">Documentos de Qualidade</a>
                                         <a class="dropdown-item" href="{{ route('cadastroProtocolos') }}">Protocolos Institucionais</a>
                                         <a class="dropdown-item" href="{{ route('cadastroPoliticas') }}">Políticas e Normas</a>
                                     <?php } ?>
+									<?php if ((in_array(19, $perfil_user)) || (in_array(1, $perfil_user))) { ?>
+                                        <a class="dropdown-item" href="{{ route('showVeiculos') }}">Veiculos</a>
+                                    <?php } ?>
+                                    <?php if ((in_array(19, $perfil_user)) || (in_array(20, $perfil_user))) { ?>
+                                        <a class="dropdown-item" href="{{ route('listaManuais') }}">Manual Farmácia</a>
+                                    <?php } ?>
+                                    <?php if ((in_array(21, $perfil_user))) { ?>
+                                        <a class="dropdown-item" href="{{ route('cadastroCardapiosDiaInicio') }}">Cardápios</a>
+                                    <?php } ?>
+                                    <?php if ((in_array(22, $perfil_user)) || (in_array(1, $perfil_user))) { ?>
+                                        <a class="dropdown-item" href="{{ route('cadastroAvaliacaoExp') }}">Avaliação de Experiência</a>
+                                    <?php } ?>
+                                    <?php if ((in_array(22, $perfil_user)) || (in_array(1, $perfil_user))) { ?>
+                                        <a class="dropdown-item" href="{{ route('setorDocumento') }}">Setores Documentos</a>
+                                    <?php } ?>
                             </li>
+							<?php if ((in_array(20, $perfil_user)) || (in_array(1, $perfil_user))) { ?>
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="{{ route('showRelatorios') }}">Relátorios <span class="sr-only">(current)</span></a>
+                                </li>
+                            <?php } ?>
                             <?php if (in_array(1, $perfil_user)) { ?>
                                 <li class="nav-item active">
                                     <a class="nav-link" href="{{ route('cadastroUsuarios') }}">Usuários <span class="sr-only">(current)</span></a>

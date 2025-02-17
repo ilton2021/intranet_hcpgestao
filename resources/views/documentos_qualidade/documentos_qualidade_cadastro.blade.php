@@ -1,4 +1,5 @@
 @extends('layouts.adm') 
+<link rel="shortcut icon" href="{{asset('assets/img/favico.png')}}"/>
 <div class="container-fluid">
 	<div class="row" style="margin-bottom: 25px; margin-top: 25px;">
 		<div class="col-md-12 text-center">
@@ -42,7 +43,9 @@
 			<table class="table table-sm " id="my_table">
 				<thead class="bg-success">
 					<tr>
-						<th scope="col" width="600px">NOME</th>
+						<th scope="col">NOME</th>
+						<th scope="col">SIGLA</th> 
+						<th scope="col">IMPRESSÃO</th>
 						<th scope="col"><center>ALTERAR</center></th>
 						<th scope="col"><center>EXCLUIR</center></th>
 					</tr>
@@ -51,6 +54,8 @@
 					@foreach($documentos as $documento)
 					<tr>
 						<td style="font-size: 15px;">{{$documento->nome}}</td>
+						<td style="font-size: 15px;">{{$documento->sigla}}</td>
+						<td style="font-size: 15px;">{{$documento->imprimir == 1 ? "Sim " : "Não"}}</td>
 						<td><center><a class="btn btn-info btn-sm" href="{{ route('documentosAlterar', $documento->id) }}" ><i class="fas fa-edit"></i></center></td>
                         <td><center><a class="btn btn-danger btn-sm" href="{{ route('documentosExcluir', $documento->id) }}" ><i class="fas fa-times-circle"></i></center></td>
 					</tr>

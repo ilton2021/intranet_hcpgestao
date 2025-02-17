@@ -11,9 +11,11 @@ class ProtocolosInstitucionais extends Model
 
     protected $fillable = [
         'nome',
-        'setor',
+        'sigla',
         'imagem',
         'caminho',
+		'imprimir',
+        'setor_id',
         'created_at',
         'updated_at'
     ];

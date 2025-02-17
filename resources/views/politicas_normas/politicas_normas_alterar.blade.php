@@ -25,32 +25,48 @@
                 </div>	
 					<form action="{{\Request::route('updatePoliticas')}}" method="post" enctype="multipart/form-data">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
-						<table border="0" class="table-sm" style="line-height: 1.5;" >
+						<table border="0" class="table table-sm" style="line-height: 1.5;" >
 						 <tr>
 							<td> Nome: </td>
 							<td>
-								<input class="form-control" type="text" id="nome" name="nome" required value="<?php echo $politicas[0]->nome; ?>" />
+								<input class="form-control form-control-sm" type="text" id="nome" name="nome" required value="<?php echo $politicas[0]->nome; ?>" />
 							</td>
 						 </tr>
 						 <tr>
-							<td> Setor: </td>
+							<td> Sigla: </td>
 							<td>
-							<select id="setor" name="setor" class="form-control">
-								 @foreach($setores as $setor)
-								  @if($setor->nome == $politicas[0]->setor)
-								    <option id="setor" name="setor" value="<?php echo $setor->nome; ?>" selected>{{ $setor->nome }}</option>
-								  @else
-								    <option id="setor" name="setor" value="<?php echo $setor->nome; ?>">{{ $setor->nome }}</option>
-								  @endif
-								 @endforeach
-								</select>
+								<input class="form-control" type="text" id="sigla" name="sigla" required value="<?php echo $politicas[0]->sigla; ?>" />
 							</td>
 						 </tr>
                          <tr>
-							<td> Imagem: </td>
+							<td> Arquivo: </td>
 							<td> 
-							  <input class="form-control" style="width: 750px" type="text" id="imagem_" name="imagem_" readonly value="<?php echo $politicas[0]->imagem; ?>" /> 
-                              <input class="form-control" style="width: 750px" type="file" id="imagem" name="imagem" value="" /> 
+							  <input class="form-control form-control-sm" type="text" id="imagem_" name="imagem_" readonly value="<?php echo $politicas[0]->imagem; ?>" /> 
+                              <input class="form-control form-control-sm" type="file" id="imagem" name="imagem" value="" /> 
+							</td>
+						 </tr>
+						<tr>
+							<td>Permite impressão ?</td>
+							<td>
+							<div class="d-flex align-items-center text-center">
+								<input type="radio" id="imprimir" name="imprimir" value="1" {{$politicas[0]->imprimir == 1 ? "checked" : ""}}>
+	  							<label for="imprimir">Sim</label>
+	  							<input type="radio" id="imprimir" name="imprimir" value="0" {{$politicas[0]->imprimir == 0 ? "checked" : ""}}>
+	  							<label for="imprimir">Não</label>
+							</div>
+							</td>
+						 </tr>
+						 <tr>
+							<td>Setor: </td>
+							<td>
+								<div class="d-flex align-items-center text-center">
+									<select name="setor_id" id="setor_id" class="form-control form-control-sm">
+										<option value="">Selecione...</option>
+										@foreach($setores as $setor)
+											<option value="{{ $setor->id }}" <?php if($politicas[0]->setor_id == $setor->id ){ echo "selected";}?>>{{ strtoupper($setor->setor) }} | {{ $setor->unidade }}</option>
+										@endforeach
+									</select>
+								</div>
 							</td>
 						 </tr>
 						 <tr>

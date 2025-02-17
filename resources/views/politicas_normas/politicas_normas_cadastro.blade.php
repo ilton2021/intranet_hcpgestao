@@ -43,8 +43,9 @@
 			<table class="table table-sm " id="my_table">
 				<thead class="bg-success">
 					<tr>
-						<th scope="col" width="900px">NOME</th>
-						<th scope="col">SETOR</th>
+						<th scope="col">NOME</th>
+						<th scope="col">SIGLA</th>
+						<th scope="col">IMPRESSÃO</th>
 						<th scope="col"><center>ALTERAR</center></th>
 						<th scope="col"><center>EXCLUIR</center></th>
 					</tr>
@@ -53,7 +54,8 @@
 					@foreach($politicas as $politica)
 					<tr>
 						<td style="font-size: 15px;">{{$politica->nome}}</td>
-						<td style="font-size: 15px;">{{$politica->setor}}</td>
+						<td style="font-size: 15px;">{{$politica->sigla}}</td>
+						<td style="font-size: 15px;">{{$politica->imprimir == 1 ? "Sim " : "Não"}}</td>
 						<td><center><a class="btn btn-info btn-sm" href="{{ route('politicasAlterar', $politica->id) }}" ><i class="fas fa-edit"></i></center></td>
                         <td><center><a class="btn btn-danger btn-sm" href="{{ route('politicasExcluir', $politica->id) }}" ><i class="fas fa-times-circle"></i></center></td>
 					</tr>

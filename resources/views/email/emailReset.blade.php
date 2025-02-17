@@ -6,6 +6,6 @@
         <h5 class="card-title">Solicitação para alteração de Senha</h5>
         <p class="card-text">Para alterar a sua senha na INTRANET do HCPGESTÃO:</p>
         <p class="card-text">Utilize este Token para validação: <?php echo $token; ?></p>
-        <a href="localhost/intranet/public/">localhost/intranet/public/</a>
+        <a href="http://intranet/auth/passwords/reset">clique aqui</a>
     </div> <br><br>
 </div>

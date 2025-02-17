@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ProtocolosInstitucionais;
-use App\Models\Setor;
+use App\Models\SetorDocumento;
 use App\Models\Logger;
+use App\Models\Unidades;
 use App\Models\UserPerfil;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PermissaoController;
@@ -74,8 +75,10 @@ class ProtocolosInstitucionaisController extends Controller
 		$idTela = 11;
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
 		if($validacao == "ok") {
-			$setores = Setor::all();
-        	return view('protocolos_institucionais/protocolos_institucionais_novo', compact('setores'));
+			$setores = SetorDocumento::join('unidades', 'setor_documento.unidade_id', '=', 'unidades.id')
+				->select('setor_documento.*', 'setor_documento.setor as setor', 'unidades.nome as unidade')->get();
+			$unidades = Unidades::all();
+        	return view('protocolos_institucionais/protocolos_institucionais_novo', compact('setores','unidades'));
 		} else {
 			$id_user = Auth::user()->id;
 			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
@@ -94,11 +97,12 @@ class ProtocolosInstitucionaisController extends Controller
     {
         $input    = $request->all();
         $setores  = Setor::all();
+		$unidades = Unidades::all();
 		$nome     = $_FILES['imagem']['name'];
 		$extensao = pathinfo($nome, PATHINFO_EXTENSION);
 		if($request->file('imagem') === NULL) {	
 			$validator = 'Selecione o arquivo do Protocolo Institucional!';
-			return view('protocolos_institucionais/protocolos_institucionais_novo', compact('setores'))
+			return view('protocolos_institucionais/protocolos_institucionais_novo', compact('setores','unidades'))
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
 		} else {
@@ -107,13 +111,20 @@ class ProtocolosInstitucionaisController extends Controller
 					'nome' => 'required|max:255'
 				]);
 				if ($validator->fails()) {
-					return view('protocolos_institucionais/protocolos_institucionais_novo', compact('setores'))
+					return view('protocolos_institucionais/protocolos_institucionais_novo', compact('setores','unidades'))
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
 				}else {
-					$request->file('imagem')->move('public/storage/protocolos_institucionais/', $nome);
+					$request->file('imagem')->move('../public/storage/protocolos_institucionais/', $nome);
 					$input['imagem'] = $nome; 
 					$input['caminho'] = 'protocolos_institucionais/'.$nome; 
+					$Und = isset($input['unidade_id']);
+					if ($Und == true) {
+						$und_destaq = implode(',', $input['unidade_id']);
+						$input['unidade_id'] = $und_destaq;
+					} else {
+						$und_destaq = "";
+					}
 					$protocolos = ProtocolosInstitucionais::create($input);
 					$protocolos = ProtocolosInstitucionais::all();
 					$id = ProtocolosInstitucionais::all()->max('id');
@@ -127,7 +138,7 @@ class ProtocolosInstitucionaisController extends Controller
 				}
 			} else {
 				$validator = 'Só é permitido imagens: .jpg, .jpeg ou .png!';		
-				return view('protocolos_institucionais/protocolos_institucionais_novo', compact('setores'))
+				return view('protocolos_institucionais/protocolos_institucionais_novo', compact('setores','unidades'))
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
 			}
@@ -141,8 +152,10 @@ class ProtocolosInstitucionaisController extends Controller
 		$validacao = PermissaoUserController::Permissao($id_user, $idTela);
 		if($validacao == "ok") {
 			$protocolos = ProtocolosInstitucionais::where('id',$id)->get();
-			$setores    = Setor::all();
-			return view('protocolos_institucionais/protocolos_institucionais_alterar', compact('protocolos','setores'));
+			$setores = SetorDocumento::join('unidades', 'setor_documento.unidade_id', '=', 'unidades.id')
+				->select('setor_documento.*', 'setor_documento.setor as setor', 'unidades.nome as unidade')->get();
+			$unidades   = Unidades::all();
+			return view('protocolos_institucionais/protocolos_institucionais_alterar', compact('protocolos','setores','unidades'));
 		} else {
 			$id_user = Auth::user()->id;
 			$UserPerfil = UserPerfil::where('users_id', $id_user)->get();
@@ -161,7 +174,8 @@ class ProtocolosInstitucionaisController extends Controller
     {
         $input = $request->all();
 		$nome1 = "";
-        $setores    = Setor::all();
+        $setores = SetorDocumento::join('unidades', 'setor_documento.unidade_id', '=', 'unidades.id')
+				->select('setor_documento.*', 'setor_documento.setor as setor', 'unidades.nome as unidade')->get();
         $protocolos = ProtocolosInstitucionais::where('id',$id)->get();
 		if($request->file('imagem') === NULL && $input['imagem_'] == "") {	
 			$validator = 'Selecione o arquivo do Protocolo Institucional!';	
@@ -186,7 +200,7 @@ class ProtocolosInstitucionaisController extends Controller
 						->withInput(session()->flashInput($request->input()));
 				}else {
 					if($nome1 != "") {
-					  $request->file('imagem')->move('public/storage/protocolos_institucionais/', $nome1);
+					  $request->file('imagem')->move('../public/storage/protocolos_institucionais/', $nome1);
 					  $input['imagem'] = $nome1; 
 					  $input['caminho'] = 'protocolos_institucionais/'.$nome1; 
 					} 

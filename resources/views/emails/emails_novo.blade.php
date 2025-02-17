@@ -1,4 +1,4 @@
-@extends('layouts.adm')
+﻿@extends('layouts.adm')
 	<div class="container-fluid">
 	<div class="row" style="margin-top: 0px;">
 		<div class="col-md-12 text-center">
@@ -39,16 +39,6 @@
 							</td>
 						 </tr>
 						 <tr>
-							<td> Setor: </td>
-							<td>
-								<select class="form-control" id="setor_id" name="setor_id">
-									@foreach($setores as $setor)
-									<option id="setor_id" name="setor_id" value="<?php echo $setor->id; ?>">{{ $setor->nome }}</option>
-									@endforeach
-								</select>
-							</td>
-						</tr>
-						 <tr>
 							<td> Unidade: </td>
 							<td>
 							  <select class="form-control" id="unidade_id" name="unidade_id">
@@ -63,7 +53,7 @@
 							<td><input hidden type="text" id="user_id" name="user_id" class="form-control" value="<?php echo Auth::user()->id; ?>"  /></td>
 							<td><input hidden type="text" id="idTabela" name="idTabela" class="form-control" value="" /> </td>
 						</tr>
-                         </table>
+                        			</table>
 						<table>
 						 <tr>
 						  <td><br> <a href="{{ route('cadastroEmails') }}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-top: 10px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a>
